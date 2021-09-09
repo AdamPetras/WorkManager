@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkManager.Models.Abstract\WorkManager.Models.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkManager.Models.Interfaces\WorkManager.Models.Interfaces.csproj" />
     <ProjectReference Include="..\WorkManager.Models\WorkManager.Models.csproj" />
   </ItemGroup>
 

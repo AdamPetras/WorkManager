@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkManager.DAL\WorkManager.DAL.csproj" />
-    <ProjectReference Include="..\WorkManager.Models.Abstract\WorkManager.Models.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkManager.Models.Interfaces\WorkManager.Models.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

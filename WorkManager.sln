@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
@@ -13,17 +13,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.DAL", "WorkMana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.BL", "WorkManager.BL\WorkManager.BL.csproj", "{C2F187B1-F081-4BD7-8446-4D21A7F5066C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.BL.Interfaces", "WorkManager.BL.Abstract\WorkManager.BL.Interfaces.csproj", "{F74E1BE6-C876-4B3A-AF85-17C35D886D40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.BL.Interfaces", "WorkManager.BL.Interfaces\WorkManager.BL.Interfaces.csproj", "{F74E1BE6-C876-4B3A-AF85-17C35D886D40}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.Models", "WorkManager.Models\WorkManager.Models.csproj", "{6E458A7E-216F-44E1-BB55-76FDD1D7D81B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.Models.Interfaces", "WorkManager.Models.Abstract\WorkManager.Models.Interfaces.csproj", "{B1273AF5-18F9-4DC6-9115-1E223942F0AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.Models.Interfaces", "WorkManager.Models.Interfaces\WorkManager.Models.Interfaces.csproj", "{B1273AF5-18F9-4DC6-9115-1E223942F0AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.Views", "WorkManager.Views\WorkManager.Views.csproj", "{880DCCE0-56CA-4B83-B93F-AD95048F11E7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.ViewModels", "WorkManagerViewModels\WorkManager.ViewModels.csproj", "{63F9F843-AE40-4749-9596-41F77D8D56E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.ViewModels.Interfaces", "WorkManager.ViewModels.Abstract\WorkManager.ViewModels.Interfaces.csproj", "{C571A561-E65E-4BCC-8F33-9EC64AAA826E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.ViewModels.Interfaces", "WorkManager.ViewModels.Interfaces\WorkManager.ViewModels.Interfaces.csproj", "{C571A561-E65E-4BCC-8F33-9EC64AAA826E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkManager.Core", "WorkManager.Core\WorkManager.Core.csproj", "{648EF000-24A0-468D-856C-7F98A4E755DC}"
 EndProject

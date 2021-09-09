@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\WorkManager.BL.Interfaces\WorkManager.BL.Interfaces.csproj" />
     <ProjectReference Include="..\..\WorkManager.BL\WorkManager.BL.csproj" />
     <ProjectReference Include="..\..\WorkManager.Core\WorkManager.Core.csproj" />
     <ProjectReference Include="..\..\WorkManager.DAL\WorkManager.DAL.csproj" />

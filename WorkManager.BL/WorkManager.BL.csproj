@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkManager.BL.Abstract\WorkManager.BL.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkManager.BL.Interfaces\WorkManager.BL.Interfaces.csproj" />
     <ProjectReference Include="..\WorkManager.DAL\WorkManager.DAL.csproj" />
     <ProjectReference Include="..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
     <ProjectReference Include="..\WorkManager.Models\WorkManager.Models.csproj" />

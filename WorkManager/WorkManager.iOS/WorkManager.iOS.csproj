@@ -203,7 +203,7 @@
     <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WorkManager.BL.Abstract\WorkManager.BL.Interfaces.csproj">
+    <ProjectReference Include="..\..\WorkManager.BL.Interfaces\WorkManager.BL.Interfaces.csproj">
       <Project>{f74e1be6-c876-4b3a-af85-17c35d886d40}</Project>
       <Name>WorkManager.BL.Interfaces</Name>
     </ProjectReference>
