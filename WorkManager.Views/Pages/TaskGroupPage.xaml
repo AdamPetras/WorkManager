@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xmlns:views="clr-namespace:WorkManager.Views.Views;assembly=WorkManager.Views"
+             xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
+             xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
+             x:DataType="pages:TaskGroupPageViewModel"
+             Title="{x:Static resources:TaskGroupPageSR.Title}"
+             x:Class="WorkManager.Views.Pages.TaskGroupPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ShowAddTaskGroupDialogCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ClearWholeTaskGroupsCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding TaskGroups}" Margin="5" SelectionChangedCommand="{Binding SelectedTaskGroupCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.EmptyView>
+                <views:TaskGroupEmptyView></views:TaskGroupEmptyView>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="interfaces:ITaskGroupModel">
+                    <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" 
+                           effects:TouchEffect.PressedScale="1.02" effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                           effects:TouchEffect.LongPressCommand="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor"
+                                                Value="Black" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor"
+                                                Value="{x:StaticResource secondaryColor}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Frame CornerRadius="18" VerticalOptions="CenterAndExpand">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0"  Text="{Binding Name}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                                <BoxView Grid.Row="1" Grid.Column="0" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                <Label Grid.Row="2" Grid.Column="0" Text="{Binding Description}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                            </Grid>
+                        </Frame>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

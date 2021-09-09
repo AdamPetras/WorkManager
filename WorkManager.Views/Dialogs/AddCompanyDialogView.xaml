@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xaml:DialogLayout.CloseOnBackgroundTapped="True"
+             xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
+             xmlns:xaml="http://prismlibrary.com"
+             xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
+             xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
+             x:DataType="dialogs:AddCompanyDialogViewModel"
+             x:Class="WorkManager.Views.Dialogs.AddCompanyDialogView">
+      <Grid>
+          <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"></RowDefinition>
+              <RowDefinition Height="Auto"></RowDefinition>
+              <RowDefinition Height="Auto"></RowDefinition>
+              <RowDefinition Height="Auto"></RowDefinition>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"></ColumnDefinition>
+              <ColumnDefinition Width="*"></ColumnDefinition>
+          </Grid.ColumnDefinitions>
+          <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.Name}"></Label>
+          <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></Entry>
+        <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+      </Grid>
+</Frame>

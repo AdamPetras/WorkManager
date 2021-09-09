@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:WorkManager.Views.Views;assembly=WorkManager.Views"
+             xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
+             xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
+             x:DataType="pages:CompanyPageViewModel"
+             x:Class="WorkManager.Views.Pages.CompanyPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ShowAddCompanyDialogCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <CollectionView ItemsSource="{Binding Companies}" Margin="5">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyView>
+                    <views:CompanyEmptyView></views:CompanyEmptyView>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="interfaces:ICompanyModel">
+                        <Frame BackgroundColor="Black" Padding="3" effects:TouchEffect.PressedScale="1.02" CornerRadius="20" VerticalOptions="CenterAndExpand" 
+                               effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                               effects:TouchEffect.Command="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" Padding="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0"  Text="{Binding Name}" TextColor="{x:StaticResource secondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                                </Grid>
+                            </Frame>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </StackLayout>
+</ContentPage>

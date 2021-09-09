@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage   xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewModels="clr-namespace:WorkManager.ViewModels;assembly=WorkManager.ViewModels"
+              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+              xmlns:extensions="http://xamarin.com/schemas/2020/toolkit"
+              x:DataType="pages:RootPageViewModel"
+              x:Class="WorkManager.Views.Pages.RootPage">
+    <FlyoutPage.Flyout>
+        <ContentPage Title="Menu">
+            <StackLayout>
+                <Image Source="icon.png" Margin="5"></Image>
+                <Button Text="Tasks" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" CommandParameter="Page2"></Button>
+                <Button Text="Work time store" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" CommandParameter="Page2"></Button>
+            </StackLayout>
+        </ContentPage>
+    </FlyoutPage.Flyout>
+</FlyoutPage>

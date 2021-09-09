@@ -1,0 +1,171 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Fonts\fa-solid-900.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts\fa-solid-900.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
+    <PackageReference Include="Prism.Unity.Forms" Version="8.1.97" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
+    <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkManager.Converters\WorkManager.Converters.csproj" />
+    <ProjectReference Include="..\WorkManager.Core\WorkManager.Core.csproj" />
+    <ProjectReference Include="..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
+    <ProjectReference Include="..\WorkManagerViewModels\WorkManager.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Prism.Forms">
+      <HintPath>C:\Users\Adam\.nuget\packages\prism.forms\8.1.97\lib\monoandroid10.0\Prism.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.CommunityToolkit">
+      <HintPath>C:\Users\Adam\.nuget\packages\xamarin.communitytoolkit\1.2.0\lib\netstandard2.1\Xamarin.CommunityToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>C:\Users\Adam\.nuget\packages\xamarin.forms\5.0.0.2083\lib\netstandard2.0\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Dialogs\AddWorkRecordDialogView.xaml.cs">
+      <DependentUpon>AddWorkRecordDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\CompanyPage.xaml.cs">
+      <DependentUpon>CompanyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\WorkRecordPage.xaml.cs">
+      <DependentUpon>WorkRecordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\DialogSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DialogSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\KanbanDetailPageSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KanbanDetailPageSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\LoginRegisterSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoginRegisterSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\TaskDetailPageSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskDetailPageSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\TaskGroupPageSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskGroupPageSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\TaskKanbanPageSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskKanbanPageSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\WorkRecordPageSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WorkRecordPageSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CompanyEmptyView.xaml.cs">
+      <DependentUpon>CompanyEmptyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WorkRecordEmptyView.xaml.cs">
+      <DependentUpon>WorkRecordEmptyView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Dialogs\AddTaskDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\FilterDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\RootPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\TaskDetailPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\TaskGroupPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\TaskKanbanPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\CompanyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\WorkRecordPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\DialogSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>DialogSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\KanbanDetailPageSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>KanbanDetailPageSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\LoginRegisterSR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoginRegisterSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\AddCompanyDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\AddTaskGroupDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\AddWorkRecordDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TaskDetailPageSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TaskDetailPageSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TaskGroupPageSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TaskGroupPageSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TaskKanbanPageSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TaskKanbanPageSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\WorkRecordPageSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>WorkRecordPageSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\WorkRecordEmptyView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TaskGroupEmptyView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CompanyEmptyView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TemplateSelectors\" />
+  </ItemGroup>
+</Project>

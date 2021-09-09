@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:converters="clr-namespace:WorkManager.Views.Converters;assembly=WorkManager.Views"
+             x:Class="WorkManager.App">
+    <Application.Resources>
+        <converters:BooleanNegateConverter x:Key="BooleanNegateConverter"></converters:BooleanNegateConverter>
+
+        <Color x:Key="primaryColor">#005288</Color>
+        <Color x:Key="primaryLightColor">#497eb8</Color>
+        <Color x:Key="primaryDarkColor">#002a5b</Color>
+        <Color x:Key="secondaryColor">#b75c00</Color>
+        <Color x:Key="secondaryLightColor">#ef8a38</Color>
+        <Color x:Key="secondaryDarkColor">#813000</Color>
+        <Color x:Key="primaryTextColor">#FAFAFA</Color>
+        <Color x:Key="secondaryTextColor">#0A0A0A</Color>
+        <Color x:Key="bodyColor">#FAFAFA</Color>
+        <Color x:Key="bodyTextColor">#888888</Color>
+        <Color x:Key="bodySelectedColor">#13B70B</Color>
+    </Application.Resources>
+</prism:PrismApplication>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xmlns:views="clr-namespace:WorkManager.ViewModels.Views;assembly=WorkManager.ViewModels"
+             x:DataType="views:TaskGroupEmptyViewModel"
+             x:Class="WorkManager.Views.Views.TaskGroupEmptyView">
+  <ContentView.Content>
+      <StackLayout>
+          <ImageButton VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="150" Command="{Binding ShowAddTaskGroupCommand}">
+              <ImageButton.Source>
+                  <FontImageSource FontFamily="fa-solid-900" Size="100" Glyph="{x:Static resources:IconFont.Plus}" Color="{StaticResource primaryLightColor}" />
+              </ImageButton.Source>
+          </ImageButton>
+      </StackLayout>
+    </ContentView.Content>
+</ContentView>

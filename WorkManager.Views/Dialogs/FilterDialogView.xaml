@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
+             xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
+             xmlns:resources="clr-namespace:WorkManager.ViewModels.Resources;assembly=WorkManager.ViewModels"
+             xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
+             xmlns:xaml="http://prismlibrary.com"
+             x:Class="WorkManager.Views.Dialogs.FilterDialogView"
+             xaml:DialogLayout.CloseOnBackgroundTapped="True"
+             x:DataType="dialogs:FilterDialogViewModel"
+             HorizontalOptions="FillAndExpand">
+    <Grid HorizontalOptions="FillAndExpand">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Picker Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EFilterType}}}" HorizontalOptions="FillAndExpand" SelectedItem="{Binding SelectedFilter}"></Picker>
+        <Button Grid.Row="1" Grid.Column="0" Text="{x:Static resources:FilterDialogViewSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="1" Grid.Column="1" Text="{x:Static resources:FilterDialogViewSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+    </Grid>
+</Frame>

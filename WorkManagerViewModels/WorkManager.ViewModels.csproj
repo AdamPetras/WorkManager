@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Forms" Version="8.1.97" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkManager.BL.Abstract\WorkManager.BL.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkManager.BL\WorkManager.BL.csproj" />
+    <ProjectReference Include="..\WorkManager.Core\WorkManager.Core.csproj" />
+    <ProjectReference Include="..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\AddCompanyDialogViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AddCompanyDialogViewModelSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\AddTaskGroupDialogViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AddTaskGroupDialogViewModelSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\FilterDialogViewSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>FilterDialogViewSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\TaskGroupPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskGroupPageViewModelSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\TaskKanbanPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TaskKanbanPageViewModelSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\LoginPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LoginPageViewModelSR.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\RegisterPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RegisterPageViewModelSR.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\AddCompanyDialogViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>AddCompanyDialogViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\AddTaskGroupDialogViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>AddTaskGroupDialogViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\FilterDialogViewSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>FilterDialogViewSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TaskGroupPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TaskGroupPageViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TaskKanbanPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TaskKanbanPageViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\LoginPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>LoginPageViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\RegisterPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>RegisterPageViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
