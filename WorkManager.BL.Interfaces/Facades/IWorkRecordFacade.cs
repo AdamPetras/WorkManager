@@ -5,7 +5,7 @@ using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Interfaces.Facades
 {
-	public interface IWorkRecordFacade
+	public interface IWorkRecordFacade: IFacade<IWorkRecordModelBase>
 	{
 		ICollection<IWorkRecordModelBase> GetAllRecordsByCompany(Guid companyId, EFilterType filterType);
 	}

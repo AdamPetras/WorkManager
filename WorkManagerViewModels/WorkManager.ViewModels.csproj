@@ -27,6 +27,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AddTaskGroupDialogViewModelSR.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\CompanyPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CompanyPageViewModelSR.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\FilterDialogViewSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +57,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegisterPageViewModelSR.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\WorkRecordPageViewModelSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WorkRecordPageViewModelSR.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +72,10 @@
     <EmbeddedResource Update="Resources\AddTaskGroupDialogViewModelSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>AddTaskGroupDialogViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\CompanyPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>CompanyPageViewModelSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\FilterDialogViewSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
@@ -82,6 +96,10 @@
     <EmbeddedResource Update="Resources\RegisterPageViewModelSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>RegisterPageViewModelSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\WorkRecordPageViewModelSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>WorkRecordPageViewModelSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

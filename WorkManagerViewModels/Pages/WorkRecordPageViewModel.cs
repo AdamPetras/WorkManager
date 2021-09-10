@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
+using Prism.Services;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
@@ -15,6 +16,7 @@ using WorkManager.Core;
 using WorkManager.DAL.Enums;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
+using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
@@ -26,11 +28,13 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IWorkRecordFacade _workFacade;
 		private readonly IDialogService _dialogService;
 		private readonly DialogEventService _dialogEventService;
+		private readonly IPageDialogService _pageDialogService;
 
 		private EFilterType _selectedFilter;
+		private IWorkRecordModelBase _selectedRecord;
 
 		public WorkRecordPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ICurrentModelProvider<ICompanyModel> companyModelProvider, 
-			IRecordTotalCalculatorService recordTotalCalculatorService, IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService) : base(navigationService)
+			IRecordTotalCalculatorService recordTotalCalculatorService, IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
 		{
 			_eventAggregator = eventAggregator;
 			_companyModelProvider = companyModelProvider;
@@ -38,13 +42,19 @@ namespace WorkManager.ViewModels.Pages
 			_workFacade = workFacade;
 			_dialogService = dialogService;
 			_dialogEventService = dialogEventService;
+			_pageDialogService = pageDialogService;
 			_selectedFilter = EFilterType.ThisMonth;
 			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s=>s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
 			ShowAddDialogCommand = new DelegateCommand(async()=> await ShowAddDialogAsync());
 			ShowStatisticsCommand = new DelegateCommand(ShowStatistics);
 			ShowFilterDialogCommand = new DelegateCommand(async()=>await ShowFilterDialog());
+			ClearWholeOrDeleteSingleRecordCommand =
+				new DelegateCommand(async () => ClearWholeOrDeleteSingleRecordAsync());
+			SelectedRecordCommand = new DelegateCommand<IWorkRecordModelBase>(SelectedRecord);
 		}
 
+		public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleRecordCommand { get; }
 		public DelegateCommand ShowFilterDialogCommand { get; }
 		public DelegateCommand ShowStatisticsCommand { get; }
 		public DelegateCommand ShowAddDialogCommand { get; }
@@ -107,6 +117,30 @@ namespace WorkManager.ViewModels.Pages
 					s.ActualDateTime.Year == DateTime.Today.Year && s.ActualDateTime.Month == DateTime.Today.Month,
 				_ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
 			};
+		}
+
+		private async Task ClearWholeOrDeleteSingleRecordAsync()
+		{
+			if (_selectedRecord != null)
+			{
+				await _workFacade.RemoveAsync(_selectedRecord.Id);
+				FilteredRecords.WholeCollection.Remove(_selectedRecord);
+			}
+			else
+			{
+				if (await _pageDialogService.DisplayAlertAsync(WorkRecordPageViewModelSR.ClearDialogTitle,
+					WorkRecordPageViewModelSR.ClearDialogMessage, WorkRecordPageViewModelSR.DialogYes,
+					WorkRecordPageViewModelSR.DialogNo))
+				{
+					_workFacade.Clear();
+					FilteredRecords.WholeCollection?.Clear();
+				}
+			}
+		}
+
+		private void SelectedRecord(IWorkRecordModelBase obj)
+		{
+			_selectedRecord = obj;
 		}
 	}
 }

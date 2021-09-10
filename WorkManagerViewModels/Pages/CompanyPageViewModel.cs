@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
+using Prism.Services;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
@@ -10,6 +11,7 @@ using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Services;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
+using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
@@ -21,9 +23,11 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ICompanyFacade _companyFacade;
 		private readonly IEventAggregator _eventAggregator;
 		private readonly DialogEventService _dialogEventService;
+		private readonly IPageDialogService _pageDialogService;
+		private ICompanyModel _selectedCompany;
 
 		public CompanyPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, ICurrentModelProviderManager<ICompanyModel> companyModelProviderManager,
-			IDialogService dialogService, ICompanyFacade companyFacade, IEventAggregator eventAggregator, DialogEventService dialogEventService) : base(navigationService)
+			IDialogService dialogService, ICompanyFacade companyFacade, IEventAggregator eventAggregator, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
 		{
 			_currentUserProvider = currentUserProvider;
 			_companyModelProviderManager = companyModelProviderManager;
@@ -31,10 +35,15 @@ namespace WorkManager.ViewModels.Pages
 			_companyFacade = companyFacade;
 			_eventAggregator = eventAggregator;
 			_dialogEventService = dialogEventService;
+			_pageDialogService = pageDialogService;
 			ShowAddCompanyDialogCommand = new DelegateCommand(async()=>await ShowAddCompanyDialogAsync());
 			ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async(s) => await ShowWorkPageAsync(s));
+			SelectCompanyCommand = new DelegateCommand<ICompanyModel>(SelectCompany);
+			ClearWholeOrDeleteSingleCompanyCommand = new DelegateCommand(async () => ClearWholeOrDeleteSingleCompanyAsync());
 		}
 
+		public DelegateCommand<ICompanyModel> SelectCompanyCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleCompanyCommand { get; }
 		public DelegateCommand ShowAddCompanyDialogCommand { get; }
 		public DelegateCommand<ICompanyModel> ShowWorkPageCommand { get; }
 
@@ -50,6 +59,8 @@ namespace WorkManager.ViewModels.Pages
 				RaisePropertyChanged();
 			}
 		}
+
+
 
 		protected override void InitializeInt()
 		{
@@ -75,6 +86,29 @@ namespace WorkManager.ViewModels.Pages
 		{
 			_companyModelProviderManager.SetItem(obj);
 			await NavigationService.NavigateAsync("WorkRecordPage");
+		}
+		private void SelectCompany(ICompanyModel companyModel)
+		{
+			_selectedCompany = companyModel;
+		}
+
+		private async Task ClearWholeOrDeleteSingleCompanyAsync()
+		{
+			if (_selectedCompany != null)
+			{
+				await _companyFacade.RemoveAsync(_selectedCompany.Id);
+				Companies.Remove(_selectedCompany);
+			}
+			else
+			{
+				if (await _pageDialogService.DisplayAlertAsync(CompanyPageViewModelSR.ClearDialogTitle,
+					CompanyPageViewModelSR.ClearDialogMessage, CompanyPageViewModelSR.DialogYes,
+					CompanyPageViewModelSR.DialogNo))
+				{
+					_companyFacade.Clear();
+					Companies.Clear();
+				}
+			}
 		}
 	}
 }

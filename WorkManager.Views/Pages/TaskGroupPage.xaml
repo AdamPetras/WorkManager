@@ -21,7 +21,7 @@
         <ToolbarItem Text="Register"
                      Order="Primary"
                      Priority="0"
-                     Command="{Binding ClearWholeTaskGroupsCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+                     Command="{Binding ClearWholeOrDeleteSingleTaskGroupCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
             </ToolbarItem.IconImageSource>

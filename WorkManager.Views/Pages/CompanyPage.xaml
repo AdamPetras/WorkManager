@@ -17,13 +17,21 @@
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ClearWholeOrDeleteSingleCompanyCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView ItemsSource="{Binding Companies}" Margin="5">
+            <CollectionView x:Name="Collection" ItemsSource="{Binding Companies}" SelectionMode="Single" Margin="5" SelectionChangedCommand="{Binding SelectCompanyCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
@@ -33,8 +41,24 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="interfaces:ICompanyModel">
                         <Frame BackgroundColor="Black" Padding="3" effects:TouchEffect.PressedScale="1.02" CornerRadius="20" VerticalOptions="CenterAndExpand" 
-                               effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                               effects:TouchEffect.Command="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                               effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                               effects:TouchEffect.LongPressCommand="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor"
+                                                    Value="Black" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor"
+                                                    Value="{x:StaticResource secondaryColor}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
                             <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" Padding="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

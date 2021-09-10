@@ -37,14 +37,14 @@ namespace WorkManager.ViewModels.Pages
 			_eventAggregator = eventAggregator;
 			_dialogEventService = dialogEventService;
 			ShowAddTaskGroupDialogCommand = new DelegateCommand(async()=>await ShowAddTaskGroupDialog());
-			ClearWholeTaskGroupsCommand = new DelegateCommand(async () => await ClearWholeTaskGroupsAsync());
+			ClearWholeOrDeleteSingleTaskGroupCommand = new DelegateCommand(async () => await ClearWholeTaskGroupsAsync());
 			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
 			SelectedTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await SelectTaskAsync(t));
 		}
 
 		public DelegateCommand<ITaskGroupModel> SelectedTaskGroupCommand { get; }
 		public DelegateCommand ShowAddTaskGroupDialogCommand { get; }
-		public DelegateCommand ClearWholeTaskGroupsCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleTaskGroupCommand { get; }
 
 		public DelegateCommand<ITaskGroupModel> NavigateToTasksPageCommand { get; }
 
