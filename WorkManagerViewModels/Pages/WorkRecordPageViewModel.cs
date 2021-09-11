@@ -125,6 +125,7 @@ namespace WorkManager.ViewModels.Pages
 			{
 				await _workFacade.RemoveAsync(_selectedRecord.Id);
 				FilteredRecords.WholeCollection.Remove(_selectedRecord);
+				_selectedRecord = null;
 			}
 			else
 			{

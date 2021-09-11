@@ -101,6 +101,7 @@ namespace WorkManager.ViewModels.Pages
 			{
 				await _taskGroupFacade.RemoveAsync(_selectedTaskGroup.Id);
 				TaskGroups.Remove(_selectedTaskGroup);
+				_selectedTaskGroup = null;
 			}
 			else
 			{

@@ -27,6 +27,7 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ITaskFacade _taskFacade;
 		private readonly IToastMessageService _toastMessageService;
 		private readonly DialogEventService _dialogEventService;
+		private ITaskModel _selectedTask;
 
 		public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService, IEventAggregator eventAggregator, IPageDialogService pageDialogService,
 			ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade, ITaskFacade taskFacade, IToastMessageService toastMessageService,
@@ -45,18 +46,20 @@ namespace WorkManager.ViewModels.Pages
 			ShowAddTaskDialogCommand = new DelegateCommand(async()=> await ShowAddTaskDialogAsync());
 			BackCommand = new DelegateCommand<ITaskModel>(async (t) => await PushTaskBackAsync(t));
 			CompleteCommand = new DelegateCommand<ITaskModel>(async (t) => await CompleteTaskAsync(t));
-			ClearWholeTasksCommand = new DelegateCommand(async () => await ClearWholeTasks());
+			ClearWholeOrDeleteSingleTaskCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTask());
 			DeleteCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteAsync(t));
 			FilterTasksCommand = new DelegateCommand<IKanbanStateModel>(FilterTasksAsync);
+			OnSelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
 		}
 
-		public DelegateCommand ClearWholeTasksCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleTaskCommand { get; }
 		public DelegateCommand<ITaskModel> NavigateToTaskDetailPageCommand { get; }
 		public DelegateCommand ShowAddTaskDialogCommand { get; }
 		public DelegateCommand<IKanbanStateModel> FilterTasksCommand { get; }
 		public DelegateCommand<ITaskModel> BackCommand { get; }
 		public DelegateCommand<ITaskModel> CompleteCommand { get; }
 		public DelegateCommand<ITaskModel> DeleteCommand { get; }
+		public DelegateCommand<ITaskModel> OnSelectTaskCommand { get; }
 
 		private IKanbanStateModel _selectedKanbanState;
 		public IKanbanStateModel SelectedKanbanState
@@ -119,6 +122,7 @@ namespace WorkManager.ViewModels.Pages
 		}
 
 		private bool _isDeleteButtonVisible;
+
 		public bool IsDeleteButtonVisible
 		{
 			get => _isDeleteButtonVisible;
@@ -128,6 +132,13 @@ namespace WorkManager.ViewModels.Pages
 				_isDeleteButtonVisible = value;
 				RaisePropertyChanged();
 			}
+		}
+
+		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		{
+			base.OnNavigatedFromInt(parameters);
+			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
+			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
 		}
 
 		private void UpdateButtonsVisibility(IKanbanStateModel kanbanState)
@@ -176,17 +187,22 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent,Tasks);
 		}
 
-		private async Task ClearWholeTasks()
+		private async Task ClearWholeOrDeleteSingleTask()
 		{
-			if (await _pageDialogService.DisplayAlertAsync(TaskKanbanPageViewModelSR.ClearTasksMessageTitle, TaskKanbanPageViewModelSR.ClearTasksMessage,
-				TaskKanbanPageViewModelSR.Yes, TaskKanbanPageViewModelSR.No))
+			if (_selectedTask != null)
 			{
-				foreach (ITaskModel taskModel in Tasks)
+				await _taskFacade.RemoveAsync(_selectedTask.Id);
+				Tasks.Remove(_selectedTask);
+				_selectedTask = null;
+			}
+			else
+			{
+				if (await _pageDialogService.DisplayAlertAsync(TaskKanbanPageViewModelSR.ClearTasksMessageTitle, TaskKanbanPageViewModelSR.ClearTasksMessage,
+					TaskKanbanPageViewModelSR.Yes, TaskKanbanPageViewModelSR.No))
 				{
-					//nepotřebu await nechci čekat může běžet nezávisle a exceptiony by neměly vyskočit pokud všechno funguje jak má
-					_taskFacade.RemoveAsync(taskModel.Id);
+					_taskFacade.Clear();
+					Tasks.Clear();
 				}
-				Tasks.Clear();
 			}
 		}
 
@@ -205,11 +221,9 @@ namespace WorkManager.ViewModels.Pages
 			UpdateButtonsVisibility(model);
 		}
 
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		private void OnSelectTask(ITaskModel obj)
 		{
-			base.OnNavigatedFromInt(parameters);
-			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent,Tasks);
+			_selectedTask = obj;
 		}
 	}
 }

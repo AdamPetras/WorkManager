@@ -98,6 +98,7 @@ namespace WorkManager.ViewModels.Pages
 			{
 				await _companyFacade.RemoveAsync(_selectedCompany.Id);
 				Companies.Remove(_selectedCompany);
+				_selectedCompany = null;
 			}
 			else
 			{
