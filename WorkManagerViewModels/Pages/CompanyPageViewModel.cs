@@ -60,8 +60,6 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-
-
 		protected override void InitializeInt()
 		{
 			base.InitializeInt();
@@ -78,7 +76,7 @@ namespace WorkManager.ViewModels.Pages
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			if (Companies.Count == 0)
+			if (Companies == null || Companies.Count == 0)
 				Companies = new ObservableCollection<ICompanyModel>(_companyFacade.GetCompaniesByUserId(_currentUserProvider.GetModel().Id));
 		}
 

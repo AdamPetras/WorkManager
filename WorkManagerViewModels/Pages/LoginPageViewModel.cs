@@ -26,7 +26,7 @@ namespace WorkManager.ViewModels.Pages
 			_authenticationService = authenticationService;
 			_registrationService = registrationService;
 			_toastMessageService = toastMessageService;
-			LoginCommand = new DelegateCommand(Login).ObservesProperty(()=>IsBusy);
+			LoginCommand = new DelegateCommand(async()=> await LoginAsync()).ObservesProperty(()=>IsBusy);
 			ShowRegisterCommand = new DelegateCommand(Register);
 			ContinueWithoutLoginCommand = new DelegateCommand(async ()=>await ContinueWithoutLogin());
 		}
@@ -43,18 +43,6 @@ namespace WorkManager.ViewModels.Pages
 			{
 				if (_username == value) return;
 				_username = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		private bool _isBusy;
-		public bool IsBusy
-		{
-			get => _isBusy;
-			set
-			{
-				if (_isBusy == value) return;
-				_isBusy = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -77,10 +65,9 @@ namespace WorkManager.ViewModels.Pages
 			await NavigationService.NavigateAsync("RegisterPage");
 		}
 
-		private async void Login()
+		private async Task LoginAsync()
 		{
 			IsBusy = true;
-
 			if(!IsUsernameRightShowDialog() || !IsPasswordRightShowDialog())
 			{
 				IsBusy = false;
@@ -90,7 +77,7 @@ namespace WorkManager.ViewModels.Pages
 			{
 				IUserModel user = await _authenticationService.AuthenticateAsync(Username, Password);
 				if (user != null)
-					NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
 			}
 			catch (UnauthorizedAccessException)
 			{

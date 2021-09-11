@@ -29,101 +29,106 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <CollectionView Grid.Row="0" x:Name="Collection" SelectionMode="Single" Margin="5" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding OnSelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.EmptyView>
-                <ContentView>
-                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                        <Label Text="{x:Static resources:KanbanDetailPageSR.NoTaskMessage}" TextColor="{x:StaticResource secondaryTextColor}" FontSize="Large"></Label>
-                    </StackLayout>
-                </ContentView>
-            </CollectionView.EmptyView>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="interfaces:ITaskModel">
-                    <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="Black" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Selected">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor"
-                                                Value="{x:StaticResource secondaryColor}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.LongPressCommand="{Binding NavigateToTaskDetailPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
-                               effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
-                            <Frame.GestureRecognizers>
-                                <SwipeGestureRecognizer Direction="Right" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
-                                                        CommandParameter="{Binding .}"></SwipeGestureRecognizer>
-                                <SwipeGestureRecognizer Direction="Left" Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" 
-                                                        CommandParameter="{Binding .}"></SwipeGestureRecognizer>
-                            </Frame.GestureRecognizers>
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                                <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="TailTruncation"  TextColor="{x:StaticResource secondaryTextColor}" HorizontalTextAlignment="Center"></Label>
-                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding TaskDoneDateTime, StringFormat='{0:dd. MM. yyyy}'}"  TextColor="{x:StaticResource secondaryTextColor}" HorizontalTextAlignment="End"></Label>
-                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="2" BackgroundColor="Black" ></BoxView>
-                                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation" TextColor="{x:StaticResource bodyTextColor}"></Label>
-                            </Grid>
+    <StackLayout>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
+        </StackLayout>
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <CollectionView Grid.Row="0" x:Name="Collection" SelectionMode="Single" Margin="5" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding OnSelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                            <Label Text="{x:Static resources:KanbanDetailPageSR.NoTaskMessage}" TextColor="{x:StaticResource secondaryTextColor}" FontSize="Large"></Label>
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="interfaces:ITaskModel">
+                        <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor"
+                                                    Value="Black" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor"
+                                                    Value="{x:StaticResource secondaryColor}" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.LongPressCommand="{Binding NavigateToTaskDetailPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
+                                   effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
+                                <Frame.GestureRecognizers>
+                                    <SwipeGestureRecognizer Direction="Right" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
+                                                            CommandParameter="{Binding .}"></SwipeGestureRecognizer>
+                                    <SwipeGestureRecognizer Direction="Left" Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" 
+                                                            CommandParameter="{Binding .}"></SwipeGestureRecognizer>
+                                </Frame.GestureRecognizers>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                                    <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="TailTruncation"  TextColor="{x:StaticResource secondaryTextColor}" HorizontalTextAlignment="Center"></Label>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding TaskDoneDateTime, StringFormat='{0:dd. MM. yyyy}'}"  TextColor="{x:StaticResource secondaryTextColor}" HorizontalTextAlignment="End"></Label>
+                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation" TextColor="{x:StaticResource bodyTextColor}"></Label>
+                                </Grid>
+                            </Frame>
                         </Frame>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <CarouselView x:Name="KanbanList" Grid.Row="1" HeightRequest="50" ItemsSource="{Binding KanbanStates}" CurrentItemChangedCommand="{Binding FilterTasksCommand}"
-                      CurrentItemChangedCommandParameter="{Binding CurrentItem, Source={x:Reference KanbanList}}" BackgroundColor="{x:StaticResource primaryLightColor}"
-                      Loop="False" PeekAreaInsets="80">
-            <CarouselView.ItemsLayout>
-                <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="10" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
-            </CarouselView.ItemsLayout>
-            <CarouselView.ItemTemplate>
-                <DataTemplate x:DataType="interfaces:IKanbanStateModel">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Fill="White" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RadiusX="10" RadiusY="10" Margin="5">
-                        </Rectangle>
-                        <Image Grid.Column="0" Grid.Row="0" Margin="10" HorizontalOptions="End">
-                            <Image.Source>
-                                <FontImageSource Glyph="{Binding IconName}"
-                                                 Color="{x:StaticResource primaryLightColor}"
-                                                 FontFamily="fa-solid-900"
-                                                 Size="40" />
-                            </Image.Source>
-                        </Image>
-                        <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="10" FontSize="Medium" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></Label>
-                    </Grid>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
-    </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <CarouselView x:Name="KanbanList" Grid.Row="1" HeightRequest="50" ItemsSource="{Binding KanbanStates}" CurrentItemChangedCommand="{Binding KanbanStateChangedCommand}"
+                          CurrentItemChangedCommandParameter="{Binding CurrentItem, Source={x:Reference KanbanList}}" BackgroundColor="{x:StaticResource primaryLightColor}"
+                          Loop="False" PeekAreaInsets="80">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="10" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="interfaces:IKanbanStateModel">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Fill="White" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RadiusX="10" RadiusY="10" Margin="5">
+                            </Rectangle>
+                            <Image Grid.Column="0" Grid.Row="0" Margin="10" HorizontalOptions="End">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{Binding IconName}"
+                                                     Color="{x:StaticResource primaryLightColor}"
+                                                     FontFamily="fa-solid-900"
+                                                     Size="40" />
+                                </Image.Source>
+                            </Image>
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" Margin="10" FontSize="Medium" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></Label>
+                        </Grid>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </Grid>
+    </StackLayout>
 </ContentPage>

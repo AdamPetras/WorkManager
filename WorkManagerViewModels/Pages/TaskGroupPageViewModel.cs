@@ -62,8 +62,6 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-
-
 		protected override void InitializeInt()
 		{
 			base.InitializeInt();
@@ -79,7 +77,7 @@ namespace WorkManager.ViewModels.Pages
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			if (TaskGroups.Count == 0)
+			if (TaskGroups == null || TaskGroups.Count == 0)
 				TaskGroups = new ObservableCollection<ITaskGroupModel>(_taskGroupFacade.GetTaskGroupsByUserId(_currentUserProvider.GetModel().Id));
 		}
 

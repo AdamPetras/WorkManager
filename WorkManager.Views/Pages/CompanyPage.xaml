@@ -27,7 +27,10 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <Grid>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
+        </StackLayout>
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
@@ -40,9 +43,7 @@
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="interfaces:ICompanyModel">
-                        <Frame BackgroundColor="Black" Padding="3" effects:TouchEffect.PressedScale="1.02" CornerRadius="20" VerticalOptions="CenterAndExpand" 
-                               effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                               effects:TouchEffect.LongPressCommand="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                        <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" >
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal">
@@ -59,7 +60,8 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" Padding="8">
+                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" Padding="8" effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                                   effects:TouchEffect.LongPressCommand="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>

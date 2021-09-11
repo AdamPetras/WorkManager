@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
@@ -64,6 +66,16 @@ namespace WorkManager.DAL.Repositories
 				return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
 					.ThenInclude(s => s.User).Include(s=>s.State).Where(s=>s.State.Name == kanbanStateName)
 					.ToList();
+			}
+		}
+
+		public async Task<IEnumerable<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+		{
+			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			{
+				return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
+					.ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
+					.ToListAsync(cancellationToken);
 			}
 		}
 	}

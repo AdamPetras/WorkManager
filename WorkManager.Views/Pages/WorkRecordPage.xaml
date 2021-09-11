@@ -12,9 +12,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" 
-                           effects:TouchEffect.PressedScale="1.02" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
@@ -31,7 +29,8 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand">
+                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand"  effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -60,9 +59,7 @@
                 </Frame>
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" 
-                           effects:TouchEffect.PressedScale="1.02" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
@@ -79,7 +76,8 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand">
+                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -108,9 +106,7 @@
                 </Frame>
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" 
-                       effects:TouchEffect.PressedScale="1.02" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                       effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" >
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
@@ -127,7 +123,8 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand">
+                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -197,36 +194,41 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
-                        SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.EmptyView>
-                <views:WorkRecordEmptyView></views:WorkRecordEmptyView>
-            </CollectionView.EmptyView>
-        </CollectionView>
-        <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{x:StaticResource primaryLightColor}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
+    <StackLayout>
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
+        </StackLayout>
+            <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+                <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <BoxView Grid.Row="0" Grid.ColumnSpan="4" HeightRequest="4" BackgroundColor="Black" Margin="0"></BoxView>
-            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:WorkRecordPageSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-            <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-            <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:WorkRecordPageSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-            <Label Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+            <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
+                            SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyView>
+                    <views:WorkRecordEmptyView></views:WorkRecordEmptyView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{x:StaticResource primaryLightColor}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <BoxView Grid.Row="0" Grid.ColumnSpan="4" HeightRequest="4" BackgroundColor="Black" Margin="0"></BoxView>
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:WorkRecordPageSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:WorkRecordPageSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+            </Grid>
         </Grid>
-    </Grid>
+    </StackLayout>
 </ContentPage>

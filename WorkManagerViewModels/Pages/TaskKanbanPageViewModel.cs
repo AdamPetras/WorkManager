@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
@@ -41,21 +42,20 @@ namespace WorkManager.ViewModels.Pages
 			_taskFacade = taskFacade;
 			_toastMessageService = toastMessageService;
 			_dialogEventService = dialogEventService;
-			KanbanStates = new ObservableCollection<IKanbanStateModel>(_kanbanTaskGroupFacade.GetKanbansByTaskGroupId(currentTaskGroupProvider.GetModel().Id).Select(s=>s.Kanban));
 			NavigateToTaskDetailPageCommand = new DelegateCommand<ITaskModel>(async (t) => await NavigateToTaskDetailPageAsync(t));
 			ShowAddTaskDialogCommand = new DelegateCommand(async()=> await ShowAddTaskDialogAsync());
 			BackCommand = new DelegateCommand<ITaskModel>(async (t) => await PushTaskBackAsync(t));
 			CompleteCommand = new DelegateCommand<ITaskModel>(async (t) => await CompleteTaskAsync(t));
 			ClearWholeOrDeleteSingleTaskCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTask());
 			DeleteCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteAsync(t));
-			FilterTasksCommand = new DelegateCommand<IKanbanStateModel>(FilterTasksAsync);
+			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanganStateChangedAsync(t));
 			OnSelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
 		}
 
 		public DelegateCommand ClearWholeOrDeleteSingleTaskCommand { get; }
 		public DelegateCommand<ITaskModel> NavigateToTaskDetailPageCommand { get; }
 		public DelegateCommand ShowAddTaskDialogCommand { get; }
-		public DelegateCommand<IKanbanStateModel> FilterTasksCommand { get; }
+		public DelegateCommand<IKanbanStateModel> KanbanStateChangedCommand { get; }
 		public DelegateCommand<ITaskModel> BackCommand { get; }
 		public DelegateCommand<ITaskModel> CompleteCommand { get; }
 		public DelegateCommand<ITaskModel> DeleteCommand { get; }
@@ -132,6 +132,12 @@ namespace WorkManager.ViewModels.Pages
 				_isDeleteButtonVisible = value;
 				RaisePropertyChanged();
 			}
+		}
+
+		protected override void InitializeInt()
+		{
+			base.InitializeInt();
+			KanbanStates = new ObservableCollection<IKanbanStateModel>(_kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Select(s => s.Kanban));
 		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
@@ -212,13 +218,15 @@ namespace WorkManager.ViewModels.Pages
 			_taskFacade.RemoveAsync(obj.Id);
 		}
 
-		private void FilterTasksAsync(IKanbanStateModel model)
+		private async Task KanganStateChangedAsync(IKanbanStateModel model)
 		{
+			IsBusy = true;
 			if (model == null)
 				return;
 			SelectedKanbanState = model;
-			Tasks = new ObservableCollection<ITaskModel>(_taskFacade.GetTasksByTaskGroupIdAndKanbanState(_currentTaskGroupProvider.GetModel().Id, model.Name));
+			Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
 			UpdateButtonsVisibility(model);
+			IsBusy = false;
 		}
 
 		private void OnSelectTask(ITaskModel obj)

@@ -20,7 +20,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class WorkRecordPageViewModel: ViewModelBase
+	public class WorkRecordPageViewModel : ViewModelBase
 	{
 		private readonly IEventAggregator _eventAggregator;
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
@@ -33,7 +33,7 @@ namespace WorkManager.ViewModels.Pages
 		private EFilterType _selectedFilter;
 		private IWorkRecordModelBase _selectedRecord;
 
-		public WorkRecordPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ICurrentModelProvider<ICompanyModel> companyModelProvider, 
+		public WorkRecordPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ICurrentModelProvider<ICompanyModel> companyModelProvider,
 			IRecordTotalCalculatorService recordTotalCalculatorService, IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
 		{
 			_eventAggregator = eventAggregator;
@@ -44,12 +44,10 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
 			_selectedFilter = EFilterType.ThisMonth;
-			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s=>s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
-			ShowAddDialogCommand = new DelegateCommand(async()=> await ShowAddDialogAsync());
+			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync());
 			ShowStatisticsCommand = new DelegateCommand(ShowStatistics);
-			ShowFilterDialogCommand = new DelegateCommand(async()=>await ShowFilterDialog());
-			ClearWholeOrDeleteSingleRecordCommand =
-				new DelegateCommand(async () => ClearWholeOrDeleteSingleRecordAsync());
+			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog());
+			ClearWholeOrDeleteSingleRecordCommand = new DelegateCommand(async () => ClearWholeOrDeleteSingleRecordAsync());
 			SelectedRecordCommand = new DelegateCommand<IWorkRecordModelBase>(SelectedRecord);
 		}
 
@@ -72,9 +70,17 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		public double TotalPriceThisMonth => _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords.WholeCollection);
+		public double TotalPriceThisMonth => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords?.WholeCollection);
 
-		public double TotalPriceThisYear => _recordTotalCalculatorService.CalculateThisYear(FilteredRecords.WholeCollection);
+		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
+
+		protected override void InitializeInt()
+		{
+			base.InitializeInt();
+			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+			RaisePropertyChanged(nameof(TotalPriceThisMonth));
+			RaisePropertyChanged(nameof(TotalPriceThisYear));
+		}
 
 		private async Task ShowAddDialogAsync()
 		{
@@ -94,8 +100,8 @@ namespace WorkManager.ViewModels.Pages
 		{
 			IDialogParameters parameters =
 				(await _dialogService.ShowDialogAsync("FilterDialogView",
-					new DialogParameters() {{"Filter", _selectedFilter}})).Parameters;
-			if(parameters.Any())	//parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
+					new DialogParameters() { { "Filter", _selectedFilter } })).Parameters;
+			if (parameters.Any())   //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
 				_selectedFilter = parameters.GetValue<EFilterType>("Filter");
 			FilteredRecords.Filter = CreateFilterByEnum(_selectedFilter);
 		}
@@ -103,8 +109,8 @@ namespace WorkManager.ViewModels.Pages
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			if(FilteredRecords.WholeCollection.Count == 0)
-				FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+			if (FilteredRecords == null || FilteredRecords.WholeCollection?.Count == 0)
+				InitializeInt();
 		}
 
 		private Func<IWorkRecordModelBase, bool> CreateFilterByEnum(EFilterType filterType)

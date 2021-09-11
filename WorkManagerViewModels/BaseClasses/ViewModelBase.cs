@@ -7,12 +7,25 @@ namespace WorkManager.ViewModels.BaseClasses
 	{
 		protected INavigationService NavigationService { get; private set; }
 
+		private bool _isBusy;
+		public bool IsBusy
+		{
+			get => _isBusy;
+			protected set
+			{
+				if (_isBusy == value) return;
+				_isBusy = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		protected ViewModelBase(INavigationService navigationService)
 		{
+			IsBusy = true;
 			NavigationService = navigationService;
 		}
 
-		public virtual void Initialize(INavigationParameters parameters)
+		public void Initialize(INavigationParameters parameters)
 		{
 			InitializeInt();
 		}
@@ -23,12 +36,14 @@ namespace WorkManager.ViewModels.BaseClasses
 
 		public void OnNavigatedFrom(INavigationParameters parameters)
 		{
+			IsBusy = true;
 			OnNavigatedFromInt(parameters);
 		}
 
 		public void OnNavigatedTo(INavigationParameters parameters)
 		{
 			OnNavigatedToInt(parameters);
+			IsBusy = false;
 		}
 
 		protected virtual void OnNavigatedFromInt(INavigationParameters parameters)
@@ -39,7 +54,12 @@ namespace WorkManager.ViewModels.BaseClasses
 		{
 		}
 
-		public virtual void Destroy()
+		public void Destroy()
+		{
+			DestroyInt();
+		}
+
+		protected virtual void DestroyInt()
 		{
 
 		}
