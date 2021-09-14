@@ -21,45 +21,42 @@ namespace WorkManager.ViewModels.Pages
 	public class TaskKanbanPageViewModel : ViewModelBase
 	{
 		private readonly IDialogService _dialogService;
-		private readonly IEventAggregator _eventAggregator;
 		private readonly IPageDialogService _pageDialogService;
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
 		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
 		private readonly ITaskFacade _taskFacade;
 		private readonly IToastMessageService _toastMessageService;
 		private readonly DialogEventService _dialogEventService;
-		private ITaskModel _selectedTask;
 
-		public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService, IEventAggregator eventAggregator, IPageDialogService pageDialogService,
+		public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService, IPageDialogService pageDialogService,
 			ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade, ITaskFacade taskFacade, IToastMessageService toastMessageService,
 			DialogEventService dialogEventService) : base(navigationService)
 		{
 			_dialogService = dialogService;
-			_eventAggregator = eventAggregator;
 			_pageDialogService = pageDialogService;
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
 			_taskFacade = taskFacade;
 			_toastMessageService = toastMessageService;
 			_dialogEventService = dialogEventService;
-			NavigateToTaskDetailPageCommand = new DelegateCommand<ITaskModel>(async (t) => await NavigateToTaskDetailPageAsync(t));
-			ShowAddTaskDialogCommand = new DelegateCommand(async()=> await ShowAddTaskDialogAsync());
 			BackCommand = new DelegateCommand<ITaskModel>(async (t) => await PushTaskBackAsync(t));
 			CompleteCommand = new DelegateCommand<ITaskModel>(async (t) => await CompleteTaskAsync(t));
-			ClearWholeOrDeleteSingleTaskCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTask());
 			DeleteCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteAsync(t));
 			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanganStateChangedAsync(t));
-			OnSelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
+			SelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
+			EditCommand = new DelegateCommand(async () => await EditAsync(), () => SelectedTask != null && !IsDialogThrown);
+			InitDialogCommands();
 		}
 
-		public DelegateCommand ClearWholeOrDeleteSingleTaskCommand { get; }
-		public DelegateCommand<ITaskModel> NavigateToTaskDetailPageCommand { get; }
-		public DelegateCommand ShowAddTaskDialogCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleTaskCommand { get; private set; }
+		public DelegateCommand ShowAddTaskDialogCommand { get; private set; }
 		public DelegateCommand<IKanbanStateModel> KanbanStateChangedCommand { get; }
 		public DelegateCommand<ITaskModel> BackCommand { get; }
 		public DelegateCommand<ITaskModel> CompleteCommand { get; }
 		public DelegateCommand<ITaskModel> DeleteCommand { get; }
-		public DelegateCommand<ITaskModel> OnSelectTaskCommand { get; }
+		public DelegateCommand<ITaskModel> SelectTaskCommand { get; }
+		public DelegateCommand EditCommand { get; }
+
 
 		private IKanbanStateModel _selectedKanbanState;
 		public IKanbanStateModel SelectedKanbanState
@@ -134,6 +131,19 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private ITaskModel _selectedTask;
+		public ITaskModel SelectedTask
+		{
+			get => _selectedTask;
+			set
+			{
+				if (_selectedTask == value) return;
+				_selectedTask = value;
+				RaisePropertyChanged();
+				EditCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 		protected override void InitializeInt()
 		{
 			base.InitializeInt();
@@ -147,6 +157,21 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
 		}
 
+		protected override void DestroyInt()
+		{
+			base.DestroyInt();
+			DialogThrownEvent -= ShowAddTaskDialogCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearWholeOrDeleteSingleTaskCommand.RaiseCanExecuteChanged;
+		}
+
+		private void InitDialogCommands()
+		{
+			ShowAddTaskDialogCommand = new DelegateCommand(async () => await ShowAddTaskDialogAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ShowAddTaskDialogCommand.RaiseCanExecuteChanged;
+			ClearWholeOrDeleteSingleTaskCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTaskAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearWholeOrDeleteSingleTaskCommand.RaiseCanExecuteChanged;
+		}
+
 		private void UpdateButtonsVisibility(IKanbanStateModel kanbanState)
 		{
 			IsBackwardButtonVisible = kanbanState.StateOrder != 0;
@@ -156,17 +181,16 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task NavigateToTaskDetailPageAsync(ITaskModel obj)
 		{
-			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", obj } });
 		}
 
 		private async Task PushTaskBackAsync(ITaskModel obj)
 		{
-			MoveWithTask(obj, false);
+			await MoveWithTask(obj, false);
 		}
 
 		private async Task CompleteTaskAsync(ITaskModel obj)
 		{
-			MoveWithTask(obj, true);
+			await MoveWithTask(obj, true);
 		}
 
 		private async Task MoveWithTask(ITaskModel obj, bool isMoveToComplete)
@@ -188,13 +212,16 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ShowAddTaskDialogAsync()
 		{
+			IsDialogThrown = true;
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskDialogView")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent,Tasks);
+			IsDialogThrown = false;
 		}
 
-		private async Task ClearWholeOrDeleteSingleTask()
+		private async Task ClearWholeOrDeleteSingleTaskAsync()
 		{
+			IsBusy = true;
 			if (_selectedTask != null)
 			{
 				await _taskFacade.RemoveAsync(_selectedTask.Id);
@@ -203,19 +230,22 @@ namespace WorkManager.ViewModels.Pages
 			}
 			else
 			{
+				IsDialogThrown = true;
 				if (await _pageDialogService.DisplayAlertAsync(TaskKanbanPageViewModelSR.ClearTasksMessageTitle, TaskKanbanPageViewModelSR.ClearTasksMessage,
 					TaskKanbanPageViewModelSR.Yes, TaskKanbanPageViewModelSR.No))
 				{
-					_taskFacade.Clear();
+					await _taskFacade.ClearAsync();
 					Tasks.Clear();
 				}
+				IsDialogThrown = false;
 			}
+			IsBusy = false;
 		}
 
 		private async Task DeleteAsync(ITaskModel obj)
 		{
 			Tasks.Remove(obj);
-			_taskFacade.RemoveAsync(obj.Id);
+			await _taskFacade.RemoveAsync(obj.Id);
 		}
 
 		private async Task KanganStateChangedAsync(IKanbanStateModel model)
@@ -231,7 +261,12 @@ namespace WorkManager.ViewModels.Pages
 
 		private void OnSelectTask(ITaskModel obj)
 		{
-			_selectedTask = obj;
+			SelectedTask = obj;
+		}
+
+		private async Task EditAsync()
+		{
+			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", SelectedTask } });
 		}
 	}
 }

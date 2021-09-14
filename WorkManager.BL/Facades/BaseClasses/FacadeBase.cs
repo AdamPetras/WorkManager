@@ -97,5 +97,10 @@ namespace WorkManager.BL.Facades.BaseClasses
 		{
 			Repository.Clear();
 		}
-    }
+
+		public async Task ClearAsync(CancellationToken token = default)
+		{
+			await Repository.ClearAsync(token);
+		}
+	}
 }

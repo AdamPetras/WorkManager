@@ -6,7 +6,7 @@
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              x:Class="WorkManager.Views.Pages.RegisterPage"
              x:DataType="pages:RegisterPageViewModel"
-             IsEnabled="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}"
+             IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}"
              Title="{x:Static resources:LoginRegisterSR.RegisterTitle}">
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">

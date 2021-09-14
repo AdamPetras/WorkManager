@@ -22,34 +22,30 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ICurrentModelProviderManager<ITaskGroupModel> _currentTaskGroupProvider;
 		private readonly IDialogService _dialogService;
 		private readonly ITaskGroupFacade _taskGroupFacade;
-		private readonly IEventAggregator _eventAggregator;
 		private readonly DialogEventService _dialogEventService;
 
 		public TaskGroupPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, IPageDialogService pageDialogService
-			, ICurrentModelProviderManager<ITaskGroupModel> currentTaskGroupProvider, IDialogService dialogService, ITaskGroupFacade taskGroupFacade,
-		IEventAggregator eventAggregator, DialogEventService dialogEventService) : base(navigationService)
+			, ICurrentModelProviderManager<ITaskGroupModel> currentTaskGroupProvider, IDialogService dialogService, ITaskGroupFacade taskGroupFacade, DialogEventService dialogEventService) : base(navigationService)
 		{
 			_currentUserProvider = currentUserProvider;
 			_pageDialogService = pageDialogService;
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_dialogService = dialogService;
 			_taskGroupFacade = taskGroupFacade;
-			_eventAggregator = eventAggregator;
 			_dialogEventService = dialogEventService;
-			ShowAddTaskGroupDialogCommand = new DelegateCommand(async()=>await ShowAddTaskGroupDialog());
-			ClearWholeOrDeleteSingleTaskGroupCommand = new DelegateCommand(async () => await ClearWholeTaskGroupsAsync());
 			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
-			SelectedTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await SelectTaskAsync(t));
+			SelectTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(SelectTaskGroup);
+			EditCommand = new DelegateCommand(Edit, () => SelectedTaskGroup != null);
+			InitDialogCommands();
 		}
 
-		public DelegateCommand<ITaskGroupModel> SelectedTaskGroupCommand { get; }
-		public DelegateCommand ShowAddTaskGroupDialogCommand { get; }
-		public DelegateCommand ClearWholeOrDeleteSingleTaskGroupCommand { get; }
-
+		public DelegateCommand<ITaskGroupModel> SelectTaskGroupCommand { get; }
+		public DelegateCommand ShowAddTaskGroupDialogCommand { get; private set; }
+		public DelegateCommand ClearWholeOrDeleteSingleTaskGroupCommand { get; private set; }
+		public DelegateCommand EditCommand { get; }
 		public DelegateCommand<ITaskGroupModel> NavigateToTasksPageCommand { get; }
 
 		private ObservableCollection<ITaskGroupModel> _taskGroups;
-		private ITaskGroupModel _selectedTaskGroup;
 
 		public ObservableCollection<ITaskGroupModel> TaskGroups
 		{
@@ -62,16 +58,23 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private ITaskGroupModel _selectedTaskGroup;
+		public ITaskGroupModel SelectedTaskGroup
+		{
+			get => _selectedTaskGroup;
+			set
+			{
+				if (_selectedTaskGroup == value) return;
+				_selectedTaskGroup = value;
+				RaisePropertyChanged();
+				EditCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 		protected override void InitializeInt()
 		{
 			base.InitializeInt();
 			TaskGroups = new ObservableCollection<ITaskGroupModel>(_taskGroupFacade.GetTaskGroupsByUserId(_currentUserProvider.GetModel().Id));
-		}
-
-		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
-		{
-			_currentTaskGroupProvider.SetItem(obj);
-			await NavigationService.NavigateAsync("TaskKanbanPage");
 		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
@@ -81,20 +84,44 @@ namespace WorkManager.ViewModels.Pages
 				TaskGroups = new ObservableCollection<ITaskGroupModel>(_taskGroupFacade.GetTaskGroupsByUserId(_currentUserProvider.GetModel().Id));
 		}
 
+		protected override void DestroyInt()
+		{
+			base.DestroyInt();
+			DialogThrownEvent -= ShowAddTaskGroupDialogCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearWholeOrDeleteSingleTaskGroupCommand.RaiseCanExecuteChanged;
+		}
+
+		private void InitDialogCommands()
+		{
+			ShowAddTaskGroupDialogCommand = new DelegateCommand(async () => await ShowAddTaskGroupDialog(), () => !IsDialogThrown);
+			DialogThrownEvent += ShowAddTaskGroupDialogCommand.RaiseCanExecuteChanged;
+			ClearWholeOrDeleteSingleTaskGroupCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTaskGroupAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearWholeOrDeleteSingleTaskGroupCommand.RaiseCanExecuteChanged;
+		}
+
+		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
+		{
+			_currentTaskGroupProvider.SetItem(obj);
+			await NavigationService.NavigateAsync("TaskKanbanPage");
+		}
+
 		private async Task ShowAddTaskGroupDialog()
 		{
+			IsDialogThrown = true;
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskGroupDialogView")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent,TaskGroups);
+			IsDialogThrown = false;
 		}
 
-		private async Task SelectTaskAsync(ITaskGroupModel model)
+		private void SelectTaskGroup(ITaskGroupModel model)
 		{
-			_selectedTaskGroup = model;
+			SelectedTaskGroup = model;
 		}
 
-		private async Task ClearWholeTaskGroupsAsync()
+		private async Task ClearWholeOrDeleteSingleTaskGroupAsync()
 		{
+			IsBusy = true;
 			if (_selectedTaskGroup != null)
 			{
 				await _taskGroupFacade.RemoveAsync(_selectedTaskGroup.Id);
@@ -103,14 +130,22 @@ namespace WorkManager.ViewModels.Pages
 			}
 			else
 			{
+				IsDialogThrown = true;
 				if (await _pageDialogService.DisplayAlertAsync(TaskGroupPageViewModelSR.ClearDialogTitle,
 					TaskGroupPageViewModelSR.ClearDialogMessage, TaskGroupPageViewModelSR.DialogYes,
 					TaskGroupPageViewModelSR.DialogNo))
 				{
-					_taskGroupFacade.Clear();
+					await _taskGroupFacade.ClearAsync();
 					TaskGroups.Clear();
 				}
+				IsDialogThrown = false;
 			}
+			IsBusy = false;
+		}
+
+		private void Edit()
+		{
+
 		}
 	}
 }

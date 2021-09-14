@@ -2,15 +2,15 @@
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace WorkManager.Views.Converters
+namespace WorkManager.Converters
 {
-	public class BooleanNegateConverter:IValueConverter
+	public class IsNullToVisibilityConverter:IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is bool val)
-				return !val;
-			throw new ArgumentException();
+			if (value == null)
+				return false;
+			return true;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

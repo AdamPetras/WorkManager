@@ -2,10 +2,13 @@
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             xmlns:converters="clr-namespace:WorkManager.Views.Converters;assembly=WorkManager.Views"
+             xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
              x:Class="WorkManager.App">
     <Application.Resources>
-        <converters:BooleanNegateConverter x:Key="BooleanNegateConverter"></converters:BooleanNegateConverter>
+        <converters:NegateBooleanConverter x:Key="NegateBooleanConverter"></converters:NegateBooleanConverter>
+        <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter"></converters:IsNullToVisibilityConverter>
+        <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
+
 
         <Color x:Key="primaryColor">#005288</Color>
         <Color x:Key="primaryLightColor">#497eb8</Color>

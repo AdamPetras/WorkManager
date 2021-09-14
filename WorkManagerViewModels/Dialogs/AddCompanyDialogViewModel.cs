@@ -20,19 +20,14 @@ namespace WorkManager.ViewModels.Dialogs
 	public class AddCompanyDialogViewModel : DialogViewModelBase
 	{
 		private readonly ICompanyFacade _companyFacade;
-		private readonly IUserFacade _userFacade;
 		private readonly ICurrentModelProvider<IUserModel> _currentUserProvider;
-		private readonly IEventAggregator _eventAggregator;
 		private readonly IToastMessageService _toastMessageService;
-		private EWorkType _selectedWorkType;
 
-		public AddCompanyDialogViewModel(INavigationService navigationService, ICompanyFacade companyFacade, IUserFacade userFacade,
-			ICurrentModelProvider<IUserModel> currentUserProvider, IEventAggregator eventAggregator, IToastMessageService toastMessageService) : base(navigationService)
+		public AddCompanyDialogViewModel(INavigationService navigationService, ICompanyFacade companyFacade,
+			ICurrentModelProvider<IUserModel> currentUserProvider, IToastMessageService toastMessageService) : base(navigationService)
 		{
 			_companyFacade = companyFacade;
-			_userFacade = userFacade;
 			_currentUserProvider = currentUserProvider;
-			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
 			CancelCommand = new DelegateCommand(Cancel);
 			ConfirmCommand = new DelegateCommand(Confirm);

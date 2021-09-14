@@ -16,10 +16,10 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IRegistrationService _registrationService;
 		private readonly IToastMessageService _toastMessageService;
 
-		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService, IToastMessageService _toastMessageService) : base(navigationService)
+		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService, IToastMessageService toastMessageService) : base(navigationService)
 		{
 			_registrationService = registrationService;
-			this._toastMessageService = _toastMessageService;
+			_toastMessageService = toastMessageService;
 			RegisterCommand = new DelegateCommand(Register);
 		}
 
@@ -61,18 +61,6 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private bool _isBusy;
-		public bool IsBusy
-		{
-			get => _isBusy;
-			set
-			{
-				if (_isBusy == value) return;
-				_isBusy = value;
-				RaisePropertyChanged();
-			}
-		}
-
 		private string _firstName;
 		public string FirstName
 		{
@@ -106,9 +94,9 @@ namespace WorkManager.ViewModels.Pages
 			{
 				if (await _registrationService.RegisterAndAuthenticateUserAsync(new UserModel(Guid.NewGuid(), FirstName,
 					Surname, Username, Password)))
-					NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
 			}
-			catch (UserAlreadyExistsException e)
+			catch (UserAlreadyExistsException)
 			{
 				_toastMessageService.LongAlert(RegisterPageViewModelSR.UserAlreadyExistsFormat(Username));
 			}

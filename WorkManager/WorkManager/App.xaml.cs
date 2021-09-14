@@ -150,6 +150,7 @@ namespace WorkManager
 			containerRegistry.RegisterForNavigation<WorkRecordPage, WorkRecordPageViewModel>();
 			containerRegistry.RegisterForNavigation<TaskKanbanPage, TaskKanbanPageViewModel>();
 			containerRegistry.RegisterForNavigation<TaskDetailPage, TaskDetailPageViewModel>();
+			containerRegistry.RegisterForNavigation<WorkRecordDetailPage, WorkRecordDetailPageViewModel>();
 
 
 			containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();

@@ -17,5 +17,19 @@ namespace WorkManager.Models.BaseClasses
 				_ => throw new ArgumentOutOfRangeException()
 			};
 		}
+
+		public IWorkRecordModelBase CopyRecord(IWorkRecordModelBase model)
+		{
+			return model.Type switch
+			{
+				EWorkType.Time => new WorkTimeRecordModel(((IWorkTimeRecordModel)model).Id, ((IWorkTimeRecordModel)model).ActualDateTime, ((IWorkTimeRecordModel)model).WorkTime, ((IWorkTimeRecordModel)model).PricePerHour,
+					((IWorkTimeRecordModel)model).Type, ((IWorkTimeRecordModel)model).Description, ((IWorkTimeRecordModel)model).Company),
+				EWorkType.Piece => new WorkPiecesRecordModel(((IWorkPiecesRecordModel)model).Id, ((IWorkPiecesRecordModel)model).ActualDateTime, ((IWorkPiecesRecordModel)model).Pieces, 
+					((IWorkPiecesRecordModel)model).PricePerPiece, ((IWorkPiecesRecordModel)model).Type, ((IWorkPiecesRecordModel)model).Description, ((IWorkPiecesRecordModel)model).Company),
+				EWorkType.Both => new WorkBothRecordModel(((IWorkBothRecordModel)model).Id, ((IWorkBothRecordModel)model).ActualDateTime, ((IWorkBothRecordModel)model).WorkTime, ((IWorkBothRecordModel)model).PricePerHour,
+					((IWorkBothRecordModel)model).Pieces, ((IWorkBothRecordModel)model).PricePerPiece, ((IWorkBothRecordModel)model).Type, ((IWorkBothRecordModel)model).Description, ((IWorkBothRecordModel)model).Company),
+				_ => throw new ArgumentOutOfRangeException()
+			};
+		}
 	}
 }

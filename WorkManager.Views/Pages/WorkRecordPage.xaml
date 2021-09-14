@@ -161,23 +161,23 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Register"
-                     Order="Primary"
+        <ToolbarItem Text="Filter"
+                     Order="Secondary"
                      Priority="0"
                      Command="{Binding ShowFilterDialogCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Filter}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Register"
-                     Order="Primary"
+        <ToolbarItem Text="Show statistics"
+                     Order="Secondary"
                      Priority="0"
                      Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Poll}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Register"
+        <ToolbarItem Text="Add"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ShowAddDialogCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
@@ -185,7 +185,15 @@
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Register"
+        <ToolbarItem Text="Edit"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Clear whole or delete single"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ClearWholeOrDeleteSingleRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
@@ -198,7 +206,7 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
-            <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
                 <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>

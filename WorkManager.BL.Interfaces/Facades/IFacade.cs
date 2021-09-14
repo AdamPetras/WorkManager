@@ -21,5 +21,6 @@ namespace WorkManager.BL.Interfaces.Facades
 		Task<TModel> GetByIdAsync(Guid id, CancellationToken token = default);
 		bool ModelExists(Guid id);
 		void Clear();
+		Task ClearAsync (CancellationToken token = default);
 	}
 }

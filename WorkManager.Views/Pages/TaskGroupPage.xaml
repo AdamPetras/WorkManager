@@ -10,12 +10,20 @@
              Title="{x:Static resources:TaskGroupPageSR.Title}"
              x:Class="WorkManager.Views.Pages.TaskGroupPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Register"
+        <ToolbarItem Text="Add"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ShowAddTaskGroupDialogCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Edit"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="Register"
@@ -31,11 +39,11 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
-        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding TaskGroups}" Margin="5" SelectionChangedCommand="{Binding SelectedTaskGroupCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+            <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding TaskGroups}" Margin="5" SelectionChangedCommand="{Binding SelectTaskGroupCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>

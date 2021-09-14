@@ -9,12 +9,20 @@
              x:DataType="pages:CompanyPageViewModel"
              x:Class="WorkManager.Views.Pages.CompanyPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Register"
+        <ToolbarItem Text="Add"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ShowAddCompanyDialogCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Edit"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="Register"
@@ -30,7 +38,7 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
-        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>

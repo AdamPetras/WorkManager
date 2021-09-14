@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:WorkManager.ViewModels;assembly=WorkManager.ViewModels"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
-             Title="{x:Static resources:LoginRegisterSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+             Title="{x:Static resources:LoginRegisterSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">
             <Grid.RowDefinitions>

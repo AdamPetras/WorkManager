@@ -12,12 +12,20 @@
                     androidSpecific:TabbedPage.ToolbarPlacement="Bottom"
                     Title="{x:Static resources:TaskKanbanPageSR.Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Register"
+        <ToolbarItem Text="Add"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding ShowAddTaskDialogCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Edit"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="Register"
@@ -33,12 +41,12 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
-        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource BooleanNegateConverter}}">
+        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView Grid.Row="0" x:Name="Collection" SelectionMode="Single" Margin="5" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding OnSelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+            <CollectionView Grid.Row="0" x:Name="Collection" SelectionMode="Single" Margin="5" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding SelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
@@ -68,8 +76,7 @@
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.LongPressCommand="{Binding NavigateToTaskDetailPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
-                                   effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
+                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.NativeAnimation="True">
                                 <Frame.GestureRecognizers>
                                     <SwipeGestureRecognizer Direction="Right" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
                                                             CommandParameter="{Binding .}"></SwipeGestureRecognizer>

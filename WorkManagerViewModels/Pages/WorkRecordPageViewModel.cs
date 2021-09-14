@@ -22,7 +22,6 @@ namespace WorkManager.ViewModels.Pages
 {
 	public class WorkRecordPageViewModel : ViewModelBase
 	{
-		private readonly IEventAggregator _eventAggregator;
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
 		private readonly IRecordTotalCalculatorService _recordTotalCalculatorService;
 		private readonly IWorkRecordFacade _workFacade;
@@ -31,12 +30,10 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IPageDialogService _pageDialogService;
 
 		private EFilterType _selectedFilter;
-		private IWorkRecordModelBase _selectedRecord;
 
-		public WorkRecordPageViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ICurrentModelProvider<ICompanyModel> companyModelProvider,
-			IRecordTotalCalculatorService recordTotalCalculatorService, IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
+		public WorkRecordPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
+			IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
 		{
-			_eventAggregator = eventAggregator;
 			_companyModelProvider = companyModelProvider;
 			_recordTotalCalculatorService = recordTotalCalculatorService;
 			_workFacade = workFacade;
@@ -44,18 +41,17 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
 			_selectedFilter = EFilterType.ThisMonth;
-			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync());
-			ShowStatisticsCommand = new DelegateCommand(ShowStatistics);
-			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog());
-			ClearWholeOrDeleteSingleRecordCommand = new DelegateCommand(async () => ClearWholeOrDeleteSingleRecordAsync());
-			SelectedRecordCommand = new DelegateCommand<IWorkRecordModelBase>(SelectedRecord);
+			SelectedRecordCommand = new DelegateCommand<IWorkRecordModelBase>(SelectRecord);
+			EditCommand = new DelegateCommand(async () => await EditAsync(), () => SelectedRecord != null);
+			InitDialogCommands();
 		}
 
 		public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
-		public DelegateCommand ClearWholeOrDeleteSingleRecordCommand { get; }
-		public DelegateCommand ShowFilterDialogCommand { get; }
-		public DelegateCommand ShowStatisticsCommand { get; }
-		public DelegateCommand ShowAddDialogCommand { get; }
+		public DelegateCommand ClearWholeOrDeleteSingleRecordCommand { get; private set; }
+		public DelegateCommand ShowFilterDialogCommand { get; private set; }
+		public DelegateCommand ShowStatisticsCommand { get; private set; }
+		public DelegateCommand EditCommand { get; }
+		public DelegateCommand ShowAddDialogCommand { get; private set; }
 
 		private FilteredObservableCollection<IWorkRecordModelBase> _filteredRecords;
 
@@ -70,9 +66,23 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private IWorkRecordModelBase _selectedRecord;
+		public IWorkRecordModelBase SelectedRecord
+		{
+			get => _selectedRecord;
+			set
+			{
+				if (_selectedRecord == value) return;
+				_selectedRecord = value;
+				RaisePropertyChanged();
+				EditCommand.RaiseCanExecuteChanged();
+			}
+		}
+
 		public double TotalPriceThisMonth => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords?.WholeCollection);
 
 		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
+
 
 		protected override void InitializeInt()
 		{
@@ -82,35 +92,68 @@ namespace WorkManager.ViewModels.Pages
 			RaisePropertyChanged(nameof(TotalPriceThisYear));
 		}
 
+		protected override void DestroyInt()
+		{
+			base.DestroyInt();
+			DialogThrownEvent -= ShowAddDialogCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ShowStatisticsCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ShowFilterDialogCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearWholeOrDeleteSingleRecordCommand.RaiseCanExecuteChanged;
+		}
+
+		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		{
+			base.OnNavigatedToInt(parameters);
+			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+			if (FilteredRecords?.WholeCollection.Count == 0)
+				FilteredRecords.WholeCollection = new ObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None)
+					.OrderByDescending(s => s.ActualDateTime));
+			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
+			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
+			RaisePropertyChanged(nameof(TotalPriceThisMonth));
+			RaisePropertyChanged(nameof(TotalPriceThisYear));
+		}
+
+		private void InitDialogCommands()
+		{
+			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ShowAddDialogCommand.RaiseCanExecuteChanged;
+			ShowStatisticsCommand = new DelegateCommand(ShowStatistics, () => !IsDialogThrown);
+			DialogThrownEvent += ShowStatisticsCommand.RaiseCanExecuteChanged;
+			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog(), () => !IsDialogThrown);
+			DialogThrownEvent += ShowFilterDialogCommand.RaiseCanExecuteChanged;
+			ClearWholeOrDeleteSingleRecordCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleRecordAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearWholeOrDeleteSingleRecordCommand.RaiseCanExecuteChanged;
+		}
+
 		private async Task ShowAddDialogAsync()
 		{
+			IsDialogThrown = true;
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialogView")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
 			RaisePropertyChanged(nameof(TotalPriceThisMonth));
 			RaisePropertyChanged(nameof(TotalPriceThisYear));
 			FilteredRecords.WholeCollection = new ObservableCollection<IWorkRecordModelBase>(FilteredRecords.WholeCollection.OrderByDescending(s => s.ActualDateTime));
+			IsDialogThrown = false;
 		}
 
 		private void ShowStatistics()
 		{
+			IsDialogThrown = true;
+			IsDialogThrown = false;
 		}
 
 		private async Task ShowFilterDialog()
 		{
+			IsDialogThrown = true;
 			IDialogParameters parameters =
 				(await _dialogService.ShowDialogAsync("FilterDialogView",
 					new DialogParameters() { { "Filter", _selectedFilter } })).Parameters;
 			if (parameters.Any())   //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
 				_selectedFilter = parameters.GetValue<EFilterType>("Filter");
 			FilteredRecords.Filter = CreateFilterByEnum(_selectedFilter);
-		}
-
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
-		{
-			base.OnNavigatedToInt(parameters);
-			if (FilteredRecords == null || FilteredRecords.WholeCollection?.Count == 0)
-				InitializeInt();
+			IsDialogThrown = false;
 		}
 
 		private Func<IWorkRecordModelBase, bool> CreateFilterByEnum(EFilterType filterType)
@@ -127,6 +170,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ClearWholeOrDeleteSingleRecordAsync()
 		{
+			IsBusy = true;
 			if (_selectedRecord != null)
 			{
 				await _workFacade.RemoveAsync(_selectedRecord.Id);
@@ -135,19 +179,29 @@ namespace WorkManager.ViewModels.Pages
 			}
 			else
 			{
+				IsDialogThrown = true;
 				if (await _pageDialogService.DisplayAlertAsync(WorkRecordPageViewModelSR.ClearDialogTitle,
 					WorkRecordPageViewModelSR.ClearDialogMessage, WorkRecordPageViewModelSR.DialogYes,
 					WorkRecordPageViewModelSR.DialogNo))
 				{
-					_workFacade.Clear();
+					await _workFacade.ClearAsync();
 					FilteredRecords.WholeCollection?.Clear();
 				}
+				IsDialogThrown = false;
 			}
+			RaisePropertyChanged(nameof(TotalPriceThisMonth));
+			RaisePropertyChanged(nameof(TotalPriceThisYear));
+			IsBusy = false;
 		}
 
-		private void SelectedRecord(IWorkRecordModelBase obj)
+		private void SelectRecord(IWorkRecordModelBase obj)
 		{
-			_selectedRecord = obj;
+			SelectedRecord = obj;
+		}
+
+		private async Task EditAsync()
+		{
+			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", SelectedRecord}});
 		}
 	}
 }

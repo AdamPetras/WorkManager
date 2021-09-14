@@ -119,7 +119,7 @@ namespace WorkManager.ViewModels.Pages
 			catch (UserAlreadyExistsException)
 			{
 				if (await _authenticationService.AuthenticateAsync(_testModel.Username, _testModel.Password) != null)
-					NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
 			}
 			finally
 			{

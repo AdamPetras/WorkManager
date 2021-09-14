@@ -8,5 +8,6 @@ namespace WorkManager.Models.BaseClasses
 	{
 		IWorkRecordModelBase CreateWorkRecord(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour,
 			uint pieces, double pricePerPiece, EWorkType type, string description, ICompanyModel company);
+		IWorkRecordModelBase CopyRecord(IWorkRecordModelBase model);
 	}
 }

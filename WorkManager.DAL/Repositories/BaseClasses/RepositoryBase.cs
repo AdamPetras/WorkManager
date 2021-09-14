@@ -151,5 +151,20 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 				dbContext.SaveChanges();
 			}
 		}
+
+		public async Task ClearAsync(CancellationToken token = default)
+		{
+			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			{
+				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
+				foreach (var id in dbSet.Select(e => e.Id))
+				{
+					var entity = new TEntity() { Id = id };
+					dbSet.Attach(entity);
+					dbSet.Remove(entity);
+				}
+				await dbContext.SaveChangesAsync(token);
+			}
+		}
 	}
 }

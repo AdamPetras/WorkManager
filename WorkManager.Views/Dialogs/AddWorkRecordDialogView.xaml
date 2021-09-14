@@ -11,9 +11,6 @@
              xaml:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:AddWorkRecordDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddWorkRecordDialogView">
-    <ContentView.Resources>
-        <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
-    </ContentView.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

@@ -16,14 +16,12 @@ namespace WorkManager.ViewModels.Dialogs
 {
 	public class AddWorkRecordDialogViewModel : DialogViewModelBase
 	{
-		private readonly IEventAggregator _eventAggregator;
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
 		private readonly IFacade<IWorkRecordModelBase> _workRecordDetailFacade;
 		private readonly IWorkRecordModelFactory _workRecordModelFactory;
 
-		public AddWorkRecordDialogViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ICurrentModelProvider<ICompanyModel> companyModelProvider, IFacade<IWorkRecordModelBase> workRecordDetailFacade, IWorkRecordModelFactory workRecordModelFactory) : base(navigationService)
+		public AddWorkRecordDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IFacade<IWorkRecordModelBase> workRecordDetailFacade, IWorkRecordModelFactory workRecordModelFactory) : base(navigationService)
 		{
-			_eventAggregator = eventAggregator;
 			_companyModelProvider = companyModelProvider;
 			_workRecordDetailFacade = workRecordDetailFacade;
 			_workRecordModelFactory = workRecordModelFactory;

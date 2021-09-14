@@ -16,19 +16,17 @@ namespace WorkManager.ViewModels.Pages
 	{
 		private readonly IPageDialogService _pageDialogService;
 		private readonly ITaskFacade _taskFacade;
-		private readonly IEventAggregator _eventAggregator;
 
-		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IEventAggregator eventAggregator) : base(navigationService)
+		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade) : base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
 			_taskFacade = taskFacade;
-			_eventAggregator = eventAggregator;
 			SaveCommand = new DelegateCommand(async() => await SaveAsync());
-			DeleteTaskCommand = new DelegateCommand(async()=> await DeleteAsync());
+			InitDialogCommands();
 		}
 
 		public DelegateCommand SaveCommand { get; }
-		public DelegateCommand DeleteTaskCommand { get; }
+		public DelegateCommand DeleteTaskCommand { get; private set; }
 
 
 		private ITaskModel _selectedTask;
@@ -45,25 +43,37 @@ namespace WorkManager.ViewModels.Pages
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
-			base.OnNavigatedFromInt(parameters);
-			SelectedTask =  new TaskModel(parameters.GetValue<ITaskModel>("Task"));	//vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
+			base.OnNavigatedToInt(parameters);
+			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));	//vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
+		}
+
+		protected override void DestroyInt()
+		{
+			base.DestroyInt();
+			DialogThrownEvent -= DeleteTaskCommand.RaiseCanExecuteChanged;
+		}
+
+		private void InitDialogCommands()
+		{
+			DeleteTaskCommand = new DelegateCommand(async () => await DeleteAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += DeleteTaskCommand.RaiseCanExecuteChanged;
 		}
 
 		private async Task SaveAsync()
 		{
 			await _taskFacade.UpdateAsync(SelectedTask);
-			//_eventAggregator.GetEvent<AddTaskListApplicationEvent>().Publish(SelectedTask.State);
 			await NavigationService.GoBackAsync(new NavigationParameters(){{ "DialogEvent", new UpdateAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask)}});
 		}
 
 		private async Task DeleteAsync()
 		{
+			IsDialogThrown = true;
 			if (await _pageDialogService.DisplayAlertAsync(TaskKanbanPageViewModelSR.DeleteTaskTitle,TaskKanbanPageViewModelSR.DeleteTaskMessage,TaskKanbanPageViewModelSR.Yes,TaskKanbanPageViewModelSR.No))
 			{
 				await _taskFacade.RemoveAsync(SelectedTask.Id);
-				//_eventAggregator.GetEvent<AddTaskListApplicationEvent>().Publish(SelectedTask.State);
 				await NavigationService.GoBackAsync(new NavigationParameters(){{ "DialogEvent", new RemoveAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask)}});
 			}
+			IsDialogThrown = false;
 		}
 	}
 }

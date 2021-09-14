@@ -1,11 +1,19 @@
-﻿using Prism.Mvvm;
+﻿using System;
+using Prism.Mvvm;
 using Prism.Navigation;
 
 namespace WorkManager.ViewModels.BaseClasses
 {
+	public delegate void DialogThrownDelegate();
 	public abstract class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
 	{
-		protected INavigationService NavigationService { get; private set; }
+		protected ViewModelBase(INavigationService navigationService)
+		{
+			IsBusy = true;
+			NavigationService = navigationService;
+		}
+
+		public event DialogThrownDelegate DialogThrownEvent;
 
 		private bool _isBusy;
 		public bool IsBusy
@@ -19,11 +27,19 @@ namespace WorkManager.ViewModels.BaseClasses
 			}
 		}
 
-		protected ViewModelBase(INavigationService navigationService)
+		private bool _isDialogThrown;
+		public bool IsDialogThrown
 		{
-			IsBusy = true;
-			NavigationService = navigationService;
+			get => _isDialogThrown;
+			set
+			{
+				if (_isDialogThrown == value) return;
+				_isDialogThrown = value;
+				RaisePropertyChanged();
+				OnDialogThrownEvent();
+			}
 		}
+		protected INavigationService NavigationService { get; private set; }
 
 		public void Initialize(INavigationParameters parameters)
 		{
@@ -62,6 +78,11 @@ namespace WorkManager.ViewModels.BaseClasses
 		protected virtual void DestroyInt()
 		{
 
+		}
+
+		private void OnDialogThrownEvent()
+		{
+			DialogThrownEvent?.Invoke();
 		}
 	}
 }

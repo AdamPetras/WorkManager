@@ -21,5 +21,6 @@ namespace WorkManager.DAL.Repositories.Interfaces
 		bool Exists(TEntity entity);
 		Task<bool> ExistsAsync(TEntity entity, CancellationToken token = default);
 		void Clear();
+		Task ClearAsync(CancellationToken token = default);
 	}
 }

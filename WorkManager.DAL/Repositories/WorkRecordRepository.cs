@@ -37,13 +37,13 @@ namespace WorkManager.DAL.Repositories
 			{
 				return filterType switch
 				{
-					EFilterType.None => dbContext.WorkSet.Where(s => s.Company.Id == companyId).ToList(),
+					EFilterType.None => dbContext.WorkSet.Where(s => s.Company.Id == companyId).Include(s=>s.Company).ThenInclude(s=>s.User).ToList(),
 					EFilterType.ThisYear => dbContext.WorkSet.Where(s => s.Company.Id == companyId)
-						.Where(s => s.ActualDateTime.Year == DateTime.Today.Year)
+						.Where(s => s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
 						.ToList(),
-					EFilterType.ThisMonth => dbContext.WorkSet.Where(s => s.Company.Id == companyId)
+					EFilterType.ThisMonth => dbContext.WorkSet.Where(s => s.Company.Id == companyId).Include(s => s.Company)
 						.Where(s => s.ActualDateTime.Month == DateTime.Today.Month &&
-						            s.ActualDateTime.Year == DateTime.Today.Year)
+						            s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
 						.ToList(),
 					_ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
 				};
