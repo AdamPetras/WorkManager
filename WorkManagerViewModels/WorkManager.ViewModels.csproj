@@ -21,98 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\AddCompanyDialogViewModelSR.Designer.cs">
+    <Compile Update="Resources\TranslateViewModelsSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AddCompanyDialogViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\AddTaskGroupDialogViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AddTaskGroupDialogViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\CompanyPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CompanyPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\FilterDialogViewSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FilterDialogViewSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TaskGroupPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaskGroupPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TaskKanbanPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaskKanbanPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\LoginPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>LoginPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\RegisterPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>RegisterPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\WorkRecordDetailPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>WorkRecordDetailPageViewModelSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\WorkRecordPageViewModelSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>WorkRecordPageViewModelSR.resx</DependentUpon>
+      <DependentUpon>TranslateViewModelsSR.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\AddCompanyDialogViewModelSR.resx">
+    <EmbeddedResource Update="Resources\TranslateViewModelsSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>AddCompanyDialogViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\AddTaskGroupDialogViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>AddTaskGroupDialogViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\CompanyPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>CompanyPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FilterDialogViewSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>FilterDialogViewSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TaskGroupPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>TaskGroupPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TaskKanbanPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>TaskKanbanPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\LoginPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>LoginPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\RegisterPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>RegisterPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\WorkRecordDetailPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>WorkRecordDetailPageViewModelSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\WorkRecordPageViewModelSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>WorkRecordPageViewModelSR.Designer.cs</LastGenOutput>
+      <LastGenOutput>TranslateViewModelsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

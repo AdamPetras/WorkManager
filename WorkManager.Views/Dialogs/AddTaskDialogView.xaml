@@ -7,6 +7,7 @@
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
              xmlns:xaml="http://prismlibrary.com"
+             xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              x:DataType="dialogs:AddTaskDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddTaskDialogView">
     <Grid>
@@ -16,20 +17,39 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:DialogSR.Name}"></Label>
-        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></Entry>
-        <Label Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:DialogSR.Description}"></Label>
+        <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Name}"></Label>
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Keyboard="Chat"></Entry>
+        <Label Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Description}"></Label>
         <Editor Grid.Row="1" Grid.Column="1" Text="{Binding Description}" AutoSize="TextChanges" FontSize="Small"></Editor>
-        <Label Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:DialogSR.TaskStartDate}"></Label>
+        <Label Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.TaskStartDate}"></Label>
         <DatePicker Grid.Row="2" Grid.Column="1" Date="{Binding TaskStartDate}"></DatePicker>
-        <Label Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:DialogSR.TaskDoneDate}"></Label>
+        <Label Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.TaskDoneDate}"></Label>
         <DatePicker Grid.Row="3" Grid.Column="1" Date="{Binding TaskDoneDate}"></DatePicker>
-        <Button Grid.Row="4" Grid.Column="0" Text="{x:Static resources:DialogSR.Cancel}" Command="{Binding CancelCommand}"></Button>
-        <Button Grid.Row="4" Grid.Column="1" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+        <Label Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.WorkTime}"></Label>
+        <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding WorkTime}"></TimePicker>
+        <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Priority}"></Label>
+        <Picker Grid.Row="5" Grid.Column="1" SelectedItem="{Binding Priority}" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EPriority}}}"></Picker>
+        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="TakePhoto" Command="{Binding TakePhotoCommand}"></Button>
+        <CollectionView Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding PhotoPaths}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="interfaces:IImageModel">
+                    <Image Source="{Binding Path}"></Image>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Grid.Row="8" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="8" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
     </Grid>
 </Frame>

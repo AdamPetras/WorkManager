@@ -78,7 +78,7 @@ namespace WorkManager
 
 		private void RegisterDbContext(IUnityContainer container)
 		{
-			container.RegisterSingleton<IDbContextFactory<WorkManagerDbContext>, WorkManagerDbContextFactory>();
+			container.RegisterSingleton<IDBContextFactory<WorkManagerDbContext>, WorkManagerDbContextFactory>();
 			container.Resolve<WorkManagerDbContextFactory>().CreateDbContext();
 		}
 
@@ -91,6 +91,7 @@ namespace WorkManager
 			container.RegisterMultipleTypeSingleton<IWorkRecordRepository, IRepository<WorkRecordEntity>, WorkRecordRepository>();
 			container.RegisterMultipleTypeSingleton<IKanbanStateRepository, IRepository<KanbanStateEntity>, KanbanStateRepository>();
 			container.RegisterMultipleTypeSingleton<IKanbanTaskGroupRepository, IRepository<KanbanTaskGroupEntity>, KanbanTaskGroupRespository>();
+			container.RegisterMultipleTypeSingleton<IImageRepository, IRepository<ImageEntity>, ImageRepository>();
 		}
 
 		private void RegisterFactories(IUnityContainer container)
@@ -107,6 +108,7 @@ namespace WorkManager
 			container.RegisterSingleton<IMapper<UserEntity, IUserModel>, UserMapper>();
 			container.RegisterSingleton<IMapper<KanbanStateEntity, IKanbanStateModel>, KanbanStateMapper>();
 			container.RegisterSingleton<IMapper<KanbanTaskGroupEntity, IKanbanTaskGroupModel>, KanbanTaskGroupMapper>();
+			container.RegisterSingleton<IMapper<ImageEntity, IImageModel>, ImageMapper>();
 
 		}
 
@@ -119,6 +121,7 @@ namespace WorkManager
 			container.RegisterMultipleTypeSingleton<IKanbanStateFacade, IFacade<IKanbanStateModel>, KanbanStateFacade>();
 			container.RegisterMultipleTypeSingleton<IKanbanTaskGroupFacade, IFacade<IKanbanTaskGroupModel>, KanbanTaskGroupFacade>();
 			container.RegisterMultipleTypeSingleton<IWorkRecordFacade, IFacade<IWorkRecordModelBase>, WorkRecordFacade>();
+			container.RegisterMultipleTypeSingleton<IImageFacade, IFacade<IImageModel>, ImageFacade>();
 		}
 
 		private void RegisterProviders(IUnityContainer container)

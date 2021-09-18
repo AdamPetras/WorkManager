@@ -179,7 +179,8 @@ namespace WorkManager.ViewModels.Pages
 			IsDeleteButtonVisible = _kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Max(s => s.Kanban.StateOrder) == kanbanState.StateOrder;
 		}
 
-		private async Task NavigateToTaskDetailPageAsync(ITaskModel obj)
+		private async Task 
+			NavigateToTaskDetailPageAsync(ITaskModel obj)
 		{
 		}
 
@@ -206,7 +207,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			else
 			{
-				_toastMessageService.LongAlert(TaskKanbanPageViewModelSR.SwipeTaskOutside);
+				_toastMessageService.LongAlert(TranslateViewModelsSR.SwipeTaskOutside);
 			}
 		}
 
@@ -231,8 +232,8 @@ namespace WorkManager.ViewModels.Pages
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TaskKanbanPageViewModelSR.ClearTasksMessageTitle, TaskKanbanPageViewModelSR.ClearTasksMessage,
-					TaskKanbanPageViewModelSR.Yes, TaskKanbanPageViewModelSR.No))
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.TaskClearTasksMessageTitle, TranslateViewModelsSR.TaskClearTasksMessage,
+					TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 				{
 					await _taskFacade.ClearAsync();
 					Tasks.Clear();

@@ -88,8 +88,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			base.InitializeInt();
 			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
-			RaisePropertyChanged(nameof(TotalPriceThisMonth));
-			RaisePropertyChanged(nameof(TotalPriceThisYear));
+			UpdateTotalPrices();
 		}
 
 		protected override void DestroyInt()
@@ -110,6 +109,11 @@ namespace WorkManager.ViewModels.Pages
 					.OrderByDescending(s => s.ActualDateTime));
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
+			UpdateTotalPrices();
+		}
+
+		private void UpdateTotalPrices()
+		{
 			RaisePropertyChanged(nameof(TotalPriceThisMonth));
 			RaisePropertyChanged(nameof(TotalPriceThisYear));
 		}
@@ -132,8 +136,7 @@ namespace WorkManager.ViewModels.Pages
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialogView")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
-			RaisePropertyChanged(nameof(TotalPriceThisMonth));
-			RaisePropertyChanged(nameof(TotalPriceThisYear));
+			UpdateTotalPrices();
 			FilteredRecords.WholeCollection = new ObservableCollection<IWorkRecordModelBase>(FilteredRecords.WholeCollection.OrderByDescending(s => s.ActualDateTime));
 			IsDialogThrown = false;
 		}
@@ -180,9 +183,9 @@ namespace WorkManager.ViewModels.Pages
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(WorkRecordPageViewModelSR.ClearDialogTitle,
-					WorkRecordPageViewModelSR.ClearDialogMessage, WorkRecordPageViewModelSR.DialogYes,
-					WorkRecordPageViewModelSR.DialogNo))
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.WorkRecordClearDialogTitle,
+					TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
 				{
 					await _workFacade.ClearAsync();
 					FilteredRecords.WholeCollection?.Clear();

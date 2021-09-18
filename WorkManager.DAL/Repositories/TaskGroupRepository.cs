@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
@@ -11,13 +12,13 @@ namespace WorkManager.DAL.Repositories
 {
 	public class TaskGroupRepository : RepositoryBase<TaskGroupEntity>, ITaskGroupRepository
 	{
-		public TaskGroupRepository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public TaskGroupRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 		}
 
 		public IEnumerable<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.TaskGroupSet.Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToList();
 			}

@@ -10,7 +10,7 @@
                     x:Class="WorkManager.Views.Pages.TaskKanbanPage"
                     x:DataType="pages:TaskKanbanPageViewModel"
                     androidSpecific:TabbedPage.ToolbarPlacement="Bottom"
-                    Title="{x:Static resources:TaskKanbanPageSR.Title}">
+                    Title="{x:Static resources:TranslatePagesSR.TaskKanbanPageTitle}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"
                      Order="Primary"
@@ -53,7 +53,7 @@
                 <CollectionView.EmptyView>
                     <ContentView>
                         <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
-                            <Label Text="{x:Static resources:KanbanDetailPageSR.NoTaskMessage}" TextColor="{x:StaticResource secondaryTextColor}" FontSize="Large"></Label>
+                            <Label Text="{x:Static resources:TranslatePagesSR.NoTaskMessage}" TextColor="{x:StaticResource secondaryTextColor}" FontSize="Large"></Label>
                         </StackLayout>
                     </ContentView>
                 </CollectionView.EmptyView>

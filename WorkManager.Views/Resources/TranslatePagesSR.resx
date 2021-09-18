@@ -117,10 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Ukončit</value>
+  <data name="ActualDate" xml:space="preserve">
+    <value>Aktuální datum</value>
   </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Potvrdit</value>
+  <data name="ContinueWithoutLogin" xml:space="preserve">
+    <value>Pokračovat bez přihlášení</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Popis</value>
+  </data>
+  <data name="Firstname" xml:space="preserve">
+    <value>Jméno</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Přihlásit</value>
+  </data>
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Přihlášení</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Název</value>
+  </data>
+  <data name="NoTaskMessage" xml:space="preserve">
+    <value>V tomto stavu není žádný úkol</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Heslo</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>Počet kusů</value>
+  </data>
+  <data name="PricePerHour" xml:space="preserve">
+    <value>Částka za hodinu</value>
+  </data>
+  <data name="PricePerPiece" xml:space="preserve">
+    <value>Částka za kus</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrovat</value>
+  </data>
+  <data name="RegisterTitle" xml:space="preserve">
+    <value>Registrace</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>Heslo znovu</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Uložit</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Přijmení</value>
+  </data>
+  <data name="TaskDoneDate" xml:space="preserve">
+    <value>Datum kdy má být hotov</value>
+  </data>
+  <data name="TaskGroupPageTitle" xml:space="preserve">
+    <value>Skupiny úkolů</value>
+  </data>
+  <data name="TaskKanbanPageTitle" xml:space="preserve">
+    <value>Úkoly</value>
+  </data>
+  <data name="ThisMonth" xml:space="preserve">
+    <value>Tento měsíc</value>
+  </data>
+  <data name="ThisYear" xml:space="preserve">
+    <value>Tento rok</value>
+  </data>
+  <data name="Totally" xml:space="preserve">
+    <value>Celkem</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Částka celkem</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Přihlašovací jméno</value>
+  </data>
+  <data name="WorkTime" xml:space="preserve">
+    <value>Čas práce</value>
   </data>
 </root>

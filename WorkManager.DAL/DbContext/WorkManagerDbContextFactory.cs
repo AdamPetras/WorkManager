@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace WorkManager.DAL.DbContext
 {
-	public class WorkManagerDbContextFactory: Interfaces.IDbContextFactory<WorkManagerDbContext>
+	public class WorkManagerDbContextFactory: Interfaces.IDBContextFactory<WorkManagerDbContext>
 	{
 		public WorkManagerDbContext CreateDbContext()
 		{

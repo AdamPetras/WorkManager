@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WorkManager.ViewModels.Resources {
+namespace WorkManager.Views.Resources {
     using System;
     
     
@@ -24,7 +24,7 @@ namespace WorkManager.ViewModels.Resources {
     [global::System.Reflection.ObfuscationAttribute(Exclude=true, ApplyToMembers=true)]
 #endif
     [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-    public partial class WorkRecordDetailPageViewModelSR {
+    public partial class TranslateViewsSR {
         
         private static global::System.Resources.ResourceManager _resourceManager;
         
@@ -33,10 +33,10 @@ namespace WorkManager.ViewModels.Resources {
         private static global::System.Globalization.CultureInfo _resourceCulture;
         
         /// <summary>
-        /// Initializes a WorkRecordDetailPageViewModelSR object.
+        /// Initializes a TranslateViewsSR object.
         /// </summary>
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public WorkRecordDetailPageViewModelSR() {
+        public TranslateViewsSR() {
         }
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace WorkManager.ViewModels.Resources {
                     global::System.Threading.Monitor.Enter(InternalSyncObject);
                     try {
                         if (object.ReferenceEquals(_resourceManager, null)) {
-                            global::System.Threading.Interlocked.Exchange(ref _resourceManager, new global::System.Resources.ResourceManager("WorkManager.ViewModels.Resources.WorkRecordDetailPageViewModelSR", typeof(WorkRecordDetailPageViewModelSR).Assembly));
+                            global::System.Threading.Interlocked.Exchange(ref _resourceManager, new global::System.Resources.ResourceManager("WorkManager.Views.Resources.TranslateViewsSR", typeof(TranslateViewsSR).Assembly));
                         }
                     }
                     finally {
@@ -87,65 +87,9 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Looks up a localized string similar to 'Opravdu chcete tento pracovní záznam?'.
-        /// </summary>
-        public static string ClearDialogMessage {
-            get {
-                return ResourceManager.GetString(ResourceNames.ClearDialogMessage, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Smazání pracovního záznamu'.
-        /// </summary>
-        public static string ClearDialogTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.ClearDialogTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Ne'.
-        /// </summary>
-        public static string DialogNo {
-            get {
-                return ResourceManager.GetString(ResourceNames.DialogNo, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Ano'.
-        /// </summary>
-        public static string DialogYes {
-            get {
-                return ResourceManager.GetString(ResourceNames.DialogYes, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Lists all the resource names as constant string fields.
         /// </summary>
         public class ResourceNames {
-            
-            /// <summary>
-            /// Stores the resource name 'ClearDialogMessage'.
-            /// </summary>
-            public const string ClearDialogMessage = "ClearDialogMessage";
-            
-            /// <summary>
-            /// Stores the resource name 'ClearDialogTitle'.
-            /// </summary>
-            public const string ClearDialogTitle = "ClearDialogTitle";
-            
-            /// <summary>
-            /// Stores the resource name 'DialogNo'.
-            /// </summary>
-            public const string DialogNo = "DialogNo";
-            
-            /// <summary>
-            /// Stores the resource name 'DialogYes'.
-            /// </summary>
-            public const string DialogYes = "DialogYes";
         }
     }
 }

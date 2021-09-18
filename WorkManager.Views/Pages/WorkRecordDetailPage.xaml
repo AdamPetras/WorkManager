@@ -25,17 +25,17 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
-                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:DialogSR.Description}"  VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
-                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkType}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
-                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:DialogSR.Pieces}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Pieces}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Pieces}" Keyboard="Numeric"></Entry>
-                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerPiece}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
+                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
@@ -52,17 +52,17 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
-                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:DialogSR.Description}"  VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
-                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkType}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
-                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkTime}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" VerticalTextAlignment="Center"></Label>
                     <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding WorkTime}" Format="HH:mm"></TimePicker>
-                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerHour}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerHour}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerHour}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
+                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
@@ -81,21 +81,21 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
-                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:DialogSR.Description}"  VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
-                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkType}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
-                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkTime}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" VerticalTextAlignment="Center"></Label>
                     <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding WorkTime}" Format="HH:mm"></TimePicker>
-                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerHour}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerHour}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerHour}" Keyboard="Numeric"></Entry>
-                    <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resources:DialogSR.Pieces}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Pieces}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="5" Grid.Column="1" Text="{Binding Pieces}" Keyboard="Numeric"></Entry>
-                    <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
+                    <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="6" Grid.Column="1" Text="{Binding PricePerPiece}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
+                    <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <templateSelectors:WorkRecordTemplateSelector x:Key="RecordTemplateSelector" BothRecordDataTemplate="{StaticResource BothRecordTemplate}" PiecesRecordDataTemplate="{StaticResource PiecesRecordTemplate}" TimeRecordDataTemplate="{StaticResource TimeRecordTemplate}"></templateSelectors:WorkRecordTemplateSelector>

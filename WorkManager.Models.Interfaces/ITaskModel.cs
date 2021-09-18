@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using WorkManager.DAL.Enums;
 
 namespace WorkManager.Models.Interfaces
 {
@@ -10,5 +12,7 @@ namespace WorkManager.Models.Interfaces
 		DateTime TaskDoneDateTime { get; set; }
 		ITaskGroupModel TaskGroup { get; set; }
 		IKanbanStateModel State { get; set; }
+		EPriority Priority { get; set; }
+		TimeSpan WorkTime { get; set; }
 	}
 }

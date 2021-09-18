@@ -73,7 +73,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			if (_taskGroupFacade.GetAll().Any(s => s.Name == Name))
 			{
-				_toastMessageService.LongAlert(AddTaskGroupDialogViewModelSR.NameAlreadyExistsFormat(Name));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExistsFormat(Name));
 				Cancel();
 				return;
 			}

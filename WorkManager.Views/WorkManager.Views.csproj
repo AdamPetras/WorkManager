@@ -53,40 +53,20 @@
     <Compile Update="Pages\WorkRecordPage.xaml.cs">
       <DependentUpon>WorkRecordPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Resources\DialogSR.Designer.cs">
+    <Compile Update="Resources\TranslateDialogsSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DialogSR.resx</DependentUpon>
+      <DependentUpon>TranslateDialogsSR.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\KanbanDetailPageSR.Designer.cs">
+    <Compile Update="Resources\TranslatePagesSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>KanbanDetailPageSR.resx</DependentUpon>
+      <DependentUpon>TranslatePagesSR.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\LoginRegisterSR.Designer.cs">
+    <Compile Update="Resources\TranslateViewsSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>LoginRegisterSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TaskDetailPageSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaskDetailPageSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TaskGroupPageSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaskGroupPageSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\TaskKanbanPageSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TaskKanbanPageSR.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\WorkRecordPageSR.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>WorkRecordPageSR.resx</DependentUpon>
+      <DependentUpon>TranslateViewsSR.resx</DependentUpon>
     </Compile>
     <Compile Update="Views\CompanyEmptyView.xaml.cs">
       <DependentUpon>CompanyEmptyView.xaml</DependentUpon>
@@ -124,17 +104,9 @@
     <EmbeddedResource Update="Pages\WorkRecordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DialogSR.resx">
+    <EmbeddedResource Update="Resources\TranslateDialogsSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>DialogSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\KanbanDetailPageSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>KanbanDetailPageSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\LoginRegisterSR.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LoginRegisterSR.Designer.cs</LastGenOutput>
+      <LastGenOutput>TranslateDialogsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Dialogs\AddCompanyDialogView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -145,21 +117,13 @@
     <EmbeddedResource Update="Dialogs\AddWorkRecordDialogView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TaskDetailPageSR.resx">
+    <EmbeddedResource Update="Resources\TranslatePagesSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>TaskDetailPageSR.Designer.cs</LastGenOutput>
+      <LastGenOutput>TranslatePagesSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TaskGroupPageSR.resx">
+    <EmbeddedResource Update="Resources\TranslateViewsSR.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>TaskGroupPageSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TaskKanbanPageSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>TaskKanbanPageSR.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\WorkRecordPageSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
-      <LastGenOutput>WorkRecordPageSR.Designer.cs</LastGenOutput>
+      <LastGenOutput>TranslateViewsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\WorkRecordEmptyView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

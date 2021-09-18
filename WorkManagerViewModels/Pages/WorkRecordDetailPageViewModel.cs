@@ -57,7 +57,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task DeleteRecordAsync()
 		{
 			IsDialogThrown = true;
-			if (await _pageDialogService.DisplayAlertAsync(WorkRecordDetailPageViewModelSR.ClearDialogTitle, WorkRecordDetailPageViewModelSR.ClearDialogMessage, WorkRecordDetailPageViewModelSR.DialogYes, WorkRecordDetailPageViewModelSR.DialogNo))
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.WorkRecordDeleteDialogTitle, TranslateViewModelsSR.WorkRecordDeleteDialogMessage, TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 			{
 				await _workRecordFacade.RemoveAsync(RecordModel.Single().Id);
 				await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new RemoveAfterDialogCloseDialogEvent<IWorkRecordModelBase>(RecordModel.Single()) } });

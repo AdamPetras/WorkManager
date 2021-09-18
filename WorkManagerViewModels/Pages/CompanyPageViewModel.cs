@@ -122,9 +122,9 @@ namespace WorkManager.ViewModels.Pages
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(CompanyPageViewModelSR.ClearDialogTitle,
-					CompanyPageViewModelSR.ClearDialogMessage, CompanyPageViewModelSR.DialogYes,
-					CompanyPageViewModelSR.DialogNo))
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.CompanyClearDialogTitle,
+					TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
 				{
 					await _companyFacade.ClearAsync();
 					Companies.Clear();

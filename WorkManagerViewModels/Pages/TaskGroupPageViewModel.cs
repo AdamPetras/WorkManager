@@ -131,9 +131,9 @@ namespace WorkManager.ViewModels.Pages
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TaskGroupPageViewModelSR.ClearDialogTitle,
-					TaskGroupPageViewModelSR.ClearDialogMessage, TaskGroupPageViewModelSR.DialogYes,
-					TaskGroupPageViewModelSR.DialogNo))
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.TaskGroupClearDialogTitle,
+					TranslateViewModelsSR.TaskGroupClearDialogMessage, TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
 				{
 					await _taskGroupFacade.ClearAsync();
 					TaskGroups.Clear();

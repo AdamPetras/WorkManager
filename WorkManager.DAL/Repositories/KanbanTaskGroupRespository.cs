@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
@@ -13,7 +14,7 @@ namespace WorkManager.DAL.Repositories
 {
 	public class KanbanTaskGroupRespository : RepositoryBase<KanbanTaskGroupEntity>, IKanbanTaskGroupRepository
 	{
-		public KanbanTaskGroupRespository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public KanbanTaskGroupRespository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 		}
 
@@ -36,7 +37,7 @@ namespace WorkManager.DAL.Repositories
 
 		public IEnumerable<KanbanTaskGroupEntity> GetKanbansByTaskGroupId(Guid taskGroupId)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.KanbanTaskGroupSet.Where(s => s.IdTaskGroup == taskGroupId).Include(s=>s.Kanban).Include(s=>s.TaskGroup).ToList();
 			}
@@ -44,7 +45,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<IEnumerable<KanbanTaskGroupEntity>> GetKanbansByTaskGroupIdAsync(Guid taskGroupId, CancellationToken token = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.KanbanTaskGroupSet.Where(s => s.IdTaskGroup == taskGroupId).Include(s => s.Kanban).Include(s => s.TaskGroup).ToListAsync(token);
 			}

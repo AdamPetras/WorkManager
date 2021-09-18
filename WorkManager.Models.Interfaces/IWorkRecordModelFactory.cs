@@ -1,8 +1,7 @@
 ﻿using System;
 using WorkManager.DAL.Enums;
-using WorkManager.Models.Interfaces;
 
-namespace WorkManager.Models.BaseClasses
+namespace WorkManager.Models.Interfaces
 {
 	public interface IWorkRecordModelFactory
 	{

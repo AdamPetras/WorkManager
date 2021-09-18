@@ -7,7 +7,7 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="pages:TaskGroupPageViewModel"
-             Title="{x:Static resources:TaskGroupPageSR.Title}"
+             Title="{x:Static resources:TranslatePagesSR.TaskGroupPageTitle}"
              x:Class="WorkManager.Views.Pages.TaskGroupPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"

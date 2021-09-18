@@ -5,50 +5,51 @@ using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
 using Microsoft.EntityFrameworkCore;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Repositories.Interfaces;
 
 namespace WorkManager.DAL.Repositories
 {
 	public class UserRepository:RepositoryBase<UserEntity>, IUserRepository
 	{
-		public UserRepository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public UserRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 
 		}
 
 		public UserEntity GetByUserName(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return dbContext.UserSet.FirstOrDefault(s => s.Username == username);
 		}
 
 		public async Task<UserEntity> GetByUserNameAsync(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username);
 		}
 
 		public string GetPasswordByUserName(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return dbContext.UserSet.FirstOrDefault(s => s.Username == username)?.Password;
 		}
 
 		public async Task<string> GetPasswordByUserNameAsync(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return (await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username))?.Password;
 		}
 
 		public bool Exists(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return dbContext.UserSet.Any(s => s.Username == username);
 		}
 
 		public async Task<bool> ExistsAsync(string username)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return await dbContext.UserSet.AnyAsync(s => s.Username == username);
 		}
 

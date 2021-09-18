@@ -24,7 +24,7 @@ namespace WorkManager.Views.Resources {
     [global::System.Reflection.ObfuscationAttribute(Exclude=true, ApplyToMembers=true)]
 #endif
     [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-    public partial class DialogSR {
+    public partial class TranslateDialogsSR {
         
         private static global::System.Resources.ResourceManager _resourceManager;
         
@@ -33,10 +33,10 @@ namespace WorkManager.Views.Resources {
         private static global::System.Globalization.CultureInfo _resourceCulture;
         
         /// <summary>
-        /// Initializes a DialogSR object.
+        /// Initializes a TranslateDialogsSR object.
         /// </summary>
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public DialogSR() {
+        public TranslateDialogsSR() {
         }
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace WorkManager.Views.Resources {
                     global::System.Threading.Monitor.Enter(InternalSyncObject);
                     try {
                         if (object.ReferenceEquals(_resourceManager, null)) {
-                            global::System.Threading.Interlocked.Exchange(ref _resourceManager, new global::System.Resources.ResourceManager("WorkManager.Views.Resources.DialogSR", typeof(DialogSR).Assembly));
+                            global::System.Threading.Interlocked.Exchange(ref _resourceManager, new global::System.Resources.ResourceManager("WorkManager.Views.Resources.TranslateDialogsSR", typeof(TranslateDialogsSR).Assembly));
                         }
                     }
                     finally {
@@ -159,6 +159,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Priorita'.
+        /// </summary>
+        public static string Priority {
+            get {
+                return ResourceManager.GetString(ResourceNames.Priority, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Datum předběžného dokončení'.
         /// </summary>
         public static string TaskDoneDate {
@@ -238,6 +247,11 @@ namespace WorkManager.Views.Resources {
             /// Stores the resource name 'PricePerPiece'.
             /// </summary>
             public const string PricePerPiece = "PricePerPiece";
+            
+            /// <summary>
+            /// Stores the resource name 'Priority'.
+            /// </summary>
+            public const string Priority = "Priority";
             
             /// <summary>
             /// Stores the resource name 'TaskDoneDate'.

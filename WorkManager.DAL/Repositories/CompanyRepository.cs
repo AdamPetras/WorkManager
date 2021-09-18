@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
@@ -11,7 +12,7 @@ namespace WorkManager.DAL.Repositories
 {
 	public class CompanyRepository : RepositoryBase<CompanyEntity>, ICompanyRepository
 	{
-		public CompanyRepository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public CompanyRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 		}
 
@@ -30,7 +31,7 @@ namespace WorkManager.DAL.Repositories
 
 		public ICollection<CompanyEntity> GetCompaniesByUserId(Guid userId)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.CompanySet.Where(s => s.User.Id == userId).Include(s=>s.User).ToList();
 			}

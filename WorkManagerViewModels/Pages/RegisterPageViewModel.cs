@@ -98,7 +98,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			catch (UserAlreadyExistsException)
 			{
-				_toastMessageService.LongAlert(RegisterPageViewModelSR.UserAlreadyExistsFormat(Username));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.UserAlreadyExistsFormat(Username));
 			}
 			catch (UserNotExistsException e)
 			{

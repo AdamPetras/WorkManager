@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WorkManager.DAL.Entities.BaseClasses;
+using WorkManager.DAL.Enums;
 
 namespace WorkManager.DAL.Entities
 {
@@ -27,5 +29,7 @@ namespace WorkManager.DAL.Entities
 
 		[ForeignKey(nameof(IdTaskGroup))]
 		public virtual TaskGroupEntity TaskGroup { get; set; }
+		public EPriority Priority { get; set; }
+		public TimeSpan WorkTime { get; set; }
 	}
 }

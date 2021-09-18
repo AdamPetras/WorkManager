@@ -26,21 +26,21 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
         <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding SelectedDate}"></DatePicker>
-        <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:DialogSR.Description}"  VerticalTextAlignment="Center"></Label>
-        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
-        <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkType}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" Keyboard="Chat"></Entry>
+        <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
         <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding SelectedWorkType}"></Picker>
-        <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:DialogSR.WorkTime}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}" VerticalTextAlignment="Center"></Label>
         <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding WorkTime}" Format="HH:mm" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}"></TimePicker>
-        <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerHour}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerHour}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}" VerticalTextAlignment="Center"></Label>
         <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerHour}" Keyboard="Numeric" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}"></Entry>
-        <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resources:DialogSR.Pieces}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Pieces}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}" VerticalTextAlignment="Center"></Label>
         <Entry Grid.Row="5" Grid.Column="1" Text="{Binding Pieces}" Keyboard="Numeric" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}"></Entry>
-        <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resources:DialogSR.PricePerPiece}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerPiece}" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}" VerticalTextAlignment="Center"></Label>
         <Entry Grid.Row="6" Grid.Column="1" Text="{Binding PricePerPiece}" Keyboard="Numeric" IsVisible="{Binding SelectedWorkType, Converter={x:StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Piece}}"></Entry>
-        <Button Grid.Row="7" Grid.Column="0" Text="{x:Static resources:DialogSR.Cancel}" Command="{Binding CancelCommand}"></Button>
-        <Button Grid.Row="7" Grid.Column="1" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+        <Button Grid.Row="7" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="7" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
     </Grid>
 </Frame>

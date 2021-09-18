@@ -81,7 +81,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			catch (UnauthorizedAccessException)
 			{
-				_toastMessageService.LongAlert(LoginPageViewModelSR.UnauthorizedAccessExceptionMessage);
+				_toastMessageService.LongAlert(TranslateViewModelsSR.UnauthorizedAccessExceptionMessage);
 			}
 			finally
 			{
@@ -93,7 +93,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			if (Password.IsNullOrEmpty())
 			{
-				_toastMessageService.LongAlert(LoginPageViewModelSR.PasswordIsNullOrEmpty);
+				_toastMessageService.LongAlert(TranslateViewModelsSR.PasswordIsNullOrEmpty);
 				return false;
 			}
 			return true;
@@ -103,7 +103,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			if (Username.IsNullOrEmpty())
 			{
-				_toastMessageService.LongAlert(LoginPageViewModelSR.UserNameIsNullOrEmpty);
+				_toastMessageService.LongAlert(TranslateViewModelsSR.UserNameIsNullOrEmpty);
 				return false;
 			}
 			return true;

@@ -57,7 +57,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			if (_companyFacade.GetAll().Any(s => s.Name == Name))
 			{
-				_toastMessageService.LongAlert(AddCompanyDialogViewModelSR.NameAlreadyExistsFormat(Name));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExistsFormat(Name));
 				Cancel();
 				return;
 			}

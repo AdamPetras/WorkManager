@@ -16,6 +16,9 @@ namespace WorkManager.ViewModels.BaseClasses
 		public event DialogThrownDelegate DialogThrownEvent;
 
 		private bool _isBusy;
+		/// <summary>
+		/// Pokud program vykonává složitější operaci nastavíme na IsBusy == true následně po vykonání IsBusy==false zobrazí nadefinovaný activity indicator pouze async popř pokud operace běží na jiném než hlavnín vlákně
+		/// </summary>
 		public bool IsBusy
 		{
 			get => _isBusy;
@@ -28,6 +31,9 @@ namespace WorkManager.ViewModels.BaseClasses
 		}
 
 		private bool _isDialogThrown;
+		/// <summary>
+		/// Řeší problém s více spuštěnými dialogy neumožní spustit více dialogů najednou a zároveň disabluje tlačítka toolbaru
+		/// </summary>
 		public bool IsDialogThrown
 		{
 			get => _isDialogThrown;

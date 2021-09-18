@@ -5,7 +5,7 @@
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
-             Title="{x:Static resources:LoginRegisterSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
+             Title="{x:Static resources:TranslatePagesSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">
             <Grid.RowDefinitions>
@@ -21,12 +21,12 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <ActivityIndicator Grid.Row="0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
-            <Label Grid.Row="1" Text="{x:Static resources:LoginRegisterSR.Username}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="1" Text="{x:Static resources:TranslatePagesSR.Username}" HorizontalOptions="Start"></Label>
             <Entry Margin="15,0,0,0" Grid.Row="2" Text="{Binding Username}" ></Entry>
-            <Label Grid.Row="3" Text="{x:Static resources:LoginRegisterSR.Password}"></Label>
+            <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Password}"></Label>
             <Entry Margin="15,0,0,0"  Grid.Row="4" Text="{Binding Password}" IsPassword="True" ></Entry>
-            <Button Grid.Row="5" Text="{x:Static resources:LoginRegisterSR.Login}" Command="{Binding LoginCommand}"></Button>
-            <Button Grid.Row="6" Text="{x:Static resources:LoginRegisterSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}"></Button>
+            <Button Grid.Row="5" Text="{x:Static resources:TranslatePagesSR.Login}" Command="{Binding LoginCommand}"></Button>
+            <Button Grid.Row="6" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}"></Button>
         </Grid>
     </ContentPage.Content>
     <ContentPage.ToolbarItems>

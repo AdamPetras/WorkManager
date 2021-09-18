@@ -20,9 +20,9 @@
               <ColumnDefinition Width="Auto"></ColumnDefinition>
               <ColumnDefinition Width="*"></ColumnDefinition>
           </Grid.ColumnDefinitions>
-          <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:DialogSR.Name}"></Label>
-          <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></Entry>
-        <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:DialogSR.Cancel}" Command="{Binding CancelCommand}"></Button>
-        <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:DialogSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+          <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Name}"></Label>
+          <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Keyboard="Chat"></Entry>
+        <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
       </Grid>
 </Frame>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using WorkManager.DAL.Enums;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 
@@ -9,7 +11,6 @@ namespace WorkManager.Models
 	{
 		public TaskModel() : base(Guid.Empty)
 		{
-
 		}
 
 		public TaskModel([NotNull] ITaskModel task): base(task.Id)
@@ -20,9 +21,12 @@ namespace WorkManager.Models
 			TaskDoneDateTime = task.TaskDoneDateTime;
 			TaskGroup = task.TaskGroup;
 			State = task.State;
+			Priority = task.Priority;
+			WorkTime = task.WorkTime;
 		}
 
-		public TaskModel(Guid id, DateTime actualDateTime, string name, string description, DateTime taskDoneDateTime, ITaskGroupModel taskGroup, IKanbanStateModel state) : base(id)
+		public TaskModel(Guid id, DateTime actualDateTime, string name, string description, DateTime taskDoneDateTime,
+			ITaskGroupModel taskGroup, IKanbanStateModel state, EPriority priority, TimeSpan workTime) : base(id)
 		{
 			ActualDateTime = actualDateTime;
 			Name = name;
@@ -30,6 +34,8 @@ namespace WorkManager.Models
 			TaskDoneDateTime = taskDoneDateTime;
 			TaskGroup = taskGroup;
 			State = state;
+			Priority = priority;
+			WorkTime = workTime;
 		}
 
 		public DateTime ActualDateTime { get; set; }
@@ -38,5 +44,7 @@ namespace WorkManager.Models
 		public DateTime TaskDoneDateTime { get; set; }
 		public ITaskGroupModel TaskGroup { get; set; }
 		public IKanbanStateModel State { get; set; }
+		public EPriority Priority { get; set; }
+		public TimeSpan WorkTime { get; set; }
 	}
 }

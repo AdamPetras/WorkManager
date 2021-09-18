@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
@@ -13,7 +14,7 @@ namespace WorkManager.DAL.Repositories
 {
 	public class TaskRepository : RepositoryBase<TaskEntity>, ITaskRepository
 	{
-		public TaskRepository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public TaskRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 		}
 
@@ -24,7 +25,7 @@ namespace WorkManager.DAL.Repositories
 
 		public override TaskEntity Add(TaskEntity entity)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				if (entity == null)
 					throw new ArgumentNullException();
@@ -53,7 +54,7 @@ namespace WorkManager.DAL.Repositories
 
 		public IEnumerable<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s=>s.TaskGroup).ThenInclude(s=>s.User).ToList();
 			}
@@ -61,7 +62,7 @@ namespace WorkManager.DAL.Repositories
 
 		public IEnumerable<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
 					.ThenInclude(s => s.User).Include(s=>s.State).Where(s=>s.State.Name == kanbanStateName)
@@ -71,7 +72,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<IEnumerable<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
 					.ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)

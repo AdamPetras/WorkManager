@@ -57,6 +57,7 @@ namespace WorkManager.BL.Mappers
 				WorkTime = workTime,
 				PricePerHour = pricePerHour,
 				Description = model.Description,
+				IdCompany = model.Company.Id,
 				Company = _companyMapper.Map(model.Company)
 			};
 		}

@@ -117,7 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NameAlreadyExists" xml:space="preserve">
+  <data name="AplicationHaveNoPermissionsToUse" xml:space="preserve">
+    <value>Tato aplikace nemá povolení používat {0}.</value>
+  </data>
+  <data name="Camera" xml:space="preserve">
+    <value>fotoaparát</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Ukončit</value>
+  </data>
+  <data name="CompanyClearDialogMessage" xml:space="preserve">
+    <value>Opravdu chcete smazat všechny firmy?</value>
+  </data>
+  <data name="CompanyClearDialogTitle" xml:space="preserve">
+    <value>Smazání všech firem</value>
+  </data>
+  <data name="CompanyNameAlreadyExists" xml:space="preserve">
+    <value>Firma se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou firmu.</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potvrdit</value>
+  </data>
+  <data name="DialogNo" xml:space="preserve">
+    <value>Ne</value>
+  </data>
+  <data name="DialogYes" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="PasswordIsNullOrEmpty" xml:space="preserve">
+    <value>Prosím vyplňte heslo.</value>
+  </data>
+  <data name="SwipeTaskOutside" xml:space="preserve">
+    <value>Úkol již není možné přesunout tímto směrem.</value>
+  </data>
+  <data name="TaskClearTasksMessage" xml:space="preserve">
+    <value>Opravdu chcete odstranit všechny úkoly z této skupiny?</value>
+  </data>
+  <data name="TaskClearTasksMessageTitle" xml:space="preserve">
+    <value>Odstranění všech úkolů</value>
+  </data>
+  <data name="TaskDeleteMessage" xml:space="preserve">
+    <value>Opravdu chcete smazat tento úkol?</value>
+  </data>
+  <data name="TaskDeleteTitle" xml:space="preserve">
+    <value>Smazání aktuálního úkolu</value>
+  </data>
+  <data name="TaskGroupClearDialogMessage" xml:space="preserve">
+    <value>Opravdu chcete smazat všechny úkoly?</value>
+  </data>
+  <data name="TaskGroupClearDialogTitle" xml:space="preserve">
+    <value>Smazání všech skupin úkolů</value>
+  </data>
+  <data name="TaskGroupNameAlreadyExists" xml:space="preserve">
     <value>Skupina se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou skupinu.</value>
+  </data>
+  <data name="UnauthorizedAccessExceptionMessage" xml:space="preserve">
+    <value>Nepovedlo se přihlásit uživatele, uživatelské jméno nebo heslo není správné.</value>
+  </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>Uživatel {0} již existuje prosím zadejte jiné jméno.</value>
+  </data>
+  <data name="UserNameIsNullOrEmpty" xml:space="preserve">
+    <value>Prosím vyplňte uživatelské jméno.</value>
+  </data>
+  <data name="WorkRecordClearDialogMessage" xml:space="preserve">
+    <value>Opravdu chcete smazat všechny úkoly?</value>
+  </data>
+  <data name="WorkRecordClearDialogTitle" xml:space="preserve">
+    <value>Smazání všech skupin úkolů</value>
+  </data>
+  <data name="WorkRecordDeleteDialogMessage" xml:space="preserve">
+    <value>Opravdu chcete tento pracovní záznam?</value>
+  </data>
+  <data name="WorkRecordDeleteDialogTitle" xml:space="preserve">
+    <value>Smazání pracovního záznamu</value>
   </data>
 </root>

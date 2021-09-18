@@ -13,16 +13,16 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 {
 	public abstract class RepositoryBase<TEntity> :IRepository<TEntity> where TEntity : class, IEntity, new()
 	{
-		protected DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> DbContextFactory;
+		protected DbContext.Interfaces.IDBContextFactory<WorkManagerDbContext> IdbContextFactory;
 
-		protected RepositoryBase(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory)
+		protected RepositoryBase(DbContext.Interfaces.IDBContextFactory<WorkManagerDbContext> idbContextFactory)
 		{
-			DbContextFactory = dbContextFactory;
+			IdbContextFactory = idbContextFactory;
 		}
 
 		public IEnumerable<TEntity> GetAll()
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return GetAllInt(dbContext.GetDatabaseByType<TEntity>().AsNoTracking());
 			}
@@ -32,7 +32,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<List<TEntity>> GetAllAsync(CancellationToken token = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(cancellationToken:token);
 			}
@@ -40,7 +40,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public TEntity GetById(Guid id)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.GetDatabaseByType<TEntity>().FirstOrDefault(s => s.Id == id);
 			};
@@ -48,7 +48,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, cancellationToken: token);
 			}
@@ -56,7 +56,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public bool Remove(Guid id)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				TEntity entity = GetById(id);
 				if (entity == null)
@@ -77,7 +77,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public virtual TEntity Add(TEntity entity)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				if (entity == null)
 					throw new ArgumentNullException();
@@ -101,7 +101,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public void Update(TEntity entity)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				if (entity == null)
 					throw new ArgumentNullException();
@@ -123,7 +123,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public bool Exists(TEntity entity)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.GetDatabaseByType<TEntity>().Any(s => s.Equals(entity));
 			}
@@ -131,7 +131,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
 			}
@@ -139,7 +139,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public void Clear()
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
 				foreach (var id in dbSet.Select(e => e.Id))
@@ -154,7 +154,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task ClearAsync(CancellationToken token = default)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
 				foreach (var id in dbSet.Select(e => e.Id))

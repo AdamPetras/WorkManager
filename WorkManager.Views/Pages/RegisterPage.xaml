@@ -7,7 +7,7 @@
              x:Class="WorkManager.Views.Pages.RegisterPage"
              x:DataType="pages:RegisterPageViewModel"
              IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}"
-             Title="{x:Static resources:LoginRegisterSR.RegisterTitle}">
+             Title="{x:Static resources:TranslatePagesSR.RegisterTitle}">
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">
             <Grid.RowDefinitions>
@@ -28,17 +28,17 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <ActivityIndicator Grid.Row="0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
-            <Label Grid.Row="1" Text="{x:Static resources:LoginRegisterSR.Firstname}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="1" Text="{x:Static resources:TranslatePagesSR.Firstname}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0" Grid.Row="2" Text="{Binding FirstName}" ></Entry>
-            <Label Grid.Row="3" Text="{x:Static resources:LoginRegisterSR.Surname}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Surname}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0" Grid.Row="4" Text="{Binding Surname}" ></Entry>
-            <Label Grid.Row="5" Text="{x:Static resources:LoginRegisterSR.Username}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="5" Text="{x:Static resources:TranslatePagesSR.Username}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0" Grid.Row="6" Text="{Binding Username}" ></Entry>
-            <Label Grid.Row="7" Text="{x:Static resources:LoginRegisterSR.Password}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="7" Text="{x:Static resources:TranslatePagesSR.Password}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0"  Grid.Row="8" Text="{Binding Password}" IsPassword="True" ></Entry>
-            <Label Grid.Row="9" Text="{x:Static resources:LoginRegisterSR.RepeatPassword}" HorizontalOptions="Start"></Label>
+            <Label Grid.Row="9" Text="{x:Static resources:TranslatePagesSR.RepeatPassword}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0"  Grid.Row="10" Text="{Binding RepeatPassword}" IsPassword="True" ></Entry>
-            <Button Grid.Row="11" Text="{x:Static resources:LoginRegisterSR.Register}" Command="{Binding RegisterCommand}"></Button>
+            <Button Grid.Row="11" Text="{x:Static resources:TranslatePagesSR.Register}" Command="{Binding RegisterCommand}"></Button>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

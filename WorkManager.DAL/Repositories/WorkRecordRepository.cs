@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
+using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Enums;
 using WorkManager.DAL.Repositories.BaseClasses;
@@ -12,7 +13,7 @@ namespace WorkManager.DAL.Repositories
 {
 	public class WorkRecordRepository : RepositoryBase<WorkRecordEntity>, IWorkRecordRepository
 	{
-		public WorkRecordRepository(DbContext.Interfaces.IDbContextFactory<WorkManagerDbContext> dbContextFactory) : base(dbContextFactory)
+		public WorkRecordRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
 		{
 		}
 
@@ -33,7 +34,7 @@ namespace WorkManager.DAL.Repositories
 
 		public IEnumerable<WorkRecordEntity> GetAllRecordsByCompany(Guid companyId, EFilterType filterType)
 		{
-			using (WorkManagerDbContext dbContext = DbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return filterType switch
 				{

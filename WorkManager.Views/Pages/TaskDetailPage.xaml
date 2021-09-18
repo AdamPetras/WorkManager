@@ -29,15 +29,15 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TaskDetailPageSR.Name}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
+            <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Name}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
             <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{ Binding SelectedTask.Name}"></Entry>
-            <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TaskDetailPageSR.Description}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
+            <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Description}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
             <Entry Grid.Row="1" Grid.Column="1" Text="{ Binding SelectedTask.Description}"></Entry>
-            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TaskDetailPageSR.ActualDate}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
+            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.ActualDate}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
             <DatePicker Grid.Row="2" Grid.Column="1" Date="{ Binding SelectedTask.ActualDateTime}"></DatePicker>
-            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TaskDetailPageSR.TaskDoneDate}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
+            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.TaskDoneDate}" TextColor="{x:StaticResource secondaryTextColor}" VerticalOptions="Center"></Label>
             <DatePicker Grid.Row="3" Grid.Column="1" Date="{ Binding SelectedTask.TaskDoneDateTime}"></DatePicker>
-            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SaveCommand}" Text="{x:Static resources:TaskDetailPageSR.Save}"></Button>
+            <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SaveCommand}" Text="{x:Static resources:TranslatePagesSR.Save}"></Button>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
