@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
+             xmlns:prism="http://prismlibrary.com"
+             x:Class="WorkManager.Views.Dialogs.SelectPictureOrCaptureCameraDialog"
+             prism:DialogLayout.LayoutBounds="0.5, 1, -1, -1"
+             prism:DialogLayout.CloseOnBackgroundTapped="True"
+             x:DataType="dialogs:SelectPictureOrCaptureCameraDialogViewModel" 
+             VerticalOptions="End" 
+             Margin="30">
+    <Grid HorizontalOptions="FillAndExpand" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Command="{Binding SelectCameraCommand}"  Text="{x:Static resources:TranslateDialogsSR.Camera}" HorizontalOptions = "CenterAndExpand">
+            <Button.ImageSource>
+                <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Camera}"></FontImageSource>
+            </Button.ImageSource>
+        </Button>
+        <Button Grid.Column="1" Command="{Binding SelectGalleryCommand}" Text="{x:Static resources:TranslateDialogsSR.Gallery}"  HorizontalOptions = "CenterAndExpand">
+            <Button.ImageSource>
+                <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
+            </Button.ImageSource>
+        </Button>
+    </Grid>
+</Frame>

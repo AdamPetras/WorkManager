@@ -96,6 +96,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Fotoaparát'.
+        /// </summary>
+        public static string Camera {
+            get {
+                return ResourceManager.GetString(ResourceNames.Camera, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Ukončit'.
         /// </summary>
         public static string Cancel {
@@ -119,6 +128,15 @@ namespace WorkManager.Views.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString(ResourceNames.Description, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Galerie'.
+        /// </summary>
+        public static string Gallery {
+            get {
+                return ResourceManager.GetString(ResourceNames.Gallery, _resourceCulture);
             }
         }
         
@@ -214,6 +232,11 @@ namespace WorkManager.Views.Resources {
             public const string ActualDateTime = "ActualDateTime";
             
             /// <summary>
+            /// Stores the resource name 'Camera'.
+            /// </summary>
+            public const string Camera = "Camera";
+            
+            /// <summary>
             /// Stores the resource name 'Cancel'.
             /// </summary>
             public const string Cancel = "Cancel";
@@ -227,6 +250,11 @@ namespace WorkManager.Views.Resources {
             /// Stores the resource name 'Description'.
             /// </summary>
             public const string Description = "Description";
+            
+            /// <summary>
+            /// Stores the resource name 'Gallery'.
+            /// </summary>
+            public const string Gallery = "Gallery";
             
             /// <summary>
             /// Stores the resource name 'Name'.

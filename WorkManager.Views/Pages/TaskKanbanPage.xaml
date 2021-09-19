@@ -78,9 +78,9 @@
                             </VisualStateManager.VisualStateGroups>
                             <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.NativeAnimation="True">
                                 <Frame.GestureRecognizers>
-                                    <SwipeGestureRecognizer Direction="Right" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
+                                    <SwipeGestureRecognizer Direction="Right" Threshold="1" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}"
                                                             CommandParameter="{Binding .}"></SwipeGestureRecognizer>
-                                    <SwipeGestureRecognizer Direction="Left" Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" 
+                                    <SwipeGestureRecognizer Direction="Left" Threshold="1" Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" 
                                                             CommandParameter="{Binding .}"></SwipeGestureRecognizer>
                                 </Frame.GestureRecognizers>
                                 <Grid >

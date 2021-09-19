@@ -137,6 +137,7 @@ namespace WorkManager
 			container.RegisterSingleton<IRegistrationService, RegistrationService>();
 			container.RegisterSingleton<IRecordTotalCalculatorService, RecordTotalCalculatorService>();
 			container.RegisterSingleton<DialogEventService>();
+			container.RegisterSingleton<IPhotoService, PhotoService>();
 
 			//model services
 			container.RegisterSingleton<IRecordCalculatorService, RecordCalculatorService>();
@@ -161,6 +162,8 @@ namespace WorkManager
 			containerRegistry.RegisterDialog<AddTaskGroupDialogView, AddTaskGroupDialogViewModel>();
 			containerRegistry.RegisterDialog<AddTaskDialogView, AddTaskDialogViewModel>();
 			containerRegistry.RegisterDialog<FilterDialogView, FilterDialogViewModel>();
+			containerRegistry.RegisterDialog<SelectPictureOrCaptureCameraDialog, SelectPictureOrCaptureCameraDialogViewModel>();
+			containerRegistry.RegisterDialog<ImageDetailDialog, ImageDetailDialogViewModel>();
 
 			ViewModelLocationProvider.Register<CompanyEmptyView, CompanyEmptyViewModel>();
 			ViewModelLocationProvider.Register<TaskGroupEmptyView, TaskGroupEmptyViewModel>();

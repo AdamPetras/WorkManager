@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
@@ -30,9 +31,21 @@ namespace WorkManager.DAL.Repositories
 			{
 				dbContext.Entry(entity.Task.TaskGroup).State = EntityState.Unchanged;
 			}
+			if (entity.Task?.State != null)
+			{
+				dbContext.Entry(entity.Task.State).State = EntityState.Unchanged;
+			}
 			if (entity.Task?.TaskGroup?.User != null)
 			{
 				dbContext.Entry(entity.Task.TaskGroup.User).State = EntityState.Unchanged;
+			}
+		}
+
+		public IEnumerable<ImageEntity> GetAllImagesByTask(Guid id)
+		{
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			{
+				return dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToList();
 			}
 		}
 	}

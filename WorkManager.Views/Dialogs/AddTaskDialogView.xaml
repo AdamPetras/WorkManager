@@ -18,7 +18,6 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
@@ -38,18 +37,42 @@
         <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding WorkTime}"></TimePicker>
         <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Priority}"></Label>
         <Picker Grid.Row="5" Grid.Column="1" SelectedItem="{Binding Priority}" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EPriority}}}"></Picker>
-        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="TakePhoto" Command="{Binding TakePhotoCommand}"></Button>
-        <CollectionView Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding PhotoPaths}">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="interfaces:IImageModel">
-                    <Image Source="{Binding Path}"></Image>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Button Grid.Row="8" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
-        <Button Grid.Row="8" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
+        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CollectionView Grid.Column="0" ItemsSource="{Binding PhotoPaths}" Margin="5">
+                <CollectionView.EmptyView>
+                    <Image VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                        <Image.Source>
+                            <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
+                        </Image.Source>
+                    </Image>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="5" SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Grid>
+                            <Image Source="{Binding .}"></Image>
+                            <ImageButton VerticalOptions="Start" HorizontalOptions="End" HeightRequest="20" Opacity="0.5" Margin="5" Command="{Binding DeletePhotoCommand, Source={RelativeSource AncestorType={x:Type dialogs:AddTaskDialogViewModel}}}" CommandParameter="{Binding .}">
+                                <ImageButton.Source>
+                                    <FontImageSource Color="{x:StaticResource primaryColor}" Glyph="{x:Static resources:IconFont.TimesCircle}" FontFamily="fa-solid-900"></FontImageSource>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Grid.Column="1" Command="{Binding TakePhotoCommand}" WidthRequest="80" HorizontalOptions="CenterAndExpand" Margin="5">
+                <Button.ImageSource>
+                    <FontImageSource Color="{x:StaticResource primaryColor}" Glyph="{x:Static resources:IconFont.Plus}" FontFamily="fa-solid-900"></FontImageSource>
+                </Button.ImageSource>
+            </Button>
+        </Grid>
+        <Button Grid.Row="7" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
+        <Button Grid.Row="7" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}"></Button>
     </Grid>
 </Frame>

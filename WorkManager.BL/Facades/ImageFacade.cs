@@ -1,4 +1,7 @@
-﻿using WorkManager.BL.Facades.BaseClasses;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using WorkManager.BL.Facades.BaseClasses;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.DAL.Entities;
@@ -13,6 +16,11 @@ namespace WorkManager.BL.Facades
 		public ImageFacade(IImageRepository repository, IMapper<ImageEntity, IImageModel> mapper) : base(repository, mapper)
 		{
 			Repository = repository;
+		}
+
+		public ICollection<IImageModel> GetAllImagesByTask(Guid id)
+		{
+			return Repository.GetAllImagesByTask(id).Select(Mapper.Map).ToList();
 		}
 	}
 }

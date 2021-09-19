@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
+             x:Class="WorkManager.Views.Dialogs.ImageDetailDialog"
+             xmlns:prism="http://prismlibrary.com"
+             prism:DialogLayout.RelativeHeightRequest="1"
+             prism:DialogLayout.RelativeWidthRequest="1"
+             x:DataType="dialogs:ImageDetailDialogViewModel">
+    <Image Source="{Binding Path}">
+        <Image.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CloseCommand}"></TapGestureRecognizer>
+        </Image.GestureRecognizers>
+    </Image>
+</ContentView>

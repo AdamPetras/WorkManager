@@ -31,23 +31,29 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
 		private readonly IEventAggregator _eventAggregator;
 		private readonly IToastMessageService _toastMessageService;
+		private readonly IDialogService _dialogService;
+		private readonly IImageFacade _imageFacade;
 
 		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade,
-			ITaskFacade taskFacade, IEventAggregator eventAggregator, IToastMessageService toastMessageService) : base(navigationService)
+			ITaskFacade taskFacade, IEventAggregator eventAggregator, IToastMessageService toastMessageService, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
 		{
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
 			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
+			_dialogService = dialogService;
+			_imageFacade = imageFacade;
 			_taskFacade = taskFacade;
 			CancelCommand = new DelegateCommand(Cancel);
 			ConfirmCommand = new DelegateCommand(Confirm);
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
 			TaskDoneDate = DateTime.Now;
-			PhotoPaths = new ObservableCollection<IImageModel>();
+			PhotoPaths = new ObservableCollection<string>();
+			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
 		}
 
+		public DelegateCommand<string> DeletePhotoCommand { get; }
 		public DelegateCommand CancelCommand { get; }
 		public DelegateCommand ConfirmCommand { get; }
 		public DelegateCommand TakePhotoCommand { get; }
@@ -124,8 +130,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private ObservableCollection<IImageModel> _photoPaths;
-		public ObservableCollection<IImageModel> PhotoPaths
+		private ObservableCollection<string> _photoPaths;
+		public ObservableCollection<string> PhotoPaths
 		{
 			get => _photoPaths;
 			set
@@ -135,7 +141,6 @@ namespace WorkManager.ViewModels.Dialogs
 				RaisePropertyChanged();
 			}
 		}
-
 
 		private void Cancel()
 		{
@@ -150,46 +155,24 @@ namespace WorkManager.ViewModels.Dialogs
 			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, Description, TaskDoneDate,
 				_currentTaskGroupProvider.GetModel(), firstKanban, Priority, WorkTime);
 			_taskFacade.Add(model);
+			foreach (string path in PhotoPaths)
+			{
+				_imageFacade.Add(new ImageModel(Guid.NewGuid(), path, "", model));
+			}
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model)} });
 		}
 
 		private async Task TakePhotoAsync()
-		{
-			try
-			{
-				var photo = await MediaPicker.CapturePhotoAsync();
-				string photoPath = await LoadPhotoAsync(photo);
-				if(photoPath!= null)
-					PhotoPaths.Add(new ImageModel(Guid.NewGuid(),photoPath,"", null));
-			}
-			catch (FeatureNotSupportedException fnsEx)
-			{
-				// Feature is not supported on the device
-			}
-			catch (PermissionException pEx)
-			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.AplicationHaveNoPermissionsToUseFormat(TranslateViewModelsSR.Camera));
-				// Permissions not granted
-			}
-			catch (Exception ex)
-			{
-				Crashes.TrackError(ex);
-			}
+		{	
+			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("SelectPictureOrCaptureCameraDialog")).Parameters;
+			string path = parameters.GetValue<string>("Path");
+			if(path != null)
+				PhotoPaths.Add(path);
 		}
 
-		private async Task<string> LoadPhotoAsync(FileResult photo)
+		private void DeletePhoto(string obj)
 		{
-			// canceled
-			if (photo == null)
-			{
-				return null;
-			}
-			// save the file into local storage
-			var newFile = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-			using (var stream = await photo.OpenReadAsync())
-			using (var newStream = File.OpenWrite(newFile))
-				await stream.CopyToAsync(newStream);
-			return newFile;
+			PhotoPaths.Remove(obj);
 		}
 	}
 }

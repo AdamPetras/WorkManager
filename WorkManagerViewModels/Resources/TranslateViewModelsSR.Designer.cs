@@ -87,15 +87,6 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Looks up a localized string similar to 'Tato aplikace nemá povolení používat {0}.'.
-        /// </summary>
-        public static string AplicationHaveNoPermissionsToUse {
-            get {
-                return ResourceManager.GetString(ResourceNames.AplicationHaveNoPermissionsToUse, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Looks up a localized string similar to 'fotoaparát'.
         /// </summary>
         public static string Camera {
@@ -312,15 +303,6 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Formats a localized string similar to 'Tato aplikace nemá povolení používat {0}.'.
-        /// </summary>
-        /// <param name="arg0">An object (0) to format.</param>
-        /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
-        public static string AplicationHaveNoPermissionsToUseFormat(object arg0) {
-            return string.Format(_resourceCulture, AplicationHaveNoPermissionsToUse, arg0);
-        }
-        
-        /// <summary>
         /// Formats a localized string similar to 'Firma se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou firmu.'.
         /// </summary>
         /// <param name="arg0">An object (0) to format.</param>
@@ -351,11 +333,6 @@ namespace WorkManager.ViewModels.Resources {
         /// Lists all the resource names as constant string fields.
         /// </summary>
         public class ResourceNames {
-            
-            /// <summary>
-            /// Stores the resource name 'AplicationHaveNoPermissionsToUse'.
-            /// </summary>
-            public const string AplicationHaveNoPermissionsToUse = "AplicationHaveNoPermissionsToUse";
             
             /// <summary>
             /// Stores the resource name 'Camera'.

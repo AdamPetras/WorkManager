@@ -33,4 +33,19 @@
     <Folder Include="EventActions\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\TranslateBussinessSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TranslateBussinessSR.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\TranslateBussinessSR.resx">
+      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <LastGenOutput>TranslateBussinessSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
