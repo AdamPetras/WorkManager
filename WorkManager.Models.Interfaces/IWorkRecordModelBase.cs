@@ -3,7 +3,7 @@ using WorkManager.DAL.Enums;
 
 namespace WorkManager.Models.Interfaces
 {
-	public interface IWorkRecordModelBase : IModel
+	public interface IWorkRecordModelBase : IModel, IEquatable<IWorkRecordModelBase>
 	{
 		DateTime ActualDateTime { get; set; }
 		EWorkType Type { get; set; }

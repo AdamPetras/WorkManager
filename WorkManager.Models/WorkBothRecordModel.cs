@@ -24,5 +24,32 @@ namespace WorkManager.Models
 		public TimeSpan WorkTime { get; set; }
 		public double PricePerPiece { get; set; }
 		public double PricePerHour { get; set; }
+
+		protected bool Equals(WorkBothRecordModel other)
+		{
+			return base.Equals(other) && Pieces == other.Pieces && WorkTime.Equals(other.WorkTime) && PricePerPiece.Equals(other.PricePerPiece) && PricePerHour.Equals(other.PricePerHour);
+		}
+
+		public bool Equals(IWorkPiecesRecordModel other)
+		{
+			return Equals((WorkBothRecordModel) other);
+		}
+
+		public bool Equals(IWorkTimeRecordModel other)
+		{
+			return Equals((WorkBothRecordModel) other);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((WorkBothRecordModel) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(base.GetHashCode(), Pieces, WorkTime, PricePerPiece, PricePerHour);
+		}
 	}
 }

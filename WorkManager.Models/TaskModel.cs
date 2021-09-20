@@ -46,5 +46,29 @@ namespace WorkManager.Models
 		public IKanbanStateModel State { get; set; }
 		public EPriority Priority { get; set; }
 		public TimeSpan WorkTime { get; set; }
+
+		public bool Equals(ITaskModel other)
+		{
+			return Equals((TaskModel)other);
+		}
+
+		protected bool Equals(TaskModel other)
+		{
+			return ActualDateTime.Equals(other.ActualDateTime) && Name == other.Name && Description == other.Description &&
+			       TaskDoneDateTime.Equals(other.TaskDoneDateTime) && Equals(TaskGroup, other.TaskGroup) && 
+			       Equals(State, other.State) && Priority == other.Priority && WorkTime.Equals(other.WorkTime);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((TaskModel) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroup, State, (int) Priority, WorkTime);
+		}
 	}
 }

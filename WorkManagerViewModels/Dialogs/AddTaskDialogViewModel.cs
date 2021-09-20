@@ -29,18 +29,14 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly ITaskFacade _taskFacade;
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
 		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
-		private readonly IEventAggregator _eventAggregator;
-		private readonly IToastMessageService _toastMessageService;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
 
 		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade,
-			ITaskFacade taskFacade, IEventAggregator eventAggregator, IToastMessageService toastMessageService, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
+			ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
 		{
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
-			_eventAggregator = eventAggregator;
-			_toastMessageService = toastMessageService;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
 			_taskFacade = taskFacade;
@@ -51,12 +47,14 @@ namespace WorkManager.ViewModels.Dialogs
 			TaskDoneDate = DateTime.Now;
 			PhotoPaths = new ObservableCollection<string>();
 			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
+			ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
 		}
 
 		public DelegateCommand<string> DeletePhotoCommand { get; }
 		public DelegateCommand CancelCommand { get; }
 		public DelegateCommand ConfirmCommand { get; }
 		public DelegateCommand TakePhotoCommand { get; }
+		public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
 
 		private string _name;
 		public string Name
@@ -173,6 +171,11 @@ namespace WorkManager.ViewModels.Dialogs
 		private void DeletePhoto(string obj)
 		{
 			PhotoPaths.Remove(obj);
+		}
+
+		private void ShowDetailImageDialog(string photoPath)
+		{
+			_dialogService.ShowDialog("ImageDetailDialog", new DialogParameters() { { "Path", photoPath } });
 		}
 	}
 }

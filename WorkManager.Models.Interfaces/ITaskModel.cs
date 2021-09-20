@@ -4,7 +4,7 @@ using WorkManager.DAL.Enums;
 
 namespace WorkManager.Models.Interfaces
 {
-	public interface ITaskModel:IModel
+	public interface ITaskModel : IModel, IEquatable<ITaskModel>
 	{
 		DateTime ActualDateTime { get; set; }
 		string Name { get; set; }

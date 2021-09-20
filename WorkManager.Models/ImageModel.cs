@@ -21,5 +21,27 @@ namespace WorkManager.Models
 		public string Path { get; set; }
 		public string Description { get; set; }
 		public ITaskModel Task { get; set; }
+
+		public bool Equals(IImageModel other)
+		{
+			return Equals((ImageModel)other);
+		}
+
+		protected bool Equals(ImageModel other)
+		{
+			return Path == other.Path && Description == other.Description && Equals(Task, other.Task);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((ImageModel) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Path, Description, Task);
+		}
 	}
 }

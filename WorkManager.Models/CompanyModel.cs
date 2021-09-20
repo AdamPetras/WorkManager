@@ -20,5 +20,27 @@ namespace WorkManager.Models
 
 		public string Name { get; set; }
 		public IUserModel User { get; set; }
+
+		public bool Equals(ICompanyModel other)
+		{
+			return Equals((CompanyModel) other);
+		}
+
+		protected bool Equals(CompanyModel other)
+		{
+			return Name == other.Name && Equals(User, other.User);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((CompanyModel) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Name, User);
+		}
 	}
 }

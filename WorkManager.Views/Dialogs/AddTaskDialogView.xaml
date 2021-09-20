@@ -56,7 +56,11 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
                         <Grid>
-                            <Image Source="{Binding .}"></Image>
+                            <Image Source="{Binding .}">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowDetailImageDialogCommand, Source={RelativeSource AncestorType={x:Type dialogs:AddTaskDialogViewModel}}}" CommandParameter="{Binding Path=.}"></TapGestureRecognizer>
+                                </Image.GestureRecognizers>
+                            </Image>
                             <ImageButton VerticalOptions="Start" HorizontalOptions="End" HeightRequest="20" Opacity="0.5" Margin="5" Command="{Binding DeletePhotoCommand, Source={RelativeSource AncestorType={x:Type dialogs:AddTaskDialogViewModel}}}" CommandParameter="{Binding .}">
                                 <ImageButton.Source>
                                     <FontImageSource Color="{x:StaticResource primaryColor}" Glyph="{x:Static resources:IconFont.TimesCircle}" FontFamily="fa-solid-900"></FontImageSource>

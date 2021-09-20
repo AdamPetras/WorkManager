@@ -13,6 +13,7 @@ using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Mappers;
 using WorkManager.BL.Providers;
 using WorkManager.BL.Services;
+using WorkManager.Core;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories;

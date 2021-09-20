@@ -24,5 +24,27 @@ namespace WorkManager.Models.BaseClasses
 		public ICompanyModel Company { get; set; }
 		public string Description { get; set; }
 		public double CalculatedPrice => _recordCalculatorService.Calculate(this);
+
+		public bool Equals(IWorkRecordModelBase other)
+		{
+			return Equals((object)other);
+		}
+
+		protected bool Equals(WorkRecordModelBase other)
+		{
+			return ActualDateTime.Equals(other.ActualDateTime) && Type == other.Type && Equals(Company, other.Company) && Description == other.Description;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((WorkRecordModelBase) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(ActualDateTime, (int) Type, Company, Description);
+		}
 	}
 }

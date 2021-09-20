@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
@@ -8,6 +11,8 @@ using Prism.Services;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
+using WorkManager.BL.Interfaces.Services;
+using WorkManager.Core;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -21,14 +26,16 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ITaskFacade _taskFacade;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
+		private readonly IToastMessageService _toastMessageService;
 
 		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IDialogService dialogService,
-			IImageFacade imageFacade) : base(navigationService)
+			IImageFacade imageFacade, IToastMessageService toastMessageService) : base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
 			_taskFacade = taskFacade;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
+			_toastMessageService = toastMessageService;
 			SaveCommand = new DelegateCommand(async () => await SaveAsync());
 			DeletePhotoCommand = new DelegateCommand<IImageModel>(DeletePhoto);
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
@@ -67,11 +74,14 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private ICollection<IImageModel> InitImages { get; set; }
+
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
 			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
 			PhotoPaths = new ObservableCollection<IImageModel>(_imageFacade.GetAllImagesByTask(SelectedTask.Id));
+			InitImages = PhotoPaths.ToList();
 		}
 
 		protected override void DestroyInt()
@@ -89,6 +99,16 @@ namespace WorkManager.ViewModels.Pages
 		private async Task SaveAsync()
 		{
 			await _taskFacade.UpdateAsync(SelectedTask);
+			EnumerableDiffChecker<IImageModel> diffChecker = new EnumerableDiffChecker<IImageModel>();
+			DifferentialCollection<IImageModel> collections = diffChecker.CheckCollectionDifference(InitImages, PhotoPaths);
+			foreach (IImageModel imageModel in collections.AddEnumerable)
+			{
+				await _imageFacade.AddAsync(imageModel);
+			}
+			foreach (IImageModel imageModel in collections.DeleteEnumerable)
+			{
+				await _imageFacade.RemoveAsync(imageModel.Id);
+			}
 			await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new UpdateAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask) } });
 		}
 
@@ -102,12 +122,15 @@ namespace WorkManager.ViewModels.Pages
 			}
 			IsDialogThrown = false;
 		}
+
 		private async Task TakePhotoAsync()
 		{
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("SelectPictureOrCaptureCameraDialog")).Parameters;
 			string path = parameters.GetValue<string>("Path");
 			if (path != null)
+			{
 				PhotoPaths.Add(new ImageModel(Guid.NewGuid(), path, "", SelectedTask));
+			}
 		}
 
 		private void DeletePhoto(IImageModel obj)
@@ -117,7 +140,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private void ShowDetailImageDialog(string photoPath)
 		{
-			_dialogService.ShowDialog("ImageDetailDialog",new DialogParameters(){{ "Path", photoPath } });
+			_dialogService.ShowDialog("ImageDetailDialog", new DialogParameters() { { "Path", photoPath } });
 		}
 	}
 }

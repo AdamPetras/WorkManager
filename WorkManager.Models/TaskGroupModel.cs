@@ -22,5 +22,27 @@ namespace WorkManager.Models
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public IUserModel User { get; set; }
+
+		public bool Equals(ITaskGroupModel other)
+		{
+			return Equals((TaskGroupModel)other);
+		}
+
+		protected bool Equals(TaskGroupModel other)
+		{
+			return Name == other.Name && Description == other.Description && Equals(User, other.User);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			return obj.GetType() == this.GetType() && Equals((TaskGroupModel) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(Name, Description, User);
+		}
 	}
 }
