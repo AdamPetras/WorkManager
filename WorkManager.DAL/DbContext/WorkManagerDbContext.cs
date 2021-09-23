@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
@@ -11,6 +12,7 @@ namespace WorkManager.DAL.DbContext
 {
 	public class WorkManagerDbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
 	{
+		private readonly DatabaseVersionChecker _databaseVersionChecker;
 		private const string DatabaseName = "WorkManager.db";
 		public string DatabasePath { get; private set; }
 		public DbSet<UserEntity> UserSet { get; set; }
@@ -23,12 +25,13 @@ namespace WorkManager.DAL.DbContext
 		public DbSet<ImageEntity> ImageSet { get; set; }
 
 		public WorkManagerDbContext()
-        {
-
-        }
+		{
+			_databaseVersionChecker = new DatabaseVersionChecker();
+		}
 
         public WorkManagerDbContext(string databasePath)
         {
+			_databaseVersionChecker = new DatabaseVersionChecker();
 	        if (!Directory.Exists(databasePath))
 		        Directory.CreateDirectory(databasePath);
 	        DatabasePath = databasePath;
@@ -81,13 +84,7 @@ namespace WorkManager.DAL.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			//modelBuilder.Entity<UserEntity>().HasMany(s => s.Companies).WithOne(s=>s.User).OnDelete(DeleteBehavior.Cascade);
-			//modelBuilder.Entity<UserEntity>().HasMany(s => s.TaskGroups).WithOne(s=>s.User).OnDelete(DeleteBehavior.Cascade);
-			//modelBuilder.Entity<CompanyEntity>().HasMany(s => s.Items).WithOne(s=>s.Company).OnDelete(DeleteBehavior.Cascade);
-			//modelBuilder.Entity<TaskGroupEntity>().HasMany(s => s.TaskCollection).WithOne(s=>s.TaskGroup).OnDelete(DeleteBehavior.Cascade);
-			//modelBuilder.Entity<KanbanStateEntity>().HasOne(s => s.Task).WithOne(s=>s.State).HasForeignKey<TaskEntity>(s=>s.IdState);
-			//modelBuilder.Entity<KanbanTaskGroupEntity>().HasOne(s => s.Kanban).WithMany(s => s.KanbanTaskGroup).HasForeignKey(s => s.IdKanban);
-			//modelBuilder.Entity<KanbanTaskGroupEntity>().HasOne(s => s.TaskGroup).WithMany(s => s.KanbanTaskGroup).HasForeignKey(s => s.IdTaskGroup);
+			
         }
 		 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -105,7 +102,19 @@ namespace WorkManager.DAL.DbContext
 	            default:
 		            throw new NotImplementedException("Platform not supported");
             }
-			//File.Delete(DatabasePath);
+
+			if (File.Exists(DatabasePath))
+			{
+				if (!_databaseVersionChecker.IsVersionTableInsideDatabase(DatabasePath))
+				{
+					File.Delete(DatabasePath);  //pokud není tabulka verzí v databázi nemělo by se stávat vůbec je to zatím pro ty co měly nainstalováno jako interní testy
+				}
+				else if (!_databaseVersionChecker.IsDatabaseCorrectVersion(DatabasePath, Assembly.GetExecutingAssembly().GetName().Version.ToString()))
+				{
+					//tady by měla být implementována změna z verze xx na yy zatím není nasazeno tak nebudu dělat
+					File.Delete(DatabasePath);  //pokud není správná verze databáze
+				}
+			}
 			optionsBuilder.UseSqlite("Filename=" + DatabasePath);
         }
     }

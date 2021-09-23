@@ -101,6 +101,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
 		{
+			IsBusy = true;
 			_currentTaskGroupProvider.SetItem(obj);
 			await NavigationService.NavigateAsync("TaskKanbanPage");
 		}

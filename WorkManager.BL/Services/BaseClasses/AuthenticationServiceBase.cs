@@ -117,7 +117,6 @@ namespace WorkManager.BL.Services.BaseClasses
 
 		public async Task<bool> PasswordMatchesHashedPasswordAsync(string password, string hashedPassword)
 		{
-
 			return await Task.Run(()=> PasswordMatchesHashedPassword(password, hashedPassword));
 		}
 	}

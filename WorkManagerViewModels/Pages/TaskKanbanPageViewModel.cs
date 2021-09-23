@@ -179,8 +179,7 @@ namespace WorkManager.ViewModels.Pages
 			IsDeleteButtonVisible = _kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Max(s => s.Kanban.StateOrder) == kanbanState.StateOrder;
 		}
 
-		private async Task 
-			NavigateToTaskDetailPageAsync(ITaskModel obj)
+		private async Task NavigateToTaskDetailPageAsync(ITaskModel obj)
 		{
 		}
 
@@ -267,6 +266,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task EditAsync()
 		{
+			IsBusy = true;
 			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", SelectedTask } });
 		}
 	}
