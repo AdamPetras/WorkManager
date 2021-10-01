@@ -115,14 +115,19 @@ namespace WorkManager.ViewModels.Pages
 			IsBusy = true;
 			if (_selectedCompany != null)
 			{
-				await _companyFacade.RemoveAsync(_selectedCompany.Id);
-				Companies.Remove(_selectedCompany);
-				_selectedCompany = null;
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+					TranslateViewModelsSR.SelectedCompanyDeleteDialogMessageFormat(_selectedCompany.Name), TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
+				{
+					await _companyFacade.RemoveAsync(_selectedCompany.Id);
+					Companies.Remove(_selectedCompany);
+					_selectedCompany = null;
+				}
 			}
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.CompanyClearDialogTitle,
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
 					TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
 					TranslateViewModelsSR.DialogNo))
 				{

@@ -192,6 +192,9 @@
   <data name="Username" xml:space="preserve">
     <value>Přihlašovací jméno</value>
   </data>
+  <data name="Version" xml:space="preserve">
+    <value>Verze</value>
+  </data>
   <data name="WorkTime" xml:space="preserve">
     <value>Čas práce</value>
   </data>

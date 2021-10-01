@@ -114,15 +114,6 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Looks up a localized string similar to 'Smazání všech firem'.
-        /// </summary>
-        public static string CompanyClearDialogTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.CompanyClearDialogTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Looks up a localized string similar to 'Firma se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou firmu.'.
         /// </summary>
         public static string CompanyNameAlreadyExists {
@@ -150,6 +141,33 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Chyba'.
+        /// </summary>
+        public static string DialogTitleError {
+            get {
+                return ResourceManager.GetString(ResourceNames.DialogTitleError, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Informace'.
+        /// </summary>
+        public static string DialogTitleInfo {
+            get {
+                return ResourceManager.GetString(ResourceNames.DialogTitleInfo, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Varování'.
+        /// </summary>
+        public static string DialogTitleWarning {
+            get {
+                return ResourceManager.GetString(ResourceNames.DialogTitleWarning, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Ano'.
         /// </summary>
         public static string DialogYes {
@@ -159,11 +177,83 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Jméno'.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString(ResourceNames.FirstName, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Id'.
+        /// </summary>
+        public static string Id {
+            get {
+                return ResourceManager.GetString(ResourceNames.Id, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Heslo'.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString(ResourceNames.Password, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Prosím vyplňte heslo.'.
         /// </summary>
         public static string PasswordIsNullOrEmpty {
             get {
                 return ResourceManager.GetString(ResourceNames.PasswordIsNullOrEmpty, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Opravdu chcete smazat firmu {0}?'.
+        /// </summary>
+        public static string SelectedCompanyDeleteDialogMessage {
+            get {
+                return ResourceManager.GetString(ResourceNames.SelectedCompanyDeleteDialogMessage, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Opravdu chcete smazat úkol {0}?'.
+        /// </summary>
+        public static string SelectedTaskDeleteMessage {
+            get {
+                return ResourceManager.GetString(ResourceNames.SelectedTaskDeleteMessage, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Opravdu chcete smazat skupinu {0}?'.
+        /// </summary>
+        public static string SelectedTaskGroupDeleteDialogMessage {
+            get {
+                return ResourceManager.GetString(ResourceNames.SelectedTaskGroupDeleteDialogMessage, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Opravdu chcete smazat pracovní záznam z {0}?'.
+        /// </summary>
+        public static string SelectedWorkRecordDeleteDialogMessage {
+            get {
+                return ResourceManager.GetString(ResourceNames.SelectedWorkRecordDeleteDialogMessage, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Přijmení'.
+        /// </summary>
+        public static string Surname {
+            get {
+                return ResourceManager.GetString(ResourceNames.Surname, _resourceCulture);
             }
         }
         
@@ -186,47 +276,11 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Looks up a localized string similar to 'Odstranění všech úkolů'.
-        /// </summary>
-        public static string TaskClearTasksMessageTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.TaskClearTasksMessageTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Opravdu chcete smazat tento úkol?'.
-        /// </summary>
-        public static string TaskDeleteMessage {
-            get {
-                return ResourceManager.GetString(ResourceNames.TaskDeleteMessage, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Smazání aktuálního úkolu'.
-        /// </summary>
-        public static string TaskDeleteTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.TaskDeleteTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Looks up a localized string similar to 'Opravdu chcete smazat všechny úkoly?'.
         /// </summary>
         public static string TaskGroupClearDialogMessage {
             get {
                 return ResourceManager.GetString(ResourceNames.TaskGroupClearDialogMessage, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Smazání všech skupin úkolů'.
-        /// </summary>
-        public static string TaskGroupClearDialogTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.TaskGroupClearDialogTitle, _resourceCulture);
             }
         }
         
@@ -258,6 +312,15 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Uživatelské jméno'.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString(ResourceNames.Username, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Prosím vyplňte uživatelské jméno.'.
         /// </summary>
         public static string UserNameIsNullOrEmpty {
@@ -276,39 +339,48 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
-        /// Looks up a localized string similar to 'Smazání všech skupin úkolů'.
-        /// </summary>
-        public static string WorkRecordClearDialogTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.WorkRecordClearDialogTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Opravdu chcete tento pracovní záznam?'.
-        /// </summary>
-        public static string WorkRecordDeleteDialogMessage {
-            get {
-                return ResourceManager.GetString(ResourceNames.WorkRecordDeleteDialogMessage, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        /// Looks up a localized string similar to 'Smazání pracovního záznamu'.
-        /// </summary>
-        public static string WorkRecordDeleteDialogTitle {
-            get {
-                return ResourceManager.GetString(ResourceNames.WorkRecordDeleteDialogTitle, _resourceCulture);
-            }
-        }
-        
-        /// <summary>
         /// Formats a localized string similar to 'Firma se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou firmu.'.
         /// </summary>
         /// <param name="arg0">An object (0) to format.</param>
         /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
         public static string CompanyNameAlreadyExistsFormat(object arg0) {
             return string.Format(_resourceCulture, CompanyNameAlreadyExists, arg0);
+        }
+        
+        /// <summary>
+        /// Formats a localized string similar to 'Opravdu chcete smazat firmu {0}?'.
+        /// </summary>
+        /// <param name="arg0">An object (0) to format.</param>
+        /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
+        public static string SelectedCompanyDeleteDialogMessageFormat(object arg0) {
+            return string.Format(_resourceCulture, SelectedCompanyDeleteDialogMessage, arg0);
+        }
+        
+        /// <summary>
+        /// Formats a localized string similar to 'Opravdu chcete smazat úkol {0}?'.
+        /// </summary>
+        /// <param name="arg0">An object (0) to format.</param>
+        /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
+        public static string SelectedTaskDeleteMessageFormat(object arg0) {
+            return string.Format(_resourceCulture, SelectedTaskDeleteMessage, arg0);
+        }
+        
+        /// <summary>
+        /// Formats a localized string similar to 'Opravdu chcete smazat skupinu {0}?'.
+        /// </summary>
+        /// <param name="arg0">An object (0) to format.</param>
+        /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
+        public static string SelectedTaskGroupDeleteDialogMessageFormat(object arg0) {
+            return string.Format(_resourceCulture, SelectedTaskGroupDeleteDialogMessage, arg0);
+        }
+        
+        /// <summary>
+        /// Formats a localized string similar to 'Opravdu chcete smazat pracovní záznam z {0}?'.
+        /// </summary>
+        /// <param name="arg0">An object (0) to format.</param>
+        /// <returns>A copy of format string in which the format items have been replaced by the String equivalent of the corresponding instances of Object in arguments.</returns>
+        public static string SelectedWorkRecordDeleteDialogMessageFormat(object arg0) {
+            return string.Format(_resourceCulture, SelectedWorkRecordDeleteDialogMessage, arg0);
         }
         
         /// <summary>
@@ -350,11 +422,6 @@ namespace WorkManager.ViewModels.Resources {
             public const string CompanyClearDialogMessage = "CompanyClearDialogMessage";
             
             /// <summary>
-            /// Stores the resource name 'CompanyClearDialogTitle'.
-            /// </summary>
-            public const string CompanyClearDialogTitle = "CompanyClearDialogTitle";
-            
-            /// <summary>
             /// Stores the resource name 'CompanyNameAlreadyExists'.
             /// </summary>
             public const string CompanyNameAlreadyExists = "CompanyNameAlreadyExists";
@@ -370,14 +437,69 @@ namespace WorkManager.ViewModels.Resources {
             public const string DialogNo = "DialogNo";
             
             /// <summary>
+            /// Stores the resource name 'DialogTitleError'.
+            /// </summary>
+            public const string DialogTitleError = "DialogTitleError";
+            
+            /// <summary>
+            /// Stores the resource name 'DialogTitleInfo'.
+            /// </summary>
+            public const string DialogTitleInfo = "DialogTitleInfo";
+            
+            /// <summary>
+            /// Stores the resource name 'DialogTitleWarning'.
+            /// </summary>
+            public const string DialogTitleWarning = "DialogTitleWarning";
+            
+            /// <summary>
             /// Stores the resource name 'DialogYes'.
             /// </summary>
             public const string DialogYes = "DialogYes";
             
             /// <summary>
+            /// Stores the resource name 'FirstName'.
+            /// </summary>
+            public const string FirstName = "FirstName";
+            
+            /// <summary>
+            /// Stores the resource name 'Id'.
+            /// </summary>
+            public const string Id = "Id";
+            
+            /// <summary>
+            /// Stores the resource name 'Password'.
+            /// </summary>
+            public const string Password = "Password";
+            
+            /// <summary>
             /// Stores the resource name 'PasswordIsNullOrEmpty'.
             /// </summary>
             public const string PasswordIsNullOrEmpty = "PasswordIsNullOrEmpty";
+            
+            /// <summary>
+            /// Stores the resource name 'SelectedCompanyDeleteDialogMessage'.
+            /// </summary>
+            public const string SelectedCompanyDeleteDialogMessage = "SelectedCompanyDeleteDialogMessage";
+            
+            /// <summary>
+            /// Stores the resource name 'SelectedTaskDeleteMessage'.
+            /// </summary>
+            public const string SelectedTaskDeleteMessage = "SelectedTaskDeleteMessage";
+            
+            /// <summary>
+            /// Stores the resource name 'SelectedTaskGroupDeleteDialogMessage'.
+            /// </summary>
+            public const string SelectedTaskGroupDeleteDialogMessage = "SelectedTaskGroupDeleteDialogMessage";
+            
+            /// <summary>
+            /// Stores the resource name 'SelectedWorkRecordDeleteDialogMessage'.
+            /// </summary>
+            public const string SelectedWorkRecordDeleteDialogMessage = "SelectedWorkRecordDeleteDialogMessage";
+            
+            /// <summary>
+            /// Stores the resource name 'Surname'.
+            /// </summary>
+            public const string Surname = "Surname";
             
             /// <summary>
             /// Stores the resource name 'SwipeTaskOutside'.
@@ -390,29 +512,9 @@ namespace WorkManager.ViewModels.Resources {
             public const string TaskClearTasksMessage = "TaskClearTasksMessage";
             
             /// <summary>
-            /// Stores the resource name 'TaskClearTasksMessageTitle'.
-            /// </summary>
-            public const string TaskClearTasksMessageTitle = "TaskClearTasksMessageTitle";
-            
-            /// <summary>
-            /// Stores the resource name 'TaskDeleteMessage'.
-            /// </summary>
-            public const string TaskDeleteMessage = "TaskDeleteMessage";
-            
-            /// <summary>
-            /// Stores the resource name 'TaskDeleteTitle'.
-            /// </summary>
-            public const string TaskDeleteTitle = "TaskDeleteTitle";
-            
-            /// <summary>
             /// Stores the resource name 'TaskGroupClearDialogMessage'.
             /// </summary>
             public const string TaskGroupClearDialogMessage = "TaskGroupClearDialogMessage";
-            
-            /// <summary>
-            /// Stores the resource name 'TaskGroupClearDialogTitle'.
-            /// </summary>
-            public const string TaskGroupClearDialogTitle = "TaskGroupClearDialogTitle";
             
             /// <summary>
             /// Stores the resource name 'TaskGroupNameAlreadyExists'.
@@ -430,6 +532,11 @@ namespace WorkManager.ViewModels.Resources {
             public const string UserAlreadyExists = "UserAlreadyExists";
             
             /// <summary>
+            /// Stores the resource name 'Username'.
+            /// </summary>
+            public const string Username = "Username";
+            
+            /// <summary>
             /// Stores the resource name 'UserNameIsNullOrEmpty'.
             /// </summary>
             public const string UserNameIsNullOrEmpty = "UserNameIsNullOrEmpty";
@@ -438,21 +545,6 @@ namespace WorkManager.ViewModels.Resources {
             /// Stores the resource name 'WorkRecordClearDialogMessage'.
             /// </summary>
             public const string WorkRecordClearDialogMessage = "WorkRecordClearDialogMessage";
-            
-            /// <summary>
-            /// Stores the resource name 'WorkRecordClearDialogTitle'.
-            /// </summary>
-            public const string WorkRecordClearDialogTitle = "WorkRecordClearDialogTitle";
-            
-            /// <summary>
-            /// Stores the resource name 'WorkRecordDeleteDialogMessage'.
-            /// </summary>
-            public const string WorkRecordDeleteDialogMessage = "WorkRecordDeleteDialogMessage";
-            
-            /// <summary>
-            /// Stores the resource name 'WorkRecordDeleteDialogTitle'.
-            /// </summary>
-            public const string WorkRecordDeleteDialogTitle = "WorkRecordDeleteDialogTitle";
         }
     }
 }

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:resources="clr-namespace:WorkManager.ViewModels.Resources;assembly=WorkManager.ViewModels"
+             x:Class="WorkManager.Views.Pages.UserDetailPage"
+             x:DataType="pages:UserDetailPageViewModel">
+    <Grid VerticalOptions="CenterAndExpand">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Id}}"></Label>
+        <Label Grid.Row="0" Grid.Column="1" Text="{Binding User.Id}"></Label>
+        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.FirstName}}"></Label>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding User.FirstName}"></Entry>
+        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Surname}}"></Label>
+        <Entry Grid.Row="2" Grid.Column="1" Text="{Binding User.Surname}"></Entry>
+        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Username}}"></Label>
+        <Entry Grid.Row="3" Grid.Column="1" Text="{Binding User.Username}"></Entry>
+        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Password}}"></Label>
+        <Entry Grid.Row="4" Grid.Column="1" Text="{Binding User.Password}" IsPassword="True"></Entry>
+    </Grid>
+</ContentPage>

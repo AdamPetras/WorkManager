@@ -224,14 +224,19 @@ namespace WorkManager.ViewModels.Pages
 			IsBusy = true;
 			if (_selectedTask != null)
 			{
-				await _taskFacade.RemoveAsync(_selectedTask.Id);
-				Tasks.Remove(_selectedTask);
-				_selectedTask = null;
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+					TranslateViewModelsSR.SelectedTaskDeleteMessageFormat(_selectedTask.Name),
+					TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
+				{
+					await _taskFacade.RemoveAsync(_selectedTask.Id);
+					Tasks.Remove(_selectedTask);
+					_selectedTask = null;
+				}
 			}
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.TaskClearTasksMessageTitle, TranslateViewModelsSR.TaskClearTasksMessage,
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.TaskClearTasksMessage,
 					TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 				{
 					await _taskFacade.ClearAsync();

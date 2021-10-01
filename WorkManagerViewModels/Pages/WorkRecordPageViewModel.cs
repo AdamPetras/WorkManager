@@ -176,14 +176,19 @@ namespace WorkManager.ViewModels.Pages
 			IsBusy = true;
 			if (_selectedRecord != null)
 			{
-				await _workFacade.RemoveAsync(_selectedRecord.Id);
-				FilteredRecords.WholeCollection.Remove(_selectedRecord);
-				_selectedRecord = null;
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+					TranslateViewModelsSR.SelectedWorkRecordDeleteDialogMessageFormat(_selectedRecord.ActualDateTime.ToString("dd.MM.yyyy")), TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
+				{
+					await _workFacade.RemoveAsync(_selectedRecord.Id);
+					FilteredRecords.WholeCollection.Remove(_selectedRecord);
+					_selectedRecord = null;
+				}
 			}
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.WorkRecordClearDialogTitle,
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
 					TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
 					TranslateViewModelsSR.DialogNo))
 				{

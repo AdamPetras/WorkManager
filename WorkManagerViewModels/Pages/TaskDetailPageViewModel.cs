@@ -115,7 +115,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task DeleteAsync()
 		{
 			IsDialogThrown = true;
-			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.TaskDeleteTitle, TranslateViewModelsSR.TaskDeleteMessage, TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.SelectedTaskDeleteMessageFormat(SelectedTask.Name), TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 			{
 				await _taskFacade.RemoveAsync(SelectedTask.Id);
 				await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new RemoveAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask) } });

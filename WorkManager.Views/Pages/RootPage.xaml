@@ -4,15 +4,42 @@
               xmlns:viewModels="clr-namespace:WorkManager.ViewModels;assembly=WorkManager.ViewModels"
               xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
               xmlns:extensions="http://xamarin.com/schemas/2020/toolkit"
+              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+              xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
               x:DataType="pages:RootPageViewModel"
               x:Class="WorkManager.Views.Pages.RootPage">
     <FlyoutPage.Flyout>
         <ContentPage Title="Menu">
-            <StackLayout>
-                <Image Source="icon.png" Margin="5"></Image>
-                <Button Text="Tasks" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" CommandParameter="Page2"></Button>
-                <Button Text="Work time store" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" CommandParameter="Page2"></Button>
-            </StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Source="icon.png" Margin="5"></Image>
+                <StackLayout Grid.Row="1" Margin="5">
+                    <Button Text="Tasks" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" CommandParameter="Page2"></Button>
+                    <Button Text="Work time store" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" CommandParameter="Page2"></Button>
+                    <Button Text="User profile" HeightRequest="50" WidthRequest="100" Command="{Binding ShowUserProfileCommand}" CommandParameter="Page2"></Button>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="End" Margin="5" Spacing="10">
+                    <ImageButton BackgroundColor="Transparent" Command="{Binding ShowSettingsCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Cogs}" Color="{x:StaticResource secondaryTextColor}" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton BackgroundColor="Transparent" Command="{Binding LogoutCommand}">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.SignOutAlt}" Color="{x:StaticResource secondaryTextColor}" />
+                        </ImageButton.Source>
+                    </ImageButton>
+                </StackLayout>
+                <StackLayout Grid.Row="3" Orientation="Horizontal" BackgroundColor="{x:StaticResource primaryLightColor}" VerticalOptions="End">
+                        <Label Text="{Binding Source= {x:Static resources:TranslatePagesSR.Version}, StringFormat='{0}:'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start" Margin="5,15,0,15"></Label>
+                        <Label Text="{Binding Source= {x:Static essentials:AppInfo.VersionString}}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="EndAndExpand" Margin="0,15,5,15"></Label>
+                </StackLayout>
+            </Grid>
         </ContentPage>
     </FlyoutPage.Flyout>
 </FlyoutPage>

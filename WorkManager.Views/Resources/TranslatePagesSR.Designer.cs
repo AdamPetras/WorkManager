@@ -312,6 +312,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Verze'.
+        /// </summary>
+        public static string Version {
+            get {
+                return ResourceManager.GetString(ResourceNames.Version, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Čas práce'.
         /// </summary>
         public static string WorkTime {
@@ -449,6 +458,11 @@ namespace WorkManager.Views.Resources {
             /// Stores the resource name 'Username'.
             /// </summary>
             public const string Username = "Username";
+            
+            /// <summary>
+            /// Stores the resource name 'Version'.
+            /// </summary>
+            public const string Version = "Version";
             
             /// <summary>
             /// Stores the resource name 'WorkTime'.

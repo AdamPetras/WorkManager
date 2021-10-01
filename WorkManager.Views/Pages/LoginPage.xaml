@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
              Title="{x:Static resources:TranslatePagesSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
-    <ContentPage.Content>
-        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding ShowRegisterCommand, Source={RelativeSource AncestorType={x:Type pages:LoginPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.UserPlus}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -16,6 +27,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -28,15 +40,9 @@
             <Button Grid.Row="5" Text="{x:Static resources:TranslatePagesSR.Login}" Command="{Binding LoginCommand}"></Button>
             <Button Grid.Row="6" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}"></Button>
         </Grid>
-    </ContentPage.Content>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Register"
-                     Order="Primary"
-                     Priority="0"
-                     Command="{Binding ShowRegisterCommand, Source={RelativeSource AncestorType={x:Type pages:LoginPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.UserPlus}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
+        <StackLayout Grid.Row="7" Orientation="Horizontal" BackgroundColor="{x:StaticResource primaryLightColor}" VerticalOptions="End">
+            <Label Text="{Binding Source= {x:Static resources:TranslatePagesSR.Version}, StringFormat='{0}:'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start" Margin="5,15,0,15"></Label>
+            <Label Text="{Binding Source= {x:Static essentials:AppInfo.VersionString}}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="EndAndExpand" Margin="0,15,5,15"></Label>
+        </StackLayout>
+    </StackLayout>
 </ContentPage>

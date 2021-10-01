@@ -125,14 +125,19 @@ namespace WorkManager.ViewModels.Pages
 			IsBusy = true;
 			if (_selectedTaskGroup != null)
 			{
-				await _taskGroupFacade.RemoveAsync(_selectedTaskGroup.Id);
-				TaskGroups.Remove(_selectedTaskGroup);
-				_selectedTaskGroup = null;
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+					TranslateViewModelsSR.SelectedTaskGroupDeleteDialogMessageFormat(_selectedTaskGroup.Name), TranslateViewModelsSR.DialogYes,
+					TranslateViewModelsSR.DialogNo))
+				{
+					await _taskGroupFacade.RemoveAsync(_selectedTaskGroup.Id);
+					TaskGroups.Remove(_selectedTaskGroup);
+					_selectedTaskGroup = null;
+				}
 			}
 			else
 			{
 				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.TaskGroupClearDialogTitle,
+				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
 					TranslateViewModelsSR.TaskGroupClearDialogMessage, TranslateViewModelsSR.DialogYes,
 					TranslateViewModelsSR.DialogNo))
 				{
