@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:WorkManager.Views.Components;assembly=WorkManager.Views"
+             x:Class="WorkManager.Views.Components.SwitchText"
+             x:Name="this">
+    <StackLayout Orientation="Horizontal" Spacing="0">
+        <Label Text="{Binding Path=Text, Source={x:Reference this}}" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+            </Label.GestureRecognizers>
+        </Label>
+        <Switch IsToggled="{Binding Path=IsToggled, Source={x:Reference this}}" HorizontalOptions="End" VerticalOptions="Center" />
+    </StackLayout>
+</ContentView>

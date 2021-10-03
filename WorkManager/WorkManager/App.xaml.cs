@@ -54,7 +54,6 @@ namespace WorkManager
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
 			IUnityContainer container = containerRegistry.GetContainer();
 			ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(container));
 			container.RegisterSingleton<IToastMessageService, ToastMessageService>();
@@ -71,6 +70,7 @@ namespace WorkManager
 
 		private void RegisterXamarinEssentials(IContainerRegistry containerRegistry)
 		{
+			containerRegistry.RegisterSingleton<IAppInfo, AppInfoImplementation>();
 			containerRegistry.RegisterSingleton<IPreferences, PreferencesImplementation>();
 			containerRegistry.RegisterSingleton<IVersionTracking, VersionTrackingImplementation>();
 			containerRegistry.RegisterSingleton<IDeviceInfo, DeviceInfoImplementation>();
@@ -139,6 +139,11 @@ namespace WorkManager
 			container.RegisterSingleton<IRecordTotalCalculatorService, RecordTotalCalculatorService>();
 			container.RegisterSingleton<DialogEventService>();
 			container.RegisterSingleton<IPhotoService, PhotoService>();
+
+			container.RegisterSingleton<SettingsService>();
+			container.RegisterSingleton<ISettingsServiceProvider,SettingsService>();
+			container.RegisterSingleton<ISettingsServiceManager, SettingsService>();
+			container.RegisterSingleton<WorkManagerSettingsService>();
 
 			//model services
 			container.RegisterSingleton<IRecordCalculatorService, RecordCalculatorService>();

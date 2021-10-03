@@ -159,6 +159,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Nezapamatovat si údaje'.
+        /// </summary>
+        public static string NotRememberCredentials {
+            get {
+                return ResourceManager.GetString(ResourceNames.NotRememberCredentials, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Heslo'.
         /// </summary>
         public static string Password {
@@ -209,6 +218,15 @@ namespace WorkManager.Views.Resources {
         public static string RegisterTitle {
             get {
                 return ResourceManager.GetString(ResourceNames.RegisterTitle, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Zapamatovat si údaje'.
+        /// </summary>
+        public static string RememberCredentials {
+            get {
+                return ResourceManager.GetString(ResourceNames.RememberCredentials, _resourceCulture);
             }
         }
         
@@ -375,6 +393,11 @@ namespace WorkManager.Views.Resources {
             public const string NoTaskMessage = "NoTaskMessage";
             
             /// <summary>
+            /// Stores the resource name 'NotRememberCredentials'.
+            /// </summary>
+            public const string NotRememberCredentials = "NotRememberCredentials";
+            
+            /// <summary>
             /// Stores the resource name 'Password'.
             /// </summary>
             public const string Password = "Password";
@@ -403,6 +426,11 @@ namespace WorkManager.Views.Resources {
             /// Stores the resource name 'RegisterTitle'.
             /// </summary>
             public const string RegisterTitle = "RegisterTitle";
+            
+            /// <summary>
+            /// Stores the resource name 'RememberCredentials'.
+            /// </summary>
+            public const string RememberCredentials = "RememberCredentials";
             
             /// <summary>
             /// Stores the resource name 'RepeatPassword'.

@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using WorkManager.BL.Exceptions;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.BL.Services;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -17,18 +18,24 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IAuthenticationService _authenticationService;
 		private readonly IRegistrationService _registrationService;
 		private readonly IToastMessageService _toastMessageService;
+		private readonly WorkManagerSettingsService _workManagerSettingsService;
 		private readonly IUserModel _testModel = new UserModel(new Guid("4E6A3273-35DB-4E73-8014-0A3566724B1B"), "", "", "###", "###");
 
 
-		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IRegistrationService registrationService, IToastMessageService toastMessageService) :
+		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IRegistrationService registrationService, IToastMessageService toastMessageService,
+			WorkManagerSettingsService workManagerSettingsService) :
 			base(navigationService)
 		{
 			_authenticationService = authenticationService;
 			_registrationService = registrationService;
 			_toastMessageService = toastMessageService;
+			_workManagerSettingsService = workManagerSettingsService;
 			LoginCommand = new DelegateCommand(async()=> await LoginAsync()).ObservesProperty(()=>IsBusy);
 			ShowRegisterCommand = new DelegateCommand(Register);
 			ContinueWithoutLoginCommand = new DelegateCommand(async ()=>await ContinueWithoutLogin());
+			Username = _workManagerSettingsService.Username;
+			Password = _workManagerSettingsService.Password;
+			IsRememberCredentialsToggled = _workManagerSettingsService.SaveCredentials;
 		}
 
 		public DelegateCommand ShowRegisterCommand { get; }
@@ -59,6 +66,17 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private bool _isRememberCredentialsToggled;
+		public bool IsRememberCredentialsToggled
+		{
+			get => _isRememberCredentialsToggled;
+			set
+			{
+				if (_isRememberCredentialsToggled == value) return;
+				_isRememberCredentialsToggled = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		private async void Register()
 		{
@@ -78,6 +96,15 @@ namespace WorkManager.ViewModels.Pages
 				IUserModel user = await _authenticationService.AuthenticateAsync(Username, Password);
 				if (user != null)
 					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+				if (IsRememberCredentialsToggled)
+				{
+					SaveCredentials();
+				}
+				else
+				{
+					ClearCredentials();
+				}
+
 			}
 			catch (UnauthorizedAccessException)
 			{
@@ -87,6 +114,20 @@ namespace WorkManager.ViewModels.Pages
 			{
 				IsBusy = false;
 			}
+		}
+
+		private void SaveCredentials()
+		{
+			_workManagerSettingsService.Username = Username;
+			_workManagerSettingsService.Password = Password;
+			_workManagerSettingsService.SaveCredentials = IsRememberCredentialsToggled;
+		}
+
+		private void ClearCredentials()
+		{
+			_workManagerSettingsService.Username = string.Empty;
+			_workManagerSettingsService.Password = string.Empty;
+			_workManagerSettingsService.SaveCredentials = false;
 		}
 
 		private bool IsPasswordRightShowDialog()

@@ -4,6 +4,7 @@
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
+             xmlns:components="clr-namespace:WorkManager.Views.Components;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
              Title="{x:Static resources:TranslatePagesSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
@@ -38,9 +39,10 @@
             <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Password}"></Label>
             <Entry Margin="15,0,0,0"  Grid.Row="4" Text="{Binding Password}" IsPassword="True" ></Entry>
             <Button Grid.Row="5" Text="{x:Static resources:TranslatePagesSR.Login}" Command="{Binding LoginCommand}"></Button>
-            <Button Grid.Row="6" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}"></Button>
+            <components:SwitchText x:Name="switch" Grid.Row="6" TextOn="{Binding  Source ={x:Static resources:TranslatePagesSR.RememberCredentials}}" IsToggled="{Binding IsRememberCredentialsToggled}"></components:SwitchText>
+            <Button Grid.Row="7" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}" VerticalOptions="End"></Button>
         </Grid>
-        <StackLayout Grid.Row="7" Orientation="Horizontal" BackgroundColor="{x:StaticResource primaryLightColor}" VerticalOptions="End">
+        <StackLayout Orientation="Horizontal" BackgroundColor="{x:StaticResource primaryLightColor}" VerticalOptions="End">
             <Label Text="{Binding Source= {x:Static resources:TranslatePagesSR.Version}, StringFormat='{0}:'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start" Margin="5,15,0,15"></Label>
             <Label Text="{Binding Source= {x:Static essentials:AppInfo.VersionString}}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="EndAndExpand" Margin="0,15,5,15"></Label>
         </StackLayout>

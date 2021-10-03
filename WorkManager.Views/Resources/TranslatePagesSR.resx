@@ -141,6 +141,9 @@
   <data name="NoTaskMessage" xml:space="preserve">
     <value>V tomto stavu není žádný úkol</value>
   </data>
+  <data name="NotRememberCredentials" xml:space="preserve">
+    <value>Nezapamatovat si údaje</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Registrace</value>
+  </data>
+  <data name="RememberCredentials" xml:space="preserve">
+    <value>Zapamatovat si údaje</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>Heslo znovu</value>
