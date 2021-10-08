@@ -30,12 +30,15 @@ namespace WorkManager.ViewModels.Pages
 			_registrationService = registrationService;
 			_toastMessageService = toastMessageService;
 			_workManagerSettingsService = workManagerSettingsService;
-			LoginCommand = new DelegateCommand(async()=> await LoginAsync()).ObservesProperty(()=>IsBusy);
-			ShowRegisterCommand = new DelegateCommand(Register);
-			ContinueWithoutLoginCommand = new DelegateCommand(async ()=>await ContinueWithoutLogin());
+			LoginCommand = new DelegateCommand(async()=> await LoginAsync(), () => !IsBusy);
+			ShowRegisterCommand = new DelegateCommand(Register, () => !IsBusy);
+			ContinueWithoutLoginCommand = new DelegateCommand(async ()=>await ContinueWithoutLogin(), () => !IsBusy);
 			Username = _workManagerSettingsService.Username;
 			Password = _workManagerSettingsService.Password;
 			IsRememberCredentialsToggled = _workManagerSettingsService.SaveCredentials;
+#if DEBUG
+			LoginCommand.Execute();
+#endif
 		}
 
 		public DelegateCommand ShowRegisterCommand { get; }
@@ -85,10 +88,10 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task LoginAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if(!IsUsernameRightShowDialog() || !IsPasswordRightShowDialog())
 			{
-				IsBusy = false;
+				EndProcess();
 				return;
 			}
 			try
@@ -112,7 +115,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			finally
 			{
-				IsBusy = false;
+				EndProcess();
 			}
 		}
 
@@ -152,7 +155,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ContinueWithoutLogin()
 		{
-			IsBusy = true;
+			BeginProcess();
 			try
 			{
 				await _registrationService.RegisterAndAuthenticateUserAsync(_testModel);
@@ -164,7 +167,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			finally
 			{
-				IsBusy = false;
+				EndProcess();
 			}
 		}
 	}

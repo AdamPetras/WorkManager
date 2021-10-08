@@ -10,6 +10,9 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              x:DataType="dialogs:AddTaskDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddTaskDialogView">
+    <Frame.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </Frame.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -46,7 +49,7 @@
                 <CollectionView.EmptyView>
                     <Image VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
                         <Image.Source>
-                            <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
+                            <FontImageSource Color="{StaticResource PrimaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
                         </Image.Source>
                     </Image>
                 </CollectionView.EmptyView>
@@ -63,7 +66,7 @@
                             </Image>
                             <ImageButton VerticalOptions="Start" HorizontalOptions="End" HeightRequest="20" Opacity="0.5" Margin="5" Command="{Binding DeletePhotoCommand, Source={RelativeSource AncestorType={x:Type dialogs:AddTaskDialogViewModel}}}" CommandParameter="{Binding .}">
                                 <ImageButton.Source>
-                                    <FontImageSource Color="{x:StaticResource primaryColor}" Glyph="{x:Static resources:IconFont.TimesCircle}" FontFamily="fa-solid-900"></FontImageSource>
+                                    <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.TimesCircle}" FontFamily="fa-solid-900"></FontImageSource>
                                 </ImageButton.Source>
                             </ImageButton>
                         </Grid>
@@ -72,7 +75,7 @@
             </CollectionView>
             <Button Grid.Column="1" Command="{Binding TakePhotoCommand}" WidthRequest="80" HorizontalOptions="CenterAndExpand" Margin="5">
                 <Button.ImageSource>
-                    <FontImageSource Color="{x:StaticResource primaryColor}" Glyph="{x:Static resources:IconFont.Plus}" FontFamily="fa-solid-900"></FontImageSource>
+                    <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.Plus}" FontFamily="fa-solid-900"></FontImageSource>
                 </Button.ImageSource>
             </Button>
         </Grid>

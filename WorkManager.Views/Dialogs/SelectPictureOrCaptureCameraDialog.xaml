@@ -10,6 +10,9 @@
              x:DataType="dialogs:SelectPictureOrCaptureCameraDialogViewModel" 
              VerticalOptions="End" 
              Margin="30">
+    <Frame.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </Frame.Resources>
     <Grid HorizontalOptions="FillAndExpand" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -17,12 +20,12 @@
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Command="{Binding SelectCameraCommand}"  Text="{x:Static resources:TranslateDialogsSR.Camera}" HorizontalOptions = "CenterAndExpand">
             <Button.ImageSource>
-                <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Camera}"></FontImageSource>
+                <FontImageSource Color="{StaticResource PrimaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Camera}"></FontImageSource>
             </Button.ImageSource>
         </Button>
         <Button Grid.Column="1" Command="{Binding SelectGalleryCommand}" Text="{x:Static resources:TranslateDialogsSR.Gallery}"  HorizontalOptions = "CenterAndExpand">
             <Button.ImageSource>
-                <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
+                <FontImageSource Color="{StaticResource PrimaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
             </Button.ImageSource>
         </Button>
     </Grid>

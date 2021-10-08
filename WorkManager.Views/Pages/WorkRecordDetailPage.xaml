@@ -10,6 +10,7 @@
              x:Class="WorkManager.Views.Pages.WorkRecordDetailPage"
              x:DataType="pages:WorkRecordDetailPageViewModel">
     <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
                 <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">

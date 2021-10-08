@@ -5,11 +5,14 @@
              xmlns:views="clr-namespace:WorkManager.ViewModels.Views;assembly=WorkManager.ViewModels"
              x:DataType="views:CompanyEmptyViewModel"
              x:Class="WorkManager.Views.Views.CompanyEmptyView">
+    <ContentView.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentView.Resources>
     <ContentView.Content>
         <StackLayout>
             <ImageButton VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="150" Command="{Binding ShowAddCompanyCommand}">
                 <ImageButton.Source>
-                  <FontImageSource FontFamily="fa-solid-900" Size="100" Glyph="{x:Static resources:IconFont.Plus}" Color="{StaticResource primaryLightColor}" />
+                  <FontImageSource FontFamily="fa-solid-900" Size="100" Glyph="{x:Static resources:IconFont.Plus}" Color="{StaticResource PrimaryLightColor}" />
               </ImageButton.Source>
             </ImageButton>
       </StackLayout>

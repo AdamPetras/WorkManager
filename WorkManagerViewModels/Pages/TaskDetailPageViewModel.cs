@@ -11,7 +11,6 @@ using Prism.Services;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
-using WorkManager.BL.Interfaces.Services;
 using WorkManager.Core;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -26,16 +25,14 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ITaskFacade _taskFacade;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
-		private readonly IToastMessageService _toastMessageService;
 
 		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IDialogService dialogService,
-			IImageFacade imageFacade, IToastMessageService toastMessageService) : base(navigationService)
+			IImageFacade imageFacade) : base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
 			_taskFacade = taskFacade;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
-			_toastMessageService = toastMessageService;
 			SaveCommand = new DelegateCommand(async () => await SaveAsync());
 			DeletePhotoCommand = new DelegateCommand<IImageModel>(DeletePhoto);
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
@@ -78,10 +75,12 @@ namespace WorkManager.ViewModels.Pages
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
+			BeginProcess();
 			base.OnNavigatedToInt(parameters);
 			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
 			PhotoPaths = new ObservableCollection<IImageModel>(_imageFacade.GetAllImagesByTask(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
+			EndProcess();
 		}
 
 		protected override void DestroyInt()

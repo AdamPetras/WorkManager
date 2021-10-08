@@ -10,6 +10,7 @@
              x:Class="WorkManager.Views.Pages.WorkRecordPage"
              x:DataType="pages:WorkRecordPageViewModel">
     <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
                 <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
@@ -24,7 +25,7 @@
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor"
-                                            Value="{x:StaticResource secondaryColor}" />
+                                            Value="{StaticResource SecondaryColor}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -44,16 +45,16 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0"  Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                            <Label Grid.Row="0" Grid.Column="0"  Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
                             <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Pieces}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pieces}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Pieces}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pieces}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
                         </Grid>
                     </Frame>
                 </Frame>
@@ -71,7 +72,7 @@
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor"
-                                            Value="{x:StaticResource secondaryColor}" />
+                                            Value="{StaticResource SecondaryColor}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -91,16 +92,16 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0"  Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                            <Label Grid.Row="0" Grid.Column="0"  Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
                             <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.WorkTime}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding WorkTime}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerHour}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerHour, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.WorkTime}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding WorkTime}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerHour}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerHour, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
                         </Grid>
                     </Frame>
                 </Frame>
@@ -118,7 +119,7 @@
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor"
-                                            Value="{x:StaticResource secondaryColor}" />
+                                            Value="{StaticResource SecondaryColor}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -139,20 +140,20 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
                             <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.WorkTime}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding WorkTime}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerHour}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerHour, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Pieces}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Pieces}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                            <Label Grid.Row="3" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.WorkTime}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding WorkTime}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerHour}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerHour, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Pieces}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding Pieces}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="3" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                            <Label Grid.Row="3" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
+                            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
                         </Grid>
                     </Frame>
                 </Frame>
@@ -206,7 +207,7 @@
         <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
-        <Grid IsVisible="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
+        <Grid IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
                 <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -214,13 +215,13 @@
             <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
                             SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
+                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.EmptyView>
                     <views:WorkRecordEmptyView></views:WorkRecordEmptyView>
                 </CollectionView.EmptyView>
             </CollectionView>
-            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{x:StaticResource primaryLightColor}">
+            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource PrimaryLightColor}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -232,10 +233,10 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <BoxView Grid.Row="0" Grid.ColumnSpan="4" HeightRequest="4" BackgroundColor="Black" Margin="0"></BoxView>
-                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{x:StaticResource secondaryTextColor}"></Label>
-                <Label Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{x:StaticResource secondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                <Label Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
             </Grid>
         </Grid>
     </StackLayout>

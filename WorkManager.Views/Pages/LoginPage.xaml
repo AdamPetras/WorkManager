@@ -8,6 +8,9 @@
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
              Title="{x:Static resources:TranslatePagesSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
+    <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Register"
                      Order="Primary"
@@ -19,7 +22,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" Margin="10">
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -38,13 +41,13 @@
             <Entry Margin="15,0,0,0" Grid.Row="2" Text="{Binding Username}" ></Entry>
             <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Password}"></Label>
             <Entry Margin="15,0,0,0"  Grid.Row="4" Text="{Binding Password}" IsPassword="True" ></Entry>
-            <Button Grid.Row="5" Text="{x:Static resources:TranslatePagesSR.Login}" Command="{Binding LoginCommand}"></Button>
-            <components:SwitchText x:Name="switch" Grid.Row="6" TextOn="{Binding  Source ={x:Static resources:TranslatePagesSR.RememberCredentials}}" IsToggled="{Binding IsRememberCredentialsToggled}"></components:SwitchText>
-            <Button Grid.Row="7" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}" VerticalOptions="End"></Button>
+            <components:SwitchText x:Name="switch" Margin="5" Grid.Row="5" TextOn="{Binding  Source ={x:Static resources:TranslatePagesSR.RememberCredentials}}" IsToggled="{Binding IsRememberCredentialsToggled}" IsEnabled="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"></components:SwitchText>
+            <Button Grid.Row="6" Text="{x:Static resources:TranslatePagesSR.Login}" Command="{Binding LoginCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"></Button>
+            <Button Grid.Row="7" Text="{x:Static resources:TranslatePagesSR.ContinueWithoutLogin}" Command="{Binding ContinueWithoutLoginCommand}" VerticalOptions="End" IsEnabled="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"></Button>
         </Grid>
-        <StackLayout Orientation="Horizontal" BackgroundColor="{x:StaticResource primaryLightColor}" VerticalOptions="End">
-            <Label Text="{Binding Source= {x:Static resources:TranslatePagesSR.Version}, StringFormat='{0}:'}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="Start" Margin="5,15,0,15"></Label>
-            <Label Text="{Binding Source= {x:Static essentials:AppInfo.VersionString}}" TextColor="{x:StaticResource secondaryTextColor}" HorizontalOptions="EndAndExpand" Margin="0,15,5,15"></Label>
+        <StackLayout Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryLightColor}" VerticalOptions="End">
+            <Label Text="{Binding Source= {x:Static resources:TranslatePagesSR.Version}, StringFormat='{0}:'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" Margin="5,15,0,15"></Label>
+            <Label Text="{Binding Source= {x:Static essentials:AppInfo.VersionString}}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="EndAndExpand" Margin="0,15,5,15"></Label>
         </StackLayout>
     </StackLayout>
 </ContentPage>

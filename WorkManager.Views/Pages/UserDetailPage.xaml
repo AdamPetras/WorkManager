@@ -5,6 +5,9 @@
              xmlns:resources="clr-namespace:WorkManager.ViewModels.Resources;assembly=WorkManager.ViewModels"
              x:Class="WorkManager.Views.Pages.UserDetailPage"
              x:DataType="pages:UserDetailPageViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentPage.Resources>
     <Grid VerticalOptions="CenterAndExpand">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

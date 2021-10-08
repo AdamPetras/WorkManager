@@ -49,9 +49,11 @@ namespace WorkManager.ViewModels.Pages
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
+			BeginProcess();
 			base.OnNavigatedToInt(parameters);
 			//observable collection kvůli tomu, že binduju na datatemplate a tam je pouze itemsource
 			RecordModel = new ObservableCollection<IWorkRecordModelBase>() { _workRecordModelFactory.CopyRecord(parameters.GetValue<IWorkRecordModelBase>("Record")) };  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
+
 		}
 
 		private async Task DeleteRecordAsync()

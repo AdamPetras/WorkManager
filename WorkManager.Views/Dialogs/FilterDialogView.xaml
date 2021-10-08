@@ -10,6 +10,9 @@
              xaml:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:FilterDialogViewModel"
              HorizontalOptions="FillAndExpand">
+    <Frame.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </Frame.Resources>
     <Grid HorizontalOptions="FillAndExpand">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>

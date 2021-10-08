@@ -45,6 +45,7 @@ namespace WorkManager.ViewModels.Pages
 			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanganStateChangedAsync(t));
 			SelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
 			EditCommand = new DelegateCommand(async () => await EditAsync(), () => SelectedTask != null && !IsDialogThrown);
+			ShowTaskKanbanSettingsCommand = new DelegateCommand(async () => await ShowTaskKanbanSettings());
 			InitDialogCommands();
 		}
 
@@ -56,6 +57,7 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand<ITaskModel> DeleteCommand { get; }
 		public DelegateCommand<ITaskModel> SelectTaskCommand { get; }
 		public DelegateCommand EditCommand { get; }
+		public DelegateCommand ShowTaskKanbanSettingsCommand { get; }
 
 
 		private IKanbanStateModel _selectedKanbanState;
@@ -221,7 +223,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ClearWholeOrDeleteSingleTaskAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (_selectedTask != null)
 			{
 				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
@@ -244,7 +246,7 @@ namespace WorkManager.ViewModels.Pages
 				}
 				IsDialogThrown = false;
 			}
-			IsBusy = false;
+			EndProcess();
 		}
 
 		private async Task DeleteAsync(ITaskModel obj)
@@ -255,13 +257,13 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task KanganStateChangedAsync(IKanbanStateModel model)
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (model == null)
 				return;
 			SelectedKanbanState = model;
 			Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
 			UpdateButtonsVisibility(model);
-			IsBusy = false;
+			EndProcess();
 		}
 
 		private void OnSelectTask(ITaskModel obj)
@@ -271,8 +273,16 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task EditAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", SelectedTask } });
+			EndProcess();
+		}
+
+		private async Task ShowTaskKanbanSettings()
+		{
+			BeginProcess();
+			await NavigationService.NavigateAsync("TaskKanbanSettingsPage", new NavigationParameters() { { "TaskGroup", _currentTaskGroupProvider.GetModel() } });
+			EndProcess();
 		}
 	}
 }

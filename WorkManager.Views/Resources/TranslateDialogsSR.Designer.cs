@@ -141,11 +141,29 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Ikona'.
+        /// </summary>
+        public static string Icon {
+            get {
+                return ResourceManager.GetString(ResourceNames.Icon, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Jméno'.
         /// </summary>
         public static string Name {
             get {
                 return ResourceManager.GetString(ResourceNames.Name, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Název'.
+        /// </summary>
+        public static string NameItem {
+            get {
+                return ResourceManager.GetString(ResourceNames.NameItem, _resourceCulture);
             }
         }
         
@@ -182,6 +200,15 @@ namespace WorkManager.Views.Resources {
         public static string Priority {
             get {
                 return ResourceManager.GetString(ResourceNames.Priority, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Vyberte ikonu'.
+        /// </summary>
+        public static string SelectIcon {
+            get {
+                return ResourceManager.GetString(ResourceNames.SelectIcon, _resourceCulture);
             }
         }
         
@@ -257,9 +284,19 @@ namespace WorkManager.Views.Resources {
             public const string Gallery = "Gallery";
             
             /// <summary>
+            /// Stores the resource name 'Icon'.
+            /// </summary>
+            public const string Icon = "Icon";
+            
+            /// <summary>
             /// Stores the resource name 'Name'.
             /// </summary>
             public const string Name = "Name";
+            
+            /// <summary>
+            /// Stores the resource name 'NameItem'.
+            /// </summary>
+            public const string NameItem = "NameItem";
             
             /// <summary>
             /// Stores the resource name 'Pieces'.
@@ -280,6 +317,11 @@ namespace WorkManager.Views.Resources {
             /// Stores the resource name 'Priority'.
             /// </summary>
             public const string Priority = "Priority";
+            
+            /// <summary>
+            /// Stores the resource name 'SelectIcon'.
+            /// </summary>
+            public const string SelectIcon = "SelectIcon";
             
             /// <summary>
             /// Stores the resource name 'TaskDoneDate'.

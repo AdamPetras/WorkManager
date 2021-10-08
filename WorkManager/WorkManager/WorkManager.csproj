@@ -31,6 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="..\..\SharedResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>SharedResources.xaml</Link>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\WorkManager.BL.Interfaces\WorkManager.BL.Interfaces.csproj" />
     <ProjectReference Include="..\..\WorkManager.BL\WorkManager.BL.csproj" />
     <ProjectReference Include="..\..\WorkManager.Core\WorkManager.Core.csproj" />

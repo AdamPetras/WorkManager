@@ -5,22 +5,40 @@
              xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
              x:Class="WorkManager.App">
     <Application.Resources>
-        <converters:NegateBooleanConverter x:Key="NegateBooleanConverter"></converters:NegateBooleanConverter>
-        <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter"></converters:IsNullToVisibilityConverter>
-        <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
-        <converters:VisibleIfAnyConverter x:Key="VisibleIfAnyConverter" ></converters:VisibleIfAnyConverter>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <converters:NegateBooleanConverter x:Key="NegateBooleanConverter"></converters:NegateBooleanConverter>
+                    <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter"></converters:IsNullToVisibilityConverter>
+                    <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
+                    <converters:VisibleIfAnyConverter x:Key="VisibleIfAnyConverter" ></converters:VisibleIfAnyConverter>
+                    <converters:DragColorConverter x:Key="DragColorConverter"></converters:DragColorConverter>
 
+                    <Color x:Key="PrimaryColor">#005288</Color>
+                    <Color x:Key="PrimaryLightColor">#497eb8</Color>
+                    <Color x:Key="PrimaryDarkColor">#002a5b</Color>
+                    <Color x:Key="SecondaryColor">#b75c00</Color>
+                    <Color x:Key="SecondaryLightColor">#ef8a38</Color>
+                    <Color x:Key="SecondaryDarkColor">#813000</Color>
+                    <Color x:Key="PrimaryTextColor">#FAFAFA</Color>
+                    <Color x:Key="SecondaryTextColor">#0A0A0A</Color>
+                    <Color x:Key="BodyColor">#FAFAFA</Color>
+                    <Color x:Key="BodyTextColor">#888888</Color>
+                    <Color x:Key="BodySelectedColor">#13B70B</Color>
 
-        <Color x:Key="primaryColor">#005288</Color>
-        <Color x:Key="primaryLightColor">#497eb8</Color>
-        <Color x:Key="primaryDarkColor">#002a5b</Color>
-        <Color x:Key="secondaryColor">#b75c00</Color>
-        <Color x:Key="secondaryLightColor">#ef8a38</Color>
-        <Color x:Key="secondaryDarkColor">#813000</Color>
-        <Color x:Key="primaryTextColor">#FAFAFA</Color>
-        <Color x:Key="secondaryTextColor">#0A0A0A</Color>
-        <Color x:Key="bodyColor">#FAFAFA</Color>
-        <Color x:Key="bodyTextColor">#888888</Color>
-        <Color x:Key="bodySelectedColor">#13B70B</Color>
+                    <SolidColorBrush  x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="PrimaryLightBrush" Color="{StaticResource PrimaryLightColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="SecondaryLightBrush" Color="{StaticResource SecondaryLightColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="SecondaryDarkBrush" Color="{StaticResource SecondaryDarkColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="PrimaryTextBrush" Color="{StaticResource PrimaryTextColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="SecondaryTextBrush" Color="{StaticResource SecondaryTextColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="BodyBrush" Color="{StaticResource BodyColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="BodyTextBrush" Color="{StaticResource BodyTextColor}"></SolidColorBrush>
+                    <SolidColorBrush  x:Key="BodySelectedBrush" Color="{StaticResource BodySelectedColor}"></SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

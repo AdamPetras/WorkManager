@@ -30,6 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="..\SharedResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>SharedResources.xaml</Link>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WorkManager.Converters\WorkManager.Converters.csproj" />
     <ProjectReference Include="..\WorkManager.Core\WorkManager.Core.csproj" />
     <ProjectReference Include="..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
@@ -88,6 +95,9 @@
     <EmbeddedResource Update="Controls\SwitchText.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Dialogs\AddKanbanStateDialogView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Dialogs\AddTaskDialogView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -116,6 +126,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\CompanyPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\TaskKanbanSettingsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\UserDetailPage.xaml">
@@ -148,6 +161,9 @@
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>TranslateViewsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Styles\SharedStyles.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\WorkRecordEmptyView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -157,9 +173,5 @@
     <EmbeddedResource Update="Views\CompanyEmptyView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TemplateSelectors\" />
   </ItemGroup>
 </Project>

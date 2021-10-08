@@ -35,5 +35,10 @@ namespace WorkManager.BL.Facades
 			yield return new KanbanStateModel(new Guid("0150EACA-302A-4FDC-9CEC-920C9152AD03"), "In Progress", 1, "\uf110");
 			yield return new KanbanStateModel(new Guid("9C5D2C07-90C2-4BDD-9DAD-81F92E7072AA"), "Done", 2, "\uf46c");
 		}
+
+		public IEnumerable<IKanbanStateModel> GetKanbanStateByTaskGroup(Guid taskGroupId)
+		{
+			return Repository.GetKanbanStateByTaskGroup(taskGroupId).Select(Mapper.Map);
+		}
 	}
 }

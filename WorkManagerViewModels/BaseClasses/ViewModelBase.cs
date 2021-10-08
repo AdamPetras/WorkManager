@@ -9,28 +9,40 @@ namespace WorkManager.ViewModels.BaseClasses
 	{
 		protected ViewModelBase(INavigationService navigationService)
 		{
-			IsBusy = true;
 			NavigationService = navigationService;
 		}
 
 		public event DialogThrownDelegate DialogThrownEvent;
 
-		private bool _isBusy;
 		/// <summary>
 		/// Pokud program vykonává složitější operaci nastavíme na IsBusy == true následně po vykonání IsBusy==false zobrazí nadefinovaný activity indicator pouze async popř pokud operace běží na jiném než hlavnín vlákně
 		/// </summary>
-		public bool IsBusy
+		public bool IsBusy => RunningOperation != 0;
+
+		private ushort _runningOperation;
+		private ushort RunningOperation
 		{
-			get => _isBusy;
-			protected set
+			get => _runningOperation;
+			set
 			{
-				if (_isBusy == value) return;
-				_isBusy = value;
-				RaisePropertyChanged();
+				_runningOperation = value;
+				RaisePropertyChanged(nameof(IsBusy));
 			}
 		}
 
+		protected void BeginProcess()
+		{
+			RunningOperation++;
+		}
+
+		protected void EndProcess()
+		{
+			if(RunningOperation != 0)
+				RunningOperation--;
+		}
+
 		private bool _isDialogThrown;
+
 		/// <summary>
 		/// Řeší problém s více spuštěnými dialogy neumožní spustit více dialogů najednou a zároveň disabluje tlačítka toolbaru
 		/// </summary>
@@ -58,14 +70,16 @@ namespace WorkManager.ViewModels.BaseClasses
 
 		public void OnNavigatedFrom(INavigationParameters parameters)
 		{
-			IsBusy = true;
+			BeginProcess();
 			OnNavigatedFromInt(parameters);
+			EndProcess();
 		}
 
 		public void OnNavigatedTo(INavigationParameters parameters)
 		{
+			BeginProcess();
 			OnNavigatedToInt(parameters);
-			IsBusy = false;
+			EndProcess();
 		}
 
 		protected virtual void OnNavigatedFromInt(INavigationParameters parameters)

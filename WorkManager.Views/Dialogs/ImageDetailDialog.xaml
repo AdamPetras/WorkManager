@@ -7,6 +7,9 @@
              prism:DialogLayout.RelativeHeightRequest="1"
              prism:DialogLayout.RelativeWidthRequest="1"
              x:DataType="dialogs:ImageDetailDialogViewModel">
+    <ContentView.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentView.Resources>
     <Image Source="{Binding Path}">
         <Image.GestureRecognizers>
             <TapGestureRecognizer Command="{Binding CloseCommand}"></TapGestureRecognizer>

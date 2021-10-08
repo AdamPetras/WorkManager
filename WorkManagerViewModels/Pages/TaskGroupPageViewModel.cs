@@ -101,9 +101,10 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
 		{
-			IsBusy = true;
+			BeginProcess();
 			_currentTaskGroupProvider.SetItem(obj);
 			await NavigationService.NavigateAsync("TaskKanbanPage");
+			EndProcess();
 		}
 
 		private async Task ShowAddTaskGroupDialog()
@@ -122,7 +123,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ClearWholeOrDeleteSingleTaskGroupAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (_selectedTaskGroup != null)
 			{
 				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
@@ -146,7 +147,7 @@ namespace WorkManager.ViewModels.Pages
 				}
 				IsDialogThrown = false;
 			}
-			IsBusy = false;
+			EndProcess();
 		}
 
 		private void Edit()

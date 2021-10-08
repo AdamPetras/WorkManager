@@ -6,5 +6,6 @@ namespace WorkManager.DAL.Repositories.Interfaces
 {
 	public interface IKanbanStateRepository: IRepository<KanbanStateEntity>
 	{
+		IEnumerable<KanbanStateEntity> GetKanbanStateByTaskGroup(Guid taskGroupId);
 	}
 }

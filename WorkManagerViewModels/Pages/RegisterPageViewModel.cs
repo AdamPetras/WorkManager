@@ -87,7 +87,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async void Register()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (RepeatPassword != Password)
 				return;//vyhození hlášky
 			try
@@ -106,7 +106,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			finally
 			{
-				IsBusy = false;
+				EndProcess();
 			}
 		}
 	}

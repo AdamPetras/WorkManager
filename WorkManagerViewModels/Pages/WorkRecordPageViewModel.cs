@@ -173,7 +173,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ClearWholeOrDeleteSingleRecordAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (_selectedRecord != null)
 			{
 				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
@@ -199,7 +199,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			RaisePropertyChanged(nameof(TotalPriceThisMonth));
 			RaisePropertyChanged(nameof(TotalPriceThisYear));
-			IsBusy = false;
+			EndProcess();
 		}
 
 		private void SelectRecord(IWorkRecordModelBase obj)
@@ -209,7 +209,9 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task EditAsync()
 		{
+			BeginProcess();
 			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", SelectedRecord}});
+			EndProcess();
 		}
 	}
 }

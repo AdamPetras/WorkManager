@@ -135,8 +135,14 @@
   <data name="Gallery" xml:space="preserve">
     <value>Galerie</value>
   </data>
+  <data name="Icon" xml:space="preserve">
+    <value>Ikona</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Jméno</value>
+  </data>
+  <data name="NameItem" xml:space="preserve">
+    <value>Název</value>
   </data>
   <data name="Pieces" xml:space="preserve">
     <value>Kusy</value>
@@ -149,6 +155,9 @@
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorita</value>
+  </data>
+  <data name="SelectIcon" xml:space="preserve">
+    <value>Vyberte ikonu</value>
   </data>
   <data name="TaskDoneDate" xml:space="preserve">
     <value>Datum předběžného dokončení</value>

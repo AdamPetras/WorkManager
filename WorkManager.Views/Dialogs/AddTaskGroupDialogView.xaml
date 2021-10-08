@@ -7,6 +7,9 @@
              x:Class="WorkManager.Views.Dialogs.AddTaskGroupDialogView"
              xaml:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:AddTaskGroupDialogViewModel">
+    <Frame.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </Frame.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

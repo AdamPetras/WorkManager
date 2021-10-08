@@ -9,7 +9,10 @@
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
              x:DataType="dialogs:AddCompanyDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddCompanyDialogView">
-      <Grid>
+    <Frame.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </Frame.Resources>
+    <Grid>
           <Grid.RowDefinitions>
               <RowDefinition Height="Auto"></RowDefinition>
               <RowDefinition Height="Auto"></RowDefinition>

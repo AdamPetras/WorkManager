@@ -29,6 +29,7 @@ using WorkManager.ViewModels.Pages;
 using WorkManager.ViewModels.Views;
 using WorkManager.Views.Dialogs;
 using WorkManager.Views.Pages;
+using WorkManager.Views.Resources;
 using WorkManager.Views.Views;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
@@ -163,6 +164,7 @@ namespace WorkManager
 			containerRegistry.RegisterForNavigation<WorkRecordDetailPage, WorkRecordDetailPageViewModel>();
 			containerRegistry.RegisterForNavigation<UserDetailPage, UserDetailPageViewModel>();
 			containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
+			containerRegistry.RegisterForNavigation<TaskKanbanSettingsPage, TaskKanbanSettingsPageViewModel>();
 
 
 			containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();
@@ -172,6 +174,7 @@ namespace WorkManager
 			containerRegistry.RegisterDialog<FilterDialogView, FilterDialogViewModel>();
 			containerRegistry.RegisterDialog<SelectPictureOrCaptureCameraDialog, SelectPictureOrCaptureCameraDialogViewModel>();
 			containerRegistry.RegisterDialog<ImageDetailDialog, ImageDetailDialogViewModel>();
+			containerRegistry.RegisterDialog<AddKanbanStateDialogView, AddKanbanStateDialogViewModel>();
 
 			ViewModelLocationProvider.Register<CompanyEmptyView, CompanyEmptyViewModel>();
 			ViewModelLocationProvider.Register<TaskGroupEmptyView, TaskGroupEmptyViewModel>();

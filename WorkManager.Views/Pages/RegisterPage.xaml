@@ -6,8 +6,11 @@
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              x:Class="WorkManager.Views.Pages.RegisterPage"
              x:DataType="pages:RegisterPageViewModel"
-             IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}"
+             IsEnabled="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"
              Title="{x:Static resources:TranslatePagesSR.RegisterTitle}">
+    <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="Fill" Margin="10">
             <Grid.RowDefinitions>

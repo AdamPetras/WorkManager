@@ -102,8 +102,10 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ShowWorkPageAsync(ICompanyModel obj)
 		{
+			BeginProcess();
 			_companyModelProviderManager.SetItem(obj);
 			await NavigationService.NavigateAsync("WorkRecordPage");
+			EndProcess();
 		}
 		private void SelectCompany(ICompanyModel companyModel)
 		{
@@ -112,7 +114,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task ClearWholeOrDeleteSingleCompanyAsync()
 		{
-			IsBusy = true;
+			BeginProcess();
 			if (_selectedCompany != null)
 			{
 				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
@@ -136,7 +138,7 @@ namespace WorkManager.ViewModels.Pages
 				}
 				IsDialogThrown = false;
 			}
-			IsBusy = false;
+			EndProcess();
 		}
 
 		private async Task ShowAddCompanyDialogAsync()
