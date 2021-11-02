@@ -59,8 +59,8 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private ObservableCollection<IImageModel> _photoPaths;
-		public ObservableCollection<IImageModel> PhotoPaths
+		private System.Collections.ObjectModel.ObservableCollection<IImageModel> _photoPaths;
+		public System.Collections.ObjectModel.ObservableCollection<IImageModel> PhotoPaths
 		{
 			get => _photoPaths;
 			set
@@ -78,7 +78,7 @@ namespace WorkManager.ViewModels.Pages
 			BeginProcess();
 			base.OnNavigatedToInt(parameters);
 			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
-			PhotoPaths = new ObservableCollection<IImageModel>(_imageFacade.GetAllImagesByTask(SelectedTask.Id));
+			PhotoPaths = new System.Collections.ObjectModel.ObservableCollection<IImageModel>(_imageFacade.GetAllImagesByTask(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
 			EndProcess();
 		}

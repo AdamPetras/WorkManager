@@ -23,19 +23,19 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IDialogService _dialogService;
 		private readonly IPageDialogService _pageDialogService;
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
-		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
+		private readonly IKanbanStateFacade _kanbanStateFacade;
 		private readonly ITaskFacade _taskFacade;
 		private readonly IToastMessageService _toastMessageService;
 		private readonly DialogEventService _dialogEventService;
 
 		public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService, IPageDialogService pageDialogService,
-			ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade, ITaskFacade taskFacade, IToastMessageService toastMessageService,
+			ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanStateFacade kanbanStateFacade, ITaskFacade taskFacade, IToastMessageService toastMessageService,
 			DialogEventService dialogEventService) : base(navigationService)
 		{
 			_dialogService = dialogService;
 			_pageDialogService = pageDialogService;
 			_currentTaskGroupProvider = currentTaskGroupProvider;
-			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
+			_kanbanStateFacade = kanbanStateFacade;
 			_taskFacade = taskFacade;
 			_toastMessageService = toastMessageService;
 			_dialogEventService = dialogEventService;
@@ -149,7 +149,7 @@ namespace WorkManager.ViewModels.Pages
 		protected override void InitializeInt()
 		{
 			base.InitializeInt();
-			KanbanStates = new ObservableCollection<IKanbanStateModel>(_kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Select(s => s.Kanban));
+			KanbanStates = new ObservableCollection<IKanbanStateModel>(_kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id));
 		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
@@ -177,8 +177,8 @@ namespace WorkManager.ViewModels.Pages
 		private void UpdateButtonsVisibility(IKanbanStateModel kanbanState)
 		{
 			IsBackwardButtonVisible = kanbanState.StateOrder != 0;
-			IsCompleteButtonVisible = _kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Max(s => s.Kanban.StateOrder) != kanbanState.StateOrder;
-			IsDeleteButtonVisible = _kanbanTaskGroupFacade.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Max(s => s.Kanban.StateOrder) == kanbanState.StateOrder;
+			IsCompleteButtonVisible = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).Max(s => s.StateOrder) != kanbanState.StateOrder;
+			IsDeleteButtonVisible = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).Max(s => s.StateOrder) == kanbanState.StateOrder;
 		}
 
 		private async Task NavigateToTaskDetailPageAsync(ITaskModel obj)
@@ -197,9 +197,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task MoveWithTask(ITaskModel obj, bool isMoveToComplete)
 		{
-			IKanbanStateModel model = (await _kanbanTaskGroupFacade
-				.GetKanbansByTaskGroupIdAsync(_currentTaskGroupProvider.GetModel().Id))
-				.FirstOrDefault(s => s.Kanban.StateOrder == SelectedKanbanState.StateOrder + (isMoveToComplete ? +1 : -1))?.Kanban;
+			IKanbanStateModel model = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).FirstOrDefault(s => s.StateOrder == SelectedKanbanState.StateOrder + (isMoveToComplete ? +1 : -1));
 			if (model != null)
 			{
 				Tasks.Remove(obj);

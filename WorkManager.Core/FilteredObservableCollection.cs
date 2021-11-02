@@ -13,17 +13,17 @@ namespace WorkManager.Core
 	{
 		public FilteredObservableCollection(IEnumerable<T> enumerable)
 		{
-			WholeCollection = new ObservableCollection<T>(enumerable ?? throw new ArgumentException());
+			WholeCollection = new System.Collections.ObjectModel.ObservableCollection<T>(enumerable ?? throw new ArgumentException());
 			Filter = (s) => true;
 		}
 
-		public FilteredObservableCollection(ObservableCollection<T> wholeCollection)
+		public FilteredObservableCollection(System.Collections.ObjectModel.ObservableCollection<T> wholeCollection)
 		{
 			WholeCollection = wholeCollection ?? throw new ArgumentException();
 			Filter = (s) => true;
 		}
 
-		public FilteredObservableCollection(ObservableCollection<T> wholeCollection, Func<T, bool> filter)
+		public FilteredObservableCollection(System.Collections.ObjectModel.ObservableCollection<T> wholeCollection, Func<T, bool> filter)
 		{
 			WholeCollection = wholeCollection ?? throw new ArgumentException();
 			Filter = filter ?? throw new ArgumentException();
@@ -31,7 +31,7 @@ namespace WorkManager.Core
 
 		public FilteredObservableCollection(IEnumerable<T> enumerable, Func<T, bool> filter)
 		{
-			WholeCollection = new ObservableCollection<T>(enumerable ?? throw new ArgumentException());
+			WholeCollection = new System.Collections.ObjectModel.ObservableCollection<T>(enumerable ?? throw new ArgumentException());
 			Filter = filter ?? throw new ArgumentException();
 		}
 
@@ -47,8 +47,8 @@ namespace WorkManager.Core
 			}
 		}
 
-		private ObservableCollection<T> _wholeCollection;
-		public ObservableCollection<T> WholeCollection
+		private System.Collections.ObjectModel.ObservableCollection<T> _wholeCollection;
+		public System.Collections.ObjectModel.ObservableCollection<T> WholeCollection
 		{
 			get => _wholeCollection;
 			set
@@ -61,7 +61,7 @@ namespace WorkManager.Core
 			}
 		}
 
-		public ObservableCollection<T> FilteredCollection => new ObservableCollection<T>(_wholeCollection.Where(Filter));
+		public System.Collections.ObjectModel.ObservableCollection<T> FilteredCollection => new System.Collections.ObjectModel.ObservableCollection<T>(_wholeCollection.Where(Filter));
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

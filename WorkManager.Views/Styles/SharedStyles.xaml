@@ -12,6 +12,7 @@
 
     <Color x:Key="PrimaryColor">#005288</Color>
     <Color x:Key="PrimaryLightColor">#497eb8</Color>
+    <Color x:Key="BorderColor">#000000</Color>
     <Color x:Key="PrimaryDarkColor">#002a5b</Color>
     <Color x:Key="SecondaryColor">#b75c00</Color>
     <Color x:Key="SecondaryLightColor">#ef8a38</Color>

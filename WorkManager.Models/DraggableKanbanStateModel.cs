@@ -8,12 +8,12 @@ namespace WorkManager.Models
 {
 	public class DraggableKanbanStateModel : KanbanStateModel, IDraggableModel, INotifyPropertyChanged
 	{
-		public DraggableKanbanStateModel(Guid id, string name, int stateOrder, string iconName) : base(id, name, stateOrder, iconName)
+		public DraggableKanbanStateModel(Guid id, string name, int stateOrder, string iconName, ITaskGroupModel taskGroup) : base(id, name, stateOrder, iconName, taskGroup)
 		{
 
 		}
 
-		public DraggableKanbanStateModel(IKanbanStateModel kanbanStateModel) : base (kanbanStateModel.Id, kanbanStateModel.Name, kanbanStateModel.StateOrder, kanbanStateModel.IconName)
+		public DraggableKanbanStateModel(IKanbanStateModel kanbanStateModel) : base (kanbanStateModel.Id, kanbanStateModel.Name, kanbanStateModel.StateOrder, kanbanStateModel.IconName, kanbanStateModel.TaskGroup)
 		{
 			
 		}

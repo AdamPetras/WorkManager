@@ -153,6 +153,12 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="KanbanIsNotSelectedMessage" xml:space="preserve">
+    <value>Položka kanbánu nebyla dosud vybrána</value>
+  </data>
+  <data name="KanbanMustHaveThreeStates" xml:space="preserve">
+    <value>Kanbán musí mít minimálně tři stavy.</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>
   </data>
@@ -173,6 +179,9 @@
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Přijmení</value>
+  </data>
+  <data name="SwipeDirectionIsOutOfCollection" xml:space="preserve">
+    <value>Tímto směrem není možné prvek posunout.</value>
   </data>
   <data name="SwipeTaskOutside" xml:space="preserve">
     <value>Úkol již není možné přesunout tímto směrem.</value>

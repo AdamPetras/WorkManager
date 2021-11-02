@@ -24,6 +24,7 @@ namespace WorkManager.BL.Mappers
 				Id = model.Id,
 				Description = model.Description,
 				Name = model.Name,
+				IdUser = model.User.Id,
 				User = _userMapper.Map(model.User),
 			};
 		}

@@ -7,6 +7,13 @@ namespace WorkManager.BL.Mappers
 {
 	public class KanbanStateMapper : IMapper<KanbanStateEntity, IKanbanStateModel>
 	{
+		private readonly IMapper<TaskGroupEntity, ITaskGroupModel> _taskGroupMapper;
+
+		public KanbanStateMapper(IMapper<TaskGroupEntity,ITaskGroupModel> taskGroupMapper)
+		{
+			_taskGroupMapper = taskGroupMapper;
+		}
+
 		public KanbanStateEntity Map(IKanbanStateModel model)
 		{
 			if (model == null)
@@ -16,7 +23,9 @@ namespace WorkManager.BL.Mappers
 				Id= model.Id,
 				Name = model.Name,
 				StateOrder = model.StateOrder,
-				IconName= model.IconName
+				IconName= model.IconName,
+				IdTaskGroup = model.TaskGroup.Id,
+				TaskGroup = _taskGroupMapper.Map(model.TaskGroup)
 			};
 		}
 
@@ -24,7 +33,7 @@ namespace WorkManager.BL.Mappers
 		{
 			if (entity == null)
 				return new KanbanStateModel();
-			return new KanbanStateModel(entity.Id, entity.Name, entity.StateOrder, entity.IconName);
+			return new KanbanStateModel(entity.Id, entity.Name, entity.StateOrder, entity.IconName, _taskGroupMapper.Map(entity.TaskGroup));
 		}
 	}
 }

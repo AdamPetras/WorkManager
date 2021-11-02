@@ -28,17 +28,17 @@ namespace WorkManager.ViewModels.Dialogs
 	{
 		private readonly ITaskFacade _taskFacade;
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
-		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
+		private readonly IKanbanStateFacade _kanbanStateFacade;
 
-		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanTaskGroupFacade kanbanTaskGroupFacade,
-			ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
+		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, 
+			ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, IKanbanStateFacade kanbanStateFacade) : base(navigationService)
 		{
 			_currentTaskGroupProvider = currentTaskGroupProvider;
-			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
+			_kanbanStateFacade = kanbanStateFacade;
 			_taskFacade = taskFacade;
 			CancelCommand = new DelegateCommand(Cancel);
 			ConfirmCommand = new DelegateCommand(Confirm);
@@ -147,9 +147,7 @@ namespace WorkManager.ViewModels.Dialogs
 
 		private void Confirm()
 		{
-			IKanbanStateModel firstKanban = _kanbanTaskGroupFacade
-				.GetKanbansByTaskGroupId(_currentTaskGroupProvider.GetModel().Id).Single(s => s.Kanban.StateOrder == 0)
-				.Kanban;
+			IKanbanStateModel firstKanban = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).Single(s => s.StateOrder == 0);
 			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, Description, TaskDoneDate,
 				_currentTaskGroupProvider.GetModel(), firstKanban, Priority, WorkTime);
 			_taskFacade.Add(model);

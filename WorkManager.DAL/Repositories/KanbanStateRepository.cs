@@ -23,13 +23,18 @@ namespace WorkManager.DAL.Repositories
 
 		protected override void AddInt(KanbanStateEntity entity, WorkManagerDbContext dbContext)
 		{
+			if (entity.TaskGroup != null)
+			{
+				dbContext.Entry(entity.TaskGroup.User).State = EntityState.Unchanged;
+				dbContext.Entry(entity.TaskGroup).State = EntityState.Unchanged;
+			}
 		}
 
 		public IEnumerable<KanbanStateEntity> GetKanbanStateByTaskGroup(Guid taskGroupId)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.KanbanTaskGroupSet.Include(s => s.Kanban).Where(s => s.IdTaskGroup == taskGroupId).Select(s=>s.Kanban).ToList();
+				return dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToList();
 			}
 		}
 	}

@@ -34,15 +34,15 @@ namespace WorkManager.ViewModels.Pages
 			_taskGroupFacade = taskGroupFacade;
 			_dialogEventService = dialogEventService;
 			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
-			SelectTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(SelectTaskGroup);
-			EditCommand = new DelegateCommand(Edit, () => SelectedTaskGroup != null);
+			DeleteTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await DeleteTaskGroupAsync(t));
+			EditCommand = new DelegateCommand<ITaskGroupModel>(Edit);
 			InitDialogCommands();
 		}
 
-		public DelegateCommand<ITaskGroupModel> SelectTaskGroupCommand { get; }
 		public DelegateCommand ShowAddTaskGroupDialogCommand { get; private set; }
-		public DelegateCommand ClearWholeOrDeleteSingleTaskGroupCommand { get; private set; }
-		public DelegateCommand EditCommand { get; }
+		public DelegateCommand ClearTaskGroupsCommand { get; private set; }
+		public DelegateCommand<ITaskGroupModel> DeleteTaskGroupCommand { get; }
+		public DelegateCommand<ITaskGroupModel> EditCommand { get; }
 		public DelegateCommand<ITaskGroupModel> NavigateToTasksPageCommand { get; }
 
 		private ObservableCollection<ITaskGroupModel> _taskGroups;
@@ -55,19 +55,6 @@ namespace WorkManager.ViewModels.Pages
 				if (_taskGroups == value) return;
 				_taskGroups = value;
 				RaisePropertyChanged();
-			}
-		}
-
-		private ITaskGroupModel _selectedTaskGroup;
-		public ITaskGroupModel SelectedTaskGroup
-		{
-			get => _selectedTaskGroup;
-			set
-			{
-				if (_selectedTaskGroup == value) return;
-				_selectedTaskGroup = value;
-				RaisePropertyChanged();
-				EditCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -88,15 +75,15 @@ namespace WorkManager.ViewModels.Pages
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= ShowAddTaskGroupDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ClearWholeOrDeleteSingleTaskGroupCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearTaskGroupsCommand.RaiseCanExecuteChanged;
 		}
 
 		private void InitDialogCommands()
 		{
 			ShowAddTaskGroupDialogCommand = new DelegateCommand(async () => await ShowAddTaskGroupDialog(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowAddTaskGroupDialogCommand.RaiseCanExecuteChanged;
-			ClearWholeOrDeleteSingleTaskGroupCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTaskGroupAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ClearWholeOrDeleteSingleTaskGroupCommand.RaiseCanExecuteChanged;
+			ClearTaskGroupsCommand = new DelegateCommand(async () => await ClearTaskGroupsAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearTaskGroupsCommand.RaiseCanExecuteChanged;
 		}
 
 		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
@@ -116,41 +103,36 @@ namespace WorkManager.ViewModels.Pages
 			IsDialogThrown = false;
 		}
 
-		private void SelectTaskGroup(ITaskGroupModel model)
-		{
-			SelectedTaskGroup = model;
-		}
-
-		private async Task ClearWholeOrDeleteSingleTaskGroupAsync()
+		private async Task ClearTaskGroupsAsync()
 		{
 			BeginProcess();
-			if (_selectedTaskGroup != null)
+			IsDialogThrown = true;
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+				TranslateViewModelsSR.TaskGroupClearDialogMessage, TranslateViewModelsSR.DialogYes,
+				TranslateViewModelsSR.DialogNo))
 			{
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.SelectedTaskGroupDeleteDialogMessageFormat(_selectedTaskGroup.Name), TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _taskGroupFacade.RemoveAsync(_selectedTaskGroup.Id);
-					TaskGroups.Remove(_selectedTaskGroup);
-					_selectedTaskGroup = null;
-				}
+				await _taskGroupFacade.ClearAsync();
+				TaskGroups.Clear();
 			}
-			else
-			{
-				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.TaskGroupClearDialogMessage, TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _taskGroupFacade.ClearAsync();
-					TaskGroups.Clear();
-				}
-				IsDialogThrown = false;
-			}
+			IsDialogThrown = false;
 			EndProcess();
 		}
 
-		private void Edit()
+		private async Task DeleteTaskGroupAsync(ITaskGroupModel taskGroupModel)
+		{
+			if (taskGroupModel != null)
+			{
+				//if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+				//	TranslateViewModelsSR.SelectedTaskGroupDeleteDialogMessageFormat(taskGroupModel.Name), TranslateViewModelsSR.DialogYes,
+				//	TranslateViewModelsSR.DialogNo))
+				//{
+				await _taskGroupFacade.RemoveAsync(taskGroupModel.Id);
+				TaskGroups.Remove(taskGroupModel);
+				//}
+			}
+		}
+
+		private void Edit(ITaskGroupModel taskGroupModel)
 		{
 
 		}

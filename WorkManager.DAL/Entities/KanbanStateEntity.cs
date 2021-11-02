@@ -11,5 +11,10 @@ namespace WorkManager.DAL.Entities
 		public string Name { get; set; }
 		public int StateOrder { get; set; }
 		public string IconName { get; set; }
+		[Required]
+		public Guid IdTaskGroup { get; set; }
+
+		[ForeignKey(nameof(IdTaskGroup))]
+		public virtual TaskGroupEntity TaskGroup { get; set; }
 	}
 }

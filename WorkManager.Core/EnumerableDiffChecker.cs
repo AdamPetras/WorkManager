@@ -30,9 +30,8 @@ namespace WorkManager.Core
 			if (initialEnumerable == null || finalEnumerable == null)
 				throw new ArgumentException();
 			List<T> add = finalEnumerable.Where(a => initialEnumerable.All(s=>!predicate(a, s))).ToList();
-			List<T> delete = initialEnumerable.Where(a => finalEnumerable.All(s=>!predicate(a,s))).ToList();
-			List<T> update = initialEnumerable.Where(a => finalEnumerable.Any(s=>predicate(a, s))).ToList();
-			return new DifferentialCollection<T>(add, delete, update);
+			List<T> delete = initialEnumerable.Where(a => finalEnumerable.All(s=>!predicate(a, s))).ToList();
+			return new DifferentialCollection<T>(add, delete);
 		}
 	}
 }

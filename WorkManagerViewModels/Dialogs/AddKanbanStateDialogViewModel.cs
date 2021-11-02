@@ -12,6 +12,7 @@ namespace WorkManager.ViewModels.Dialogs
 {
 	public class AddKanbanStateDialogViewModel : DialogViewModelBase
 	{
+		private ITaskGroupModel _selectedTaskGroup;
 		private int _selectedStateOrder;
 
 		public AddKanbanStateDialogViewModel(INavigationService navigationService) : base(navigationService)
@@ -69,11 +70,12 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			base.OnDialogOpenedInt(parameters);
 			_selectedStateOrder = parameters.GetValue<int>("StateOrder");
+			_selectedTaskGroup = parameters.GetValue<ITaskGroupModel>("TaskGroup");
 		}
 
 		private async Task Confirm()
 		{
-			DraggableKanbanStateModel stateModel = new DraggableKanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon);
+			DraggableKanbanStateModel stateModel = new DraggableKanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup);
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<DraggableKanbanStateModel>(stateModel) } });
 		}
 	}

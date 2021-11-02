@@ -21,7 +21,6 @@ namespace WorkManager.DAL.DbContext
 		public DbSet<TaskGroupEntity> TaskGroupSet { get; set; }
 		public DbSet<TaskEntity> TaskSet { get; set; }
 		public DbSet<KanbanStateEntity> KanbanSet { get; set; }
-		public DbSet<KanbanTaskGroupEntity> KanbanTaskGroupSet { get; set; }
 		public DbSet<ImageEntity> ImageSet { get; set; }
 
 		public WorkManagerDbContext()
@@ -68,11 +67,6 @@ namespace WorkManager.DAL.DbContext
 			{
 				if (KanbanSet != null)
 					return KanbanSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(KanbanTaskGroupEntity))
-			{
-				if (KanbanTaskGroupSet != null)
-					return KanbanTaskGroupSet as DbSet<T>;
 			}
 			if (typeof(T) == typeof(ImageEntity))
 			{

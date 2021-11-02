@@ -8,11 +8,13 @@ using Prism.Navigation;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
+using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Services;
 using WorkManager.Core;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
+using WorkManager.ViewModels.Resources;
 using Xamarin.Forms.Internals;
 
 namespace WorkManager.ViewModels.Pages
@@ -21,35 +23,34 @@ namespace WorkManager.ViewModels.Pages
 	{
 		private readonly IDialogService _dialogService;
 		private readonly IKanbanStateFacade _kanbanStateFacade;
-		private readonly IKanbanTaskGroupFacade _kanbanTaskGroupFacade;
 		private readonly DialogEventService _dialogEventService;
+		private readonly IToastMessageService _toastMessageService;
 		private ITaskGroupModel _selectedTaskGroup;
 
-		public TaskKanbanSettingsPageViewModel(INavigationService navigationService, IDialogService dialogService, IKanbanStateFacade kanbanStateFacade, IKanbanTaskGroupFacade kanbanTaskGroupFacade, DialogEventService dialogEventService) : base(navigationService)
+		public TaskKanbanSettingsPageViewModel(INavigationService navigationService, IDialogService dialogService, IKanbanStateFacade kanbanStateFacade, 
+			DialogEventService dialogEventService, IToastMessageService toastMessageService) : base(navigationService)
 		{
 			_dialogService = dialogService;
 			_kanbanStateFacade = kanbanStateFacade;
-			_kanbanTaskGroupFacade = kanbanTaskGroupFacade;
 			_dialogEventService = dialogEventService;
-			ItemDraggedCommand = new DelegateCommand<DraggableKanbanStateModel>(ItemDragged);
-			ItemDroppedCommand = new DelegateCommand<DraggableKanbanStateModel>(ItemDropped);
-			ItemDraggedOverCommand = new DelegateCommand<DraggableKanbanStateModel>(ItemDraggedOver);
-			ItemDragLeaveCommand = new DelegateCommand<DraggableKanbanStateModel>(ItemDragLeave);
+			_toastMessageService = toastMessageService;
 			ShowCreateNewKanbanStateCommand = new DelegateCommand(async () => await ShowCreateNewKanbanState());
 			SaveCommand = new DelegateCommand(async() => await Save());
+			MoveItemUpCommand = new DelegateCommand<IKanbanStateModel>(ItemUp);
+			MoveItemDownCommand = new DelegateCommand<IKanbanStateModel>(ItemDown);
+			DeleteCommand = new DelegateCommand(Delete);
 		}
 
 		public DelegateCommand ShowCreateNewKanbanStateCommand { get; }
-		public DelegateCommand<DraggableKanbanStateModel> ItemDraggedCommand { get; }
-		public DelegateCommand<DraggableKanbanStateModel> ItemDroppedCommand { get; }
-		public DelegateCommand<DraggableKanbanStateModel> ItemDraggedOverCommand { get; }
-		public DelegateCommand<DraggableKanbanStateModel> ItemDragLeaveCommand { get; }
+		public DelegateCommand DeleteCommand { get; }
 		public DelegateCommand SaveCommand { get; }
+		public DelegateCommand<IKanbanStateModel> MoveItemUpCommand { get; }
+		public DelegateCommand<IKanbanStateModel> MoveItemDownCommand { get; }
 
-		private ObservableCollection<DraggableKanbanStateModel> _kanbanItems;
+		private ObservableCollection<IKanbanStateModel> _kanbanItems;
 		private DraggableKanbanStateModel _startItemDrag;
 
-		public ObservableCollection<DraggableKanbanStateModel> KanbanItems
+		public ObservableCollection<IKanbanStateModel> KanbanItems
 		{
 			get => _kanbanItems;
 			set
@@ -60,6 +61,17 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
+		private DraggableKanbanStateModel _selectedKanban;
+		public DraggableKanbanStateModel SelectedKanban
+		{
+			get => _selectedKanban;
+			set
+			{
+				if (_selectedKanban == value) return;
+				_selectedKanban = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
 		{
@@ -67,80 +79,78 @@ namespace WorkManager.ViewModels.Pages
 			if (parameters.Any()) //ošetření navigace z dialogu
 			{
 				_selectedTaskGroup = parameters.GetValue<ITaskGroupModel>("TaskGroup");
-				KanbanItems = new ObservableCollection<DraggableKanbanStateModel>(_kanbanStateFacade
-					.GetKanbanStateByTaskGroup(_selectedTaskGroup.Id).Select(s => new DraggableKanbanStateModel(s)));
+				KanbanItems = new ObservableCollection<IKanbanStateModel>(_kanbanStateFacade
+					.GetKanbanStatesByTaskGroup(_selectedTaskGroup.Id).Select(s => new DraggableKanbanStateModel(s)));
 			}
-		}
-
-		private void ItemDragged(DraggableKanbanStateModel item)
-		{
-			_startItemDrag = item;
-		}
-
-		private void ItemDraggedOver(DraggableKanbanStateModel item)
-		{
-			if (item.Name == _startItemDrag.Name)
-				return;
-			if (item.StateOrder < _startItemDrag.StateOrder)
-				item.IsBeingDraggedOverFromBottom = true;
-			else
-				item.IsBeingDraggedOverFromTop = true;
-		}
-
-		private void ItemDragLeave(DraggableKanbanStateModel item)
-		{
-			KanbanItems.ForEach(i =>
-			{
-				i.IsBeingDraggedOverFromBottom = false;
-				i.IsBeingDraggedOverFromTop = false;
-			});
-		}
-
-		private void ItemDropped(DraggableKanbanStateModel item)
-		{
-			DraggableKanbanStateModel itemToMove = _startItemDrag;
-			DraggableKanbanStateModel itemToInsertAfter = item;
-			if (itemToMove == null || itemToInsertAfter == null || itemToMove.Name == itemToInsertAfter.Name)
-				return;
-			KanbanItems.Remove(itemToMove);
-			int insertAtIndex = KanbanItems.IndexOf(itemToInsertAfter);
-			//index je podmíněn kvůli tom, že je rozdíl pokud beru položku ze spod a vkládám nahoru či beru položku ze zhora a vkládám do spod
-			KanbanItems.Insert(insertAtIndex + (itemToInsertAfter.IsBeingDraggedOverFromTop ? 1 : 0), itemToMove);
-			itemToMove.IsBeingDragged = false;
-			itemToInsertAfter.IsBeingDraggedOverFromBottom = false;
-			itemToInsertAfter.IsBeingDraggedOverFromTop = false;
-			//nastavení indexů každého prvku musím každý prvek, protože když vložím položku ze zhora do středu tak budu muset změnit indexy všech položek předtím
-			KanbanItems.ForEach(s => s.StateOrder = KanbanItems.IndexOf(s));
 		}
 
 		private async Task ShowCreateNewKanbanState()
 		{
-			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialogView")).Parameters;
+			BeginProcess();
+			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialogView", new DialogParameters() {{"StateOrder", KanbanItems.Count}, {"TaskGroup", _selectedTaskGroup}})).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-			DraggableKanbanStateModel model = KanbanItems.Last();
-			KanbanItems.Remove(KanbanItems.Last());		//odstraním poslední prvek přidám poslední a následně vložím prvek na předposlední místo byl zde problém s obnovou datatemplate
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, KanbanItems);
-			KanbanItems.Insert(KanbanItems.Count - 1, model);
+			if (dialogEvent != null)
+			{
+				_dialogEventService.OnRaiseDialogEvent(dialogEvent, KanbanItems);
+				KanbanItems = new ObservableCollection<IKanbanStateModel>(KanbanItems);//neobnovuje se datatemplate
+			}
+			EndProcess();
 		}
 
 		private async Task Save()
 		{
-			EnumerableDiffChecker<IKanbanStateModel> kanbanDiffChecker = new EnumerableDiffChecker<IKanbanStateModel>();
-			DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(_kanbanStateFacade.GetKanbanStateByTaskGroup(_selectedTaskGroup.Id), KanbanItems,(s,t)=>s.Id == t.Id);
-			foreach (IKanbanStateModel kanbanStateModel in value.AddEnumerable)
+			if (KanbanItems.Count <= 3)
 			{
-				await _kanbanStateFacade.AddAsync(kanbanStateModel);
-				await _kanbanTaskGroupFacade.AddAsync(new KanbanTaskGroupModel(Guid.NewGuid(), _selectedTaskGroup,
-					kanbanStateModel));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.KanbanMustHaveThreeStates);
+				return;
 			}
+			EnumerableDiffChecker<IKanbanStateModel> kanbanDiffChecker = new EnumerableDiffChecker<IKanbanStateModel>();
+			DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(_kanbanStateFacade.GetKanbanStatesByTaskGroup(_selectedTaskGroup.Id), KanbanItems,(s,t)=>s.Id == t.Id && s.StateOrder == t.StateOrder);
 			foreach (IKanbanStateModel kanbanStateModel in value.DeleteEnumerable)
 			{
 				await _kanbanStateFacade.RemoveAsync(kanbanStateModel.Id);
 			}
-			foreach (IKanbanStateModel kanbanStateModel in value.UpdateEnumerable)
+			foreach (IKanbanStateModel kanbanStateModel in value.AddEnumerable)
 			{
-				await _kanbanStateFacade.UpdateAsync(kanbanStateModel);
+				await _kanbanStateFacade.AddAsync(kanbanStateModel);
 			}
+		}
+
+		private void Delete()
+		{
+			if (SelectedKanban == null)
+			{
+				_toastMessageService.LongAlert(TranslateViewModelsSR.KanbanIsNotSelectedMessage);
+				return;
+			}
+			KanbanItems.Remove(SelectedKanban);
+			SelectedKanban = null;
+			KanbanItems = new ObservableCollection<IKanbanStateModel>(KanbanItems);//neobnovuje se datatemplate
+		}
+
+		private void ItemUp(IKanbanStateModel kanbanStateModel)
+		{
+			int index = KanbanItems.IndexOf(kanbanStateModel);
+			if (index == 0)
+			{
+				_toastMessageService.LongAlert(TranslateViewModelsSR.SwipeDirectionIsOutOfCollection);
+				return;
+			}
+			KanbanItems.Remove(kanbanStateModel);
+			KanbanItems.Insert(index-1,kanbanStateModel);
+
+		}
+
+		private void ItemDown(IKanbanStateModel kanbanStateModel)
+		{
+			int index = KanbanItems.IndexOf(kanbanStateModel);
+			if (index == KanbanItems.Count - 1)
+			{
+				_toastMessageService.LongAlert(TranslateViewModelsSR.SwipeDirectionIsOutOfCollection);
+				return;
+			}
+			KanbanItems.Remove(kanbanStateModel);
+			KanbanItems.Insert(index + 1, kanbanStateModel);
 		}
 	}
 }

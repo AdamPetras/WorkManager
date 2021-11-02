@@ -195,6 +195,24 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        /// Looks up a localized string similar to 'Položka kanbánu nebyla dosud vybrána'.
+        /// </summary>
+        public static string KanbanIsNotSelectedMessage {
+            get {
+                return ResourceManager.GetString(ResourceNames.KanbanIsNotSelectedMessage, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Kanbán musí mít minimálně tři stavy.'.
+        /// </summary>
+        public static string KanbanMustHaveThreeStates {
+            get {
+                return ResourceManager.GetString(ResourceNames.KanbanMustHaveThreeStates, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
         /// Looks up a localized string similar to 'Heslo'.
         /// </summary>
         public static string Password {
@@ -254,6 +272,15 @@ namespace WorkManager.ViewModels.Resources {
         public static string Surname {
             get {
                 return ResourceManager.GetString(ResourceNames.Surname, _resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// Looks up a localized string similar to 'Tímto směrem není možné prvek posunout.'.
+        /// </summary>
+        public static string SwipeDirectionIsOutOfCollection {
+            get {
+                return ResourceManager.GetString(ResourceNames.SwipeDirectionIsOutOfCollection, _resourceCulture);
             }
         }
         
@@ -467,6 +494,16 @@ namespace WorkManager.ViewModels.Resources {
             public const string Id = "Id";
             
             /// <summary>
+            /// Stores the resource name 'KanbanIsNotSelectedMessage'.
+            /// </summary>
+            public const string KanbanIsNotSelectedMessage = "KanbanIsNotSelectedMessage";
+            
+            /// <summary>
+            /// Stores the resource name 'KanbanMustHaveThreeStates'.
+            /// </summary>
+            public const string KanbanMustHaveThreeStates = "KanbanMustHaveThreeStates";
+            
+            /// <summary>
             /// Stores the resource name 'Password'.
             /// </summary>
             public const string Password = "Password";
@@ -500,6 +537,11 @@ namespace WorkManager.ViewModels.Resources {
             /// Stores the resource name 'Surname'.
             /// </summary>
             public const string Surname = "Surname";
+            
+            /// <summary>
+            /// Stores the resource name 'SwipeDirectionIsOutOfCollection'.
+            /// </summary>
+            public const string SwipeDirectionIsOutOfCollection = "SwipeDirectionIsOutOfCollection";
             
             /// <summary>
             /// Stores the resource name 'SwipeTaskOutside'.

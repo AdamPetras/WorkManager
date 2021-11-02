@@ -6,7 +6,7 @@ namespace WorkManager.BL.Interfaces.Facades
 {
 	public interface IKanbanStateFacade : IFacade<IKanbanStateModel>
 	{
-		IEnumerable<IKanbanStateModel> GetDefaultKanbanStateModels();
-		IEnumerable<IKanbanStateModel> GetKanbanStateByTaskGroup(Guid taskGroupId);
+		void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup);
+		IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId);
 	}
 }

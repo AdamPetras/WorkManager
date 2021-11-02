@@ -105,7 +105,7 @@ namespace WorkManager.ViewModels.Pages
 			base.OnNavigatedToInt(parameters);
 			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
 			if (FilteredRecords?.WholeCollection.Count == 0)
-				FilteredRecords.WholeCollection = new ObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None)
+				FilteredRecords.WholeCollection = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None)
 					.OrderByDescending(s => s.ActualDateTime));
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
@@ -137,7 +137,7 @@ namespace WorkManager.ViewModels.Pages
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
 			UpdateTotalPrices();
-			FilteredRecords.WholeCollection = new ObservableCollection<IWorkRecordModelBase>(FilteredRecords.WholeCollection.OrderByDescending(s => s.ActualDateTime));
+			FilteredRecords.WholeCollection = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(FilteredRecords.WholeCollection.OrderByDescending(s => s.ActualDateTime));
 			IsDialogThrown = false;
 		}
 
