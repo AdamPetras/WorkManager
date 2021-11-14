@@ -7,32 +7,29 @@
              xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:templateSelectors="clr-namespace:WorkManager.Views.TemplateSelectors;assembly=WorkManager.Views"
+             xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="WorkManager.Views.Pages.WorkRecordPage"
              x:DataType="pages:WorkRecordPageViewModel">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Black" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{StaticResource SecondaryColor}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand"  effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
-                        <Grid>
+                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItemView>
+                                <StackLayout Orientation="Horizontal">
+                                    <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+                                        <ImageButton.Source>
+                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </StackLayout>
+                            </SwipeItemView>
+                        </SwipeView.RightItems>
+                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                                effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
+                                effects:TouchEffect.CommandParameter="{Binding .}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -54,32 +51,28 @@
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding Pieces}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
                             <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{StaticResource SecondaryTextColor}"></Label>
                             <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
                         </Grid>
-                    </Frame>
-                </Frame>
+                    </SwipeView>
+                </pancakeView:PancakeView>
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Black" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{StaticResource SecondaryColor}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
-                        <Grid>
+                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItemView>
+                                <StackLayout Orientation="Horizontal">
+                                    <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+                                        <ImageButton.Source>
+                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </StackLayout>
+                            </SwipeItemView>
+                        </SwipeView.RightItems>
+                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                              effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
+                              effects:TouchEffect.CommandParameter="{Binding .}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -101,32 +94,28 @@
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding WorkTime}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
                             <Label Grid.Row="2" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerHour}" TextColor="{StaticResource SecondaryTextColor}"></Label>
                             <Label Grid.Row="2" Grid.Column="3" Text="{Binding PricePerHour, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
                         </Grid>
-                    </Frame>
-                </Frame>
+                    </SwipeView>
+                </pancakeView:PancakeView>
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
-                <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" >
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="Black" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Selected">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor"
-                                            Value="{StaticResource SecondaryColor}" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                    <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                           effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
-                        <Grid>
+                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItemView>
+                                <StackLayout Orientation="Horizontal">
+                                    <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+                                        <ImageButton.Source>
+                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                        </ImageButton.Source>
+                                    </ImageButton>
+                                </StackLayout>
+                            </SwipeItemView>
+                        </SwipeView.RightItems>
+                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                              effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
+                              effects:TouchEffect.CommandParameter="{Binding .}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -153,29 +142,21 @@
                             <Label Grid.Row="3" Grid.Column="1" Text="{Binding Pieces}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
                             <Label Grid.Row="3" Grid.Column="2" Text="{x:Static resources:TranslatePagesSR.PricePerPiece}" TextColor="{StaticResource SecondaryTextColor}"></Label>
                             <Label Grid.Row="3" Grid.Column="3" Text="{Binding PricePerPiece, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="End"></Label>
-                            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start"></Label>
+                            <Label Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
                         </Grid>
-                    </Frame>
-                </Frame>
+                    </SwipeView>
+                </pancakeView:PancakeView>
             </DataTemplate>
             <templateSelectors:WorkRecordTemplateSelector x:Key="RecordTemplateSelector" BothRecordDataTemplate="{StaticResource BothRecordTemplate}" PiecesRecordDataTemplate="{StaticResource PiecesRecordTemplate}" TimeRecordDataTemplate="{StaticResource TimeRecordTemplate}"></templateSelectors:WorkRecordTemplateSelector>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Filter"
-                     Order="Secondary"
+                     Order="Primary"
                      Priority="0"
                      Command="{Binding ShowFilterDialogCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Filter}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-        <ToolbarItem Text="Show statistics"
-                     Order="Secondary"
-                     Priority="0"
-                     Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Poll}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="Add"
@@ -186,18 +167,10 @@
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Edit"
-                     Order="Primary"
-                     Priority="0"
-                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
         <ToolbarItem Text="Clear whole or delete single"
                      Order="Primary"
                      Priority="0"
-                     Command="{Binding ClearWholeOrDeleteSingleRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+                     Command="{Binding ClearRecordsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
             </ToolbarItem.IconImageSource>
@@ -208,11 +181,11 @@
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
         </StackLayout>
         <Grid IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
-                <Grid.RowDefinitions>
+            <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView x:Name="Collection" SelectionMode="Single" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
+            <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
                             SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
@@ -221,7 +194,8 @@
                     <views:WorkRecordEmptyView></views:WorkRecordEmptyView>
                 </CollectionView.EmptyView>
             </CollectionView>
-            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource PrimaryLightColor}">
+            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource PrimaryLightColor}" 
+                  effects:TouchEffect.Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>

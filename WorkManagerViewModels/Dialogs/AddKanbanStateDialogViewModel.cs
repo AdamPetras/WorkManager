@@ -4,6 +4,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
+using WorkManager.BL.NavigationParams;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -21,7 +22,7 @@ namespace WorkManager.ViewModels.Dialogs
 			ShowHideSelectionCommand = new DelegateCommand(() => { IsIconSelectionVisible = !IsIconSelectionVisible; });
 			SelectionChangedCommand = new DelegateCommand(() => IsIconSelectionVisible = false);
 			CancelCommand = new DelegateCommand(()=> OnRequestClose(null));
-			ConfirmCommand = new DelegateCommand(async () => await Confirm());
+			ConfirmCommand = new DelegateCommand(Confirm);
 		}
 
 		public DelegateCommand ShowHideSelectionCommand { get; }
@@ -69,14 +70,15 @@ namespace WorkManager.ViewModels.Dialogs
 		protected override void OnDialogOpenedInt(IDialogParameters parameters)
 		{
 			base.OnDialogOpenedInt(parameters);
-			_selectedStateOrder = parameters.GetValue<int>("StateOrder");
-			_selectedTaskGroup = parameters.GetValue<ITaskGroupModel>("TaskGroup");
-		}
+            StateOrderTaskGroupNavigationParameters navParameters = new StateOrderTaskGroupNavigationParameters(parameters);
+            _selectedStateOrder = navParameters.StateOrder;
+            _selectedTaskGroup = navParameters.TaskGroup;
+        }
 
-		private async Task Confirm()
+		private void Confirm()
 		{
-			DraggableKanbanStateModel stateModel = new DraggableKanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup);
-			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<DraggableKanbanStateModel>(stateModel) } });
+			IKanbanStateModel stateModel = new KanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup);
+			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<IKanbanStateModel>(stateModel) } });
 		}
 	}
 }

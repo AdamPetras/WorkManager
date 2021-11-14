@@ -26,8 +26,7 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
 
-		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IDialogService dialogService,
-			IImageFacade imageFacade) : base(navigationService)
+		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
 			_taskFacade = taskFacade;
@@ -37,6 +36,7 @@ namespace WorkManager.ViewModels.Pages
 			DeletePhotoCommand = new DelegateCommand<IImageModel>(DeletePhoto);
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
+            PhotoPaths = new ObservableCollection<IImageModel>();
 			InitDialogCommands();
 		}
 
@@ -59,8 +59,8 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private System.Collections.ObjectModel.ObservableCollection<IImageModel> _photoPaths;
-		public System.Collections.ObjectModel.ObservableCollection<IImageModel> PhotoPaths
+		private ObservableCollection<IImageModel> _photoPaths;
+		public ObservableCollection<IImageModel> PhotoPaths
 		{
 			get => _photoPaths;
 			set
@@ -73,12 +73,12 @@ namespace WorkManager.ViewModels.Pages
 
 		private ICollection<IImageModel> InitImages { get; set; }
 
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			BeginProcess();
 			base.OnNavigatedToInt(parameters);
 			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
-			PhotoPaths = new System.Collections.ObjectModel.ObservableCollection<IImageModel>(_imageFacade.GetAllImagesByTask(SelectedTask.Id));
+			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
 			EndProcess();
 		}

@@ -21,10 +21,14 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public ICollection<ICompanyModel> GetCompaniesByUserId(Guid userId)
+		public IEnumerable<ICompanyModel> GetCompaniesByUserId(Guid userId)
 		{
-			return Repository.GetCompaniesByUserId(userId).Select(Mapper.Map).ToList();
+			return Repository.GetCompaniesByUserId(userId).Select(Mapper.Map);
 		}
 
-	}
+        public async Task<IEnumerable<ICompanyModel>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default)
+        {
+            return (await Repository.GetCompaniesByUserIdAsync(userId, token)).Select(Mapper.Map);
+        }
+    }
 }

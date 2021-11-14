@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using WorkManager.BL.Facades.BaseClasses;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
@@ -30,5 +32,10 @@ namespace WorkManager.BL.Facades
 		{
 			return Repository.GetKanbanStateByTaskGroup(taskGroupId).Select(Mapper.Map);
 		}
+
+        public async Task<IEnumerable<IKanbanStateModel>> GetKanbanStatesByTaskGroupAsync(Guid taskGroupId, CancellationToken token = default)
+        {
+			return (await Repository.GetKanbanStateByTaskGroupAsync(taskGroupId, token)).Select(Mapper.Map);
+        }
 	}
 }

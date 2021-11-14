@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
@@ -16,7 +18,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override IEnumerable<CompanyEntity> GetAllInt(IQueryable<CompanyEntity> dbSet)
+		protected override ICollection<CompanyEntity> GetAllInt(IQueryable<CompanyEntity> dbSet)
 		{
 			return dbSet.Include(s => s.User).ToList();
 		}
@@ -36,5 +38,13 @@ namespace WorkManager.DAL.Repositories
 				return dbContext.CompanySet.Where(s => s.User.Id == userId).Include(s=>s.User).ToList();
 			}
 		}
-	}
+
+        public async Task<ICollection<CompanyEntity>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.CompanySet.Where(s => s.User.Id == userId).Include(s => s.User).ToListAsync(token);
+            }
+		}
+    }
 }

@@ -18,7 +18,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override IEnumerable<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
+		protected override ICollection<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
 		{
 			return dbSet.Include(s => s.TaskGroup).ToList();
 		}
@@ -52,7 +52,7 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public IEnumerable<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId)
+		public ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -60,7 +60,7 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public IEnumerable<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
+		public ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -70,7 +70,7 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public async Task<IEnumerable<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+		public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{

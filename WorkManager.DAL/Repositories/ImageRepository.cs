@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
@@ -16,7 +18,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override IEnumerable<ImageEntity> GetAllInt(IQueryable<ImageEntity> dbSet)
+		protected override ICollection<ImageEntity> GetAllInt(IQueryable<ImageEntity> dbSet)
 		{
 			return dbSet.Include(s => s.Task).ToList();
 		}
@@ -41,12 +43,20 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public IEnumerable<ImageEntity> GetAllImagesByTask(Guid id)
+		public ICollection<ImageEntity> GetAllImagesByTask(Guid id)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToList();
 			}
 		}
-	}
+
+        public async Task<ICollection<ImageEntity>> GetAllImagesByTaskAsync(Guid id, CancellationToken token)
+        {
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToListAsync(token);
+            }
+		}
+    }
 }

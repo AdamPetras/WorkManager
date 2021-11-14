@@ -20,21 +20,21 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			IdbContextFactory = idbContextFactory;
 		}
 
-		public IEnumerable<TEntity> GetAll()
+		public ICollection<TEntity> GetAll()
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return GetAllInt(dbContext.GetDatabaseByType<TEntity>().AsNoTracking());
+				return GetAllInt(dbContext.GetDatabaseByType<TEntity>().AsNoTracking()).ToList();
 			}
 		}
 
-		protected abstract IEnumerable<TEntity> GetAllInt(IQueryable<TEntity> dbSet);
+		protected abstract ICollection<TEntity> GetAllInt(IQueryable<TEntity> dbSet);
 
-		public async Task<List<TEntity>> GetAllAsync(CancellationToken token = default)
+		public async Task<ICollection<TEntity>> GetAllAsync(CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(cancellationToken:token);
+				return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(token);
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			};
 		}
 
-		public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token = default)
+		public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -70,7 +70,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			return false;
 		}
 
-		public async Task<bool> RemoveAsync(Guid id, CancellationToken token = default)
+		public async Task<bool> RemoveAsync(Guid id, CancellationToken token)
 		{
 			return await Task.Run(() => Remove(id), token);
 		}
@@ -94,7 +94,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		protected abstract void AddInt(TEntity entity, WorkManagerDbContext dbContext);
 
-		public async Task<TEntity> AddAsync(TEntity entity, CancellationToken token = default)
+		public async Task<TEntity> AddAsync(TEntity entity, CancellationToken token)
 		{
 			return await Task.Run(() => Add(entity), token);
 		}
@@ -116,7 +116,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			}
 		}
 
-		public async Task UpdateAsync(TEntity entity, CancellationToken token = default)
+		public async Task UpdateAsync(TEntity entity, CancellationToken token)
 		{
 			await Task.Run(() => Update(entity), token);
 		}
@@ -129,7 +129,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			}
 		}
 
-		public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token = default)
+		public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -152,7 +152,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			}
 		}
 
-		public async Task ClearAsync(CancellationToken token = default)
+		public async Task ClearAsync(CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{

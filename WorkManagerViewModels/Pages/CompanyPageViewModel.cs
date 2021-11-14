@@ -33,22 +33,24 @@ namespace WorkManager.ViewModels.Pages
 			_companyFacade = companyFacade;
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
-			ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async(s) => await ShowWorkPageAsync(s));
-			SelectCompanyCommand = new DelegateCommand<ICompanyModel>(SelectCompany);
-			EditCommand = new DelegateCommand(Edit, () => SelectedCompany != null);
+			ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async (s) => await ShowWorkPageAsync(s));
+			EditCommand = new DelegateCommand<ICompanyModel>(Edit);
+			DeleteCompanyCommand = new DelegateCommand<ICompanyModel>(async (s) => await DeleteCompanyAsync(s));
+            RefreshCommand = new DelegateCommand(async() => await RefreshAsync());
 			InitDialogCommands();
 		}
 
-		public DelegateCommand<ICompanyModel> SelectCompanyCommand { get; }
-		public DelegateCommand ClearWholeOrDeleteSingleCompanyCommand { get; private set; }
+        public DelegateCommand RefreshCommand { get; }
+		public DelegateCommand ClearCompaniesCommand { get; private set; }
 		public DelegateCommand ShowAddCompanyDialogCommand { get; private set; }
 		public DelegateCommand<ICompanyModel> ShowWorkPageCommand { get; }
-		public DelegateCommand EditCommand { get; }
+		public DelegateCommand<ICompanyModel> EditCommand { get; }
+		public DelegateCommand<ICompanyModel> DeleteCompanyCommand { get; }
 
 
 		private ObservableCollection<ICompanyModel> _companies;
-		public ObservableCollection<ICompanyModel> Companies 
-		{ 
+		public ObservableCollection<ICompanyModel> Companies
+		{
 			get => _companies;
 			private set
 			{
@@ -59,45 +61,32 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private ICompanyModel _selectedCompany;
-		public ICompanyModel SelectedCompany
+        protected override async Task InitializeAsyncInt()
 		{
-			get => _selectedCompany;
-			set
-			{
-				if (_selectedCompany == value) return;
-				_selectedCompany = value;
-				RaisePropertyChanged();
-				EditCommand.RaiseCanExecuteChanged();
-			}
+			await base.InitializeAsyncInt();
+            await RefreshAsync();
 		}
 
-		protected override void InitializeInt()
-		{
-			base.InitializeInt();
-			Companies = new ObservableCollection<ICompanyModel>(_companyFacade.GetCompaniesByUserId(_currentUserProvider.GetModel().Id));
-		}
-
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			if (Companies == null || Companies.Count == 0)
-				Companies = new ObservableCollection<ICompanyModel>(_companyFacade.GetCompaniesByUserId(_currentUserProvider.GetModel().Id));
-		}
+            if (Companies == null || Companies.Count == 0)
+                await RefreshAsync();
+        }
 
 		protected override void DestroyInt()
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= ShowAddCompanyDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ClearWholeOrDeleteSingleCompanyCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearCompaniesCommand.RaiseCanExecuteChanged;
 		}
 
 		private void InitDialogCommands()
 		{
 			ShowAddCompanyDialogCommand = new DelegateCommand(async () => await ShowAddCompanyDialogAsync(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowAddCompanyDialogCommand.RaiseCanExecuteChanged;
-			ClearWholeOrDeleteSingleCompanyCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleCompanyAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ClearWholeOrDeleteSingleCompanyCommand.RaiseCanExecuteChanged;
+			ClearCompaniesCommand = new DelegateCommand(async () => await ClearCompaniesAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearCompaniesCommand.RaiseCanExecuteChanged;
 		}
 
 		private async Task ShowWorkPageAsync(ICompanyModel obj)
@@ -107,37 +96,27 @@ namespace WorkManager.ViewModels.Pages
 			await NavigationService.NavigateAsync("WorkRecordPage");
 			EndProcess();
 		}
-		private void SelectCompany(ICompanyModel companyModel)
-		{
-			SelectedCompany = companyModel;
-		}
 
-		private async Task ClearWholeOrDeleteSingleCompanyAsync()
+		private async Task ClearCompaniesAsync()
 		{
 			BeginProcess();
-			if (_selectedCompany != null)
+			IsDialogThrown = true;
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+				TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
+				TranslateViewModelsSR.DialogNo))
 			{
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.SelectedCompanyDeleteDialogMessageFormat(_selectedCompany.Name), TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _companyFacade.RemoveAsync(_selectedCompany.Id);
-					Companies.Remove(_selectedCompany);
-					_selectedCompany = null;
-				}
+				await _companyFacade.ClearAsync();
+				Companies.Clear();
 			}
-			else
-			{
-				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _companyFacade.ClearAsync();
-					Companies.Clear();
-				}
-				IsDialogThrown = false;
-			}
+			IsDialogThrown = false;
+			EndProcess();
+		}
+
+		private async Task DeleteCompanyAsync(ICompanyModel companyModel)
+		{
+			BeginProcess();
+			await _companyFacade.RemoveAsync(companyModel.Id);
+			Companies.Remove(companyModel);
 			EndProcess();
 		}
 
@@ -150,7 +129,14 @@ namespace WorkManager.ViewModels.Pages
 			IsDialogThrown = false;
 		}
 
-		private void Edit()
+        private async Task RefreshAsync()
+        {
+			BeginProcess();
+			Companies = new ObservableCollection<ICompanyModel>(await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id));
+			EndProcess();
+		}
+
+		private void Edit(ICompanyModel companyModel)
 		{
 
 		}

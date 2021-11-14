@@ -7,6 +7,10 @@
   </assembly>
 
   <assembly fullname="Prism" />
+  <assembly fullname="Xamarin.CommunityToolkit" />
+  <assembly fullname="Microsoft.AppCenter" />
+  <assembly fullname="Microsoft.AppCenter.Analytics" />
+  <assembly fullname="Microsoft.AppCenter.Crashes" />
   <assembly fullname="Prism.Forms" />
   <assembly fullname="Prism.Unity.Forms" />
   <assembly fullname="Unity.Container" />	

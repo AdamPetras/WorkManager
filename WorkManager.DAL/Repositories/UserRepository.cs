@@ -53,7 +53,7 @@ namespace WorkManager.DAL.Repositories
 				return await dbContext.UserSet.AnyAsync(s => s.Username == username);
 		}
 
-		protected override IEnumerable<UserEntity> GetAllInt(IQueryable<UserEntity> dbSet)
+		protected override ICollection<UserEntity> GetAllInt(IQueryable<UserEntity> dbSet)
 		{
 			return dbSet.ToList();
 		}

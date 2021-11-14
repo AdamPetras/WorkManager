@@ -66,12 +66,12 @@ namespace WorkManager.BL.Facades.BaseClasses
 			await Repository.UpdateAsync(Mapper.Map(model), token);
 		}
 
-		public IList<TModel> GetAll()
+		public IEnumerable<TModel> GetAll()
 		{
 			return Repository.GetAll().Select(Mapper.Map).ToList();
 		}
 
-		public async Task<IList<TModel>> GetAllAsync(CancellationToken token = default)
+		public async Task<IEnumerable<TModel>> GetAllAsync(CancellationToken token = default)
 		{
 			return (await Repository.GetAllAsync(token)).Select(Mapper.Map).ToList();
 		}

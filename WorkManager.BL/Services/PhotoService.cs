@@ -24,7 +24,7 @@ namespace WorkManager.BL.Services
 				FileResult photo = await MediaPicker.PickPhotoAsync();
 				return photo.FullPath;
 			}
-			catch (PermissionException pEx)
+			catch (PermissionException)
 			{
 				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUseFormat(TranslateBussinessSR.Camera));
 			}
@@ -42,11 +42,11 @@ namespace WorkManager.BL.Services
 				FileResult photo = await MediaPicker.CapturePhotoAsync();
 				return await LoadPhotoAsync(photo);
 			}
-			catch (FeatureNotSupportedException fnsEx)
+			catch (FeatureNotSupportedException)
 			{
 				_toastMessageService.LongAlert(TranslateBussinessSR.FeatureIsNotSupportedFormat(TranslateBussinessSR.Camera));
 			}
-			catch (PermissionException pEx)
+			catch (PermissionException)
 			{
 				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUseFormat(TranslateBussinessSR.Camera));
 			}

@@ -39,57 +39,56 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView SelectionMode="None" ItemsSource="{Binding TaskGroups}" Margin="5">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
-                </CollectionView.ItemsLayout>
-                <CollectionView.EmptyView>
-                    <views:TaskGroupEmptyView></views:TaskGroupEmptyView>
-                </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="interfaces:ITaskGroupModel">
-                        <pancakeView:PancakeView CornerRadius="20" VerticalOptions="FillAndExpand" Padding="5">
-                            <pancakeView:PancakeView.Border>
-                                <pancakeView:Border Color="{StaticResource BorderColor}" Thickness="3"></pancakeView:Border>
-                            </pancakeView:PancakeView.Border>
-                            <SwipeView>
-                                <SwipeView.RightItems>
-                                    <SwipeItemView>
-                                        <StackLayout Orientation="Horizontal">
-                                            <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}"
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+                <CollectionView SelectionMode="None" ItemsSource="{Binding TaskGroups}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyView>
+                        <views:TaskGroupEmptyView></views:TaskGroupEmptyView>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="interfaces:ITaskGroupModel">
+                            <StackLayout>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItemView>
+                                            <StackLayout Orientation="Horizontal">
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}"
+                                                             CommandParameter="{Binding .}">
+                                                    <ImageButton.Source>
+                                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" Color="{StaticResource PrimaryLightColor}"/>
+                                                    </ImageButton.Source>
+                                                </ImageButton>
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteTaskGroupCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}" 
                                                          CommandParameter="{Binding .}">
-                                                <ImageButton.Source>
-                                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" Color="{StaticResource PrimaryLightColor}"/>
-                                                </ImageButton.Source>
-                                            </ImageButton>
-                                            <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteTaskGroupCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}" 
-                                                         CommandParameter="{Binding .}">
-                                                <ImageButton.Source>
-                                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
-                                                </ImageButton.Source>
-                                            </ImageButton>
-                                        </StackLayout>
-                                    </SwipeItemView>
-                                </SwipeView.RightItems>
-                                <Grid effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                                                    <ImageButton.Source>
+                                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                                    </ImageButton.Source>
+                                                </ImageButton>
+                                            </StackLayout>
+                                        </SwipeItemView>
+                                    </SwipeView.RightItems>
+                                    <Grid effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
                                       effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0"  Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
-                                    <BoxView Grid.Row="1" Grid.Column="0" HeightRequest="2" BackgroundColor="{StaticResource BorderColor}" ></BoxView>
-                                    <Label Grid.Row="2" Grid.Column="0" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}"></Label>
-                                </Grid>
-                            </SwipeView>
-                        </pancakeView:PancakeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                                        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" Margin="5" VerticalTextAlignment="Center"  HorizontalTextAlignment="Center"></Label>
+                                    </Grid>
+                                </SwipeView>
+                                <BoxView HeightRequest="2" BackgroundColor="{StaticResource BorderColor}"></BoxView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </Grid>
     </StackLayout>
 </ContentPage>

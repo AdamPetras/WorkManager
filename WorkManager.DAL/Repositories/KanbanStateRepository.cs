@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
@@ -16,7 +18,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override IEnumerable<KanbanStateEntity> GetAllInt(IQueryable<KanbanStateEntity> dbSet)
+		protected override ICollection<KanbanStateEntity> GetAllInt(IQueryable<KanbanStateEntity> dbSet)
 		{
 			return dbSet.ToList();
 		}
@@ -30,12 +32,20 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public IEnumerable<KanbanStateEntity> GetKanbanStateByTaskGroup(Guid taskGroupId)
+		public ICollection<KanbanStateEntity> GetKanbanStateByTaskGroup(Guid taskGroupId)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToList();
 			}
 		}
-	}
+
+        public async Task<ICollection<KanbanStateEntity>> GetKanbanStateByTaskGroupAsync(Guid taskGroupId, CancellationToken token)
+        {
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToListAsync(token);
+            }
+		}
+    }
 }

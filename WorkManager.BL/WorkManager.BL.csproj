@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.4.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Forms" Version="8.1.97" />
     <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
@@ -36,6 +37,7 @@
 
   <ItemGroup>
     <Folder Include="EventActions\" />
+    <Folder Include="NavigationParams\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -21,9 +21,14 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public ICollection<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId)
+		public IEnumerable<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId)
 		{
-			return Repository.GetTaskGroupsByUserId(userId).Select(Mapper.Map).ToList();
+			return Repository.GetTaskGroupsByUserId(userId).Select(Mapper.Map);
 		}
+
+        public async Task<IEnumerable<ITaskGroupModel>> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default)
+        {
+			return (await Repository.GetTaskGroupsByUserIdAsync(id, token)).Select(Mapper.Map);
+        }
 	}
 }

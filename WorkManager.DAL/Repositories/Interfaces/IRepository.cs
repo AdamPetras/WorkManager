@@ -8,19 +8,19 @@ namespace WorkManager.DAL.Repositories.Interfaces
 {
 	public interface IRepository<TEntity> where TEntity : IEntity
 	{
-		IEnumerable<TEntity> GetAll();
-		Task<List<TEntity>> GetAllAsync(CancellationToken token = default);
+        ICollection<TEntity> GetAll();
+		Task<ICollection<TEntity>> GetAllAsync(CancellationToken token);
 		TEntity GetById(Guid id);
-		Task<TEntity> GetByIdAsync(Guid id, CancellationToken token = default);
+		Task<TEntity> GetByIdAsync(Guid id, CancellationToken token);
 		bool Remove(Guid id);
-		Task<bool> RemoveAsync(Guid id, CancellationToken token = default);
+		Task<bool> RemoveAsync(Guid id, CancellationToken token);
 		TEntity Add(TEntity entity);
-		Task<TEntity> AddAsync(TEntity entity, CancellationToken token = default);
+		Task<TEntity> AddAsync(TEntity entity, CancellationToken token);
 		void Update(TEntity entity);
-		Task UpdateAsync(TEntity entity, CancellationToken token = default);
+		Task UpdateAsync(TEntity entity, CancellationToken token);
 		bool Exists(TEntity entity);
-		Task<bool> ExistsAsync(TEntity entity, CancellationToken token = default);
+		Task<bool> ExistsAsync(TEntity entity, CancellationToken token);
 		void Clear();
-		Task ClearAsync(CancellationToken token = default);
+		Task ClearAsync(CancellationToken token);
 	}
 }

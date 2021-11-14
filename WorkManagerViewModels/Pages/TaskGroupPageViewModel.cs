@@ -8,6 +8,7 @@ using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
+using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -35,13 +36,15 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService = dialogEventService;
 			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
 			DeleteTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await DeleteTaskGroupAsync(t));
-			EditCommand = new DelegateCommand<ITaskGroupModel>(Edit);
+			EditCommand = new DelegateCommand<ITaskGroupModel>(async(s) => await EditAsync(s));
+            RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
 			InitDialogCommands();
 		}
 
 		public DelegateCommand ShowAddTaskGroupDialogCommand { get; private set; }
 		public DelegateCommand ClearTaskGroupsCommand { get; private set; }
-		public DelegateCommand<ITaskGroupModel> DeleteTaskGroupCommand { get; }
+		public DelegateCommand RefreshCommand { get; }
+        public DelegateCommand<ITaskGroupModel> DeleteTaskGroupCommand { get; }
 		public DelegateCommand<ITaskGroupModel> EditCommand { get; }
 		public DelegateCommand<ITaskGroupModel> NavigateToTasksPageCommand { get; }
 
@@ -58,18 +61,18 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		protected override void InitializeInt()
+        protected override async Task InitializeAsyncInt()
 		{
-			base.InitializeInt();
-			TaskGroups = new ObservableCollection<ITaskGroupModel>(_taskGroupFacade.GetTaskGroupsByUserId(_currentUserProvider.GetModel().Id));
+			await base.InitializeAsyncInt( );
+                await RefreshAsync();
 		}
 
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			if (TaskGroups == null || TaskGroups.Count == 0)
-				TaskGroups = new ObservableCollection<ITaskGroupModel>(_taskGroupFacade.GetTaskGroupsByUserId(_currentUserProvider.GetModel().Id));
-		}
+            if (TaskGroups == null || TaskGroups.Count == 0)
+                await RefreshAsync();
+        }
 
 		protected override void DestroyInt()
 		{
@@ -122,19 +125,23 @@ namespace WorkManager.ViewModels.Pages
 		{
 			if (taskGroupModel != null)
 			{
-				//if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-				//	TranslateViewModelsSR.SelectedTaskGroupDeleteDialogMessageFormat(taskGroupModel.Name), TranslateViewModelsSR.DialogYes,
-				//	TranslateViewModelsSR.DialogNo))
-				//{
-				await _taskGroupFacade.RemoveAsync(taskGroupModel.Id);
-				TaskGroups.Remove(taskGroupModel);
-				//}
+			    await _taskGroupFacade.RemoveAsync(taskGroupModel.Id);
+			    TaskGroups.Remove(taskGroupModel);
 			}
 		}
 
-		private void Edit(ITaskGroupModel taskGroupModel)
+        private async Task RefreshAsync()
 		{
+			BeginProcess();
+			TaskGroups = new ObservableCollection<ITaskGroupModel>(await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id));
+			EndProcess();
+		}
 
+		private async Task EditAsync(ITaskGroupModel taskGroupModel)
+		{
+            BeginProcess();
+            await NavigationService.NavigateAsync("TaskGroupDetailPage", new TaskGroupNavigationParameters(taskGroupModel));
+            EndProcess();
 		}
 	}
 }

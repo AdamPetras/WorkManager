@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Mvvm;
 using Prism.Navigation;
 
 namespace WorkManager.ViewModels.BaseClasses
 {
 	public delegate void DialogThrownDelegate();
-	public abstract class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible
+	public abstract class ViewModelBase : BindableBase, IInitializeAsync, INavigationAware, IDestructible
 	{
 		protected ViewModelBase(INavigationService navigationService)
 		{
@@ -59,14 +60,15 @@ namespace WorkManager.ViewModels.BaseClasses
 		}
 		protected INavigationService NavigationService { get; private set; }
 
-		public void Initialize(INavigationParameters parameters)
+		public Task InitializeAsync(INavigationParameters parameters)
 		{
-			InitializeInt();
+			return InitializeAsyncInt();
 		}
 
-		protected virtual void InitializeInt()
-		{
-		}
+		protected virtual Task InitializeAsyncInt()
+        {
+            return Task.CompletedTask;
+        }
 
 		public void OnNavigatedFrom(INavigationParameters parameters)
 		{

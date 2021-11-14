@@ -41,16 +41,17 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
 			_selectedFilter = EFilterType.ThisMonth;
-			SelectedRecordCommand = new DelegateCommand<IWorkRecordModelBase>(SelectRecord);
-			EditCommand = new DelegateCommand(async () => await EditAsync(), () => SelectedRecord != null);
+			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
+            DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
 			InitDialogCommands();
 		}
 
-		public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
-		public DelegateCommand ClearWholeOrDeleteSingleRecordCommand { get; private set; }
+        public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
+		public DelegateCommand ClearRecordsCommand { get; private set; }
+		public DelegateCommand<IWorkRecordModelBase> DeleteRecordCommand { get; private set; }
 		public DelegateCommand ShowFilterDialogCommand { get; private set; }
 		public DelegateCommand ShowStatisticsCommand { get; private set; }
-		public DelegateCommand EditCommand { get; }
+		public DelegateCommand<IWorkRecordModelBase> EditCommand { get; }
 		public DelegateCommand ShowAddDialogCommand { get; private set; }
 
 		private FilteredObservableCollection<IWorkRecordModelBase> _filteredRecords;
@@ -66,28 +67,15 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private IWorkRecordModelBase _selectedRecord;
-		public IWorkRecordModelBase SelectedRecord
-		{
-			get => _selectedRecord;
-			set
-			{
-				if (_selectedRecord == value) return;
-				_selectedRecord = value;
-				RaisePropertyChanged();
-				EditCommand.RaiseCanExecuteChanged();
-			}
-		}
-
 		public double TotalPriceThisMonth => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords?.WholeCollection);
 
 		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
 
 
-		protected override void InitializeInt()
+		protected override async Task InitializeAsyncInt()
 		{
-			base.InitializeInt();
-			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+			await base.InitializeAsyncInt();
+			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
 			UpdateTotalPrices();
 		}
 
@@ -97,7 +85,7 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent -= ShowAddDialogCommand.RaiseCanExecuteChanged;
 			DialogThrownEvent -= ShowStatisticsCommand.RaiseCanExecuteChanged;
 			DialogThrownEvent -= ShowFilterDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ClearWholeOrDeleteSingleRecordCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
@@ -126,8 +114,8 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent += ShowStatisticsCommand.RaiseCanExecuteChanged;
 			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowFilterDialogCommand.RaiseCanExecuteChanged;
-			ClearWholeOrDeleteSingleRecordCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleRecordAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ClearWholeOrDeleteSingleRecordCommand.RaiseCanExecuteChanged;
+			ClearRecordsCommand = new DelegateCommand(async () => await ClearRecordsAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
 		private async Task ShowAddDialogAsync()
@@ -171,46 +159,40 @@ namespace WorkManager.ViewModels.Pages
 			};
 		}
 
-		private async Task ClearWholeOrDeleteSingleRecordAsync()
+		private async Task ClearRecordsAsync()
 		{
 			BeginProcess();
-			if (_selectedRecord != null)
+			IsDialogThrown = true;
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+				TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
+				TranslateViewModelsSR.DialogNo))
 			{
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.SelectedWorkRecordDeleteDialogMessageFormat(_selectedRecord.ActualDateTime.ToString("dd.MM.yyyy")), TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _workFacade.RemoveAsync(_selectedRecord.Id);
-					FilteredRecords.WholeCollection.Remove(_selectedRecord);
-					_selectedRecord = null;
-				}
+				await _workFacade.ClearAsync();
+				FilteredRecords.WholeCollection?.Clear();
 			}
-			else
-			{
-				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
-					TranslateViewModelsSR.DialogNo))
-				{
-					await _workFacade.ClearAsync();
-					FilteredRecords.WholeCollection?.Clear();
-				}
-				IsDialogThrown = false;
-			}
+			IsDialogThrown = false;
 			RaisePropertyChanged(nameof(TotalPriceThisMonth));
 			RaisePropertyChanged(nameof(TotalPriceThisYear));
 			EndProcess();
 		}
 
-		private void SelectRecord(IWorkRecordModelBase obj)
-		{
-			SelectedRecord = obj;
+        private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
+        {
+			BeginProcess();
+            if (workRecordModelBase != null)
+            {
+                await _workFacade.RemoveAsync(workRecordModelBase.Id);
+                FilteredRecords.WholeCollection.Remove(workRecordModelBase);
+                RaisePropertyChanged(nameof(TotalPriceThisMonth));
+                RaisePropertyChanged(nameof(TotalPriceThisYear));
+			}
+			EndProcess();
 		}
 
-		private async Task EditAsync()
+		private async Task EditAsync(IWorkRecordModelBase workRecordModelBase)
 		{
 			BeginProcess();
-			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", SelectedRecord}});
+			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", workRecordModelBase} });
 			EndProcess();
 		}
 	}

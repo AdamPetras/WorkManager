@@ -2,13 +2,14 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
+             xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="WorkManager.Views.Styles.SharedStyles">
 
     <converters:NegateBooleanConverter x:Key="NegateBooleanConverter"></converters:NegateBooleanConverter>
     <converters:IsNullToVisibilityConverter x:Key="IsNullToVisibilityConverter"></converters:IsNullToVisibilityConverter>
     <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
     <converters:VisibleIfAnyConverter x:Key="VisibleIfAnyConverter" ></converters:VisibleIfAnyConverter>
-    <converters:DragColorConverter x:Key="DragColorConverter"></converters:DragColorConverter>
+    <converters:StringIsNullOrEmptyToVisibilityConverter x:Key="StringIsNullOrEmptyToVisibilityConverter"></converters:StringIsNullOrEmptyToVisibilityConverter>
 
     <Color x:Key="PrimaryColor">#005288</Color>
     <Color x:Key="PrimaryLightColor">#497eb8</Color>
@@ -34,4 +35,6 @@
     <SolidColorBrush  x:Key="BodyBrush" Color="{StaticResource BodyColor}"></SolidColorBrush>
     <SolidColorBrush  x:Key="BodyTextBrush" Color="{StaticResource BodyTextColor}"></SolidColorBrush>
     <SolidColorBrush  x:Key="BodySelectedBrush" Color="{StaticResource BodySelectedColor}"></SolidColorBrush>
+
+    <pancakeView:Border x:Key="PancakeBorder" Thickness="3" Color="{StaticResource BorderColor}"></pancakeView:Border>
 </ResourceDictionary>

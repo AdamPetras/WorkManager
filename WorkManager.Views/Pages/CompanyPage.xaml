@@ -6,6 +6,7 @@
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:DataType="pages:CompanyPageViewModel"
              x:Class="WorkManager.Views.Pages.CompanyPage">
     <ContentPage.Resources>
@@ -20,18 +21,10 @@
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Plus}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Text="Edit"
-                     Order="Primary"
-                     Priority="0"
-                     Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
         <ToolbarItem Text="Register"
                      Order="Primary"
                      Priority="0"
-                     Command="{Binding ClearWholeOrDeleteSingleCompanyCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                     Command="{Binding ClearCompaniesCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
             </ToolbarItem.IconImageSource>
@@ -45,48 +38,53 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView x:Name="Collection" ItemsSource="{Binding Companies}" SelectionMode="Single" Margin="5" SelectionChangedCommand="{Binding SelectCompanyCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
-                </CollectionView.ItemsLayout>
-                <CollectionView.EmptyView>
-                    <views:CompanyEmptyView></views:CompanyEmptyView>
-                </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="interfaces:ICompanyModel">
-                        <Frame BackgroundColor="Black" Padding="3" CornerRadius="20" VerticalOptions="CenterAndExpand" >
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor"
-                                                    Value="Black" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState x:Name="Selected">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor"
-                                                    Value="{StaticResource SecondaryColor}" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Frame CornerRadius="18" VerticalOptions="CenterAndExpand" Padding="8" effects:TouchEffect.LongPressCommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
-                                   effects:TouchEffect.LongPressCommand="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0"  Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
-                                </Grid>
-                            </Frame>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+                <CollectionView ItemsSource="{Binding Companies}" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyView>
+                        <views:CompanyEmptyView></views:CompanyEmptyView>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="interfaces:ICompanyModel">
+                            <StackLayout>
+                            <SwipeView HeightRequest="40">
+                                    <SwipeView.RightItems>
+                                        <SwipeItemView>
+                                            <StackLayout Orientation="Horizontal">
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}"
+                                                             CommandParameter="{Binding .}">
+                                                    <ImageButton.Source>
+                                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" Color="{StaticResource PrimaryLightColor}"/>
+                                                    </ImageButton.Source>
+                                                </ImageButton>
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteCompanyCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}" 
+                                                             CommandParameter="{Binding .}">
+                                                    <ImageButton.Source>
+                                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                                    </ImageButton.Source>
+                                                </ImageButton>
+                                            </StackLayout>
+                                        </SwipeItemView>
+                                    </SwipeView.RightItems>
+                                    <Grid effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True"
+                                          effects:TouchEffect.Command="{Binding ShowWorkPageCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyPageViewModel}}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0"  Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                                    </Grid>
+                                </SwipeView>
+                                <BoxView HeightRequest="2" BackgroundColor="{StaticResource BorderColor}"></BoxView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </Grid>
     </StackLayout>
 </ContentPage>

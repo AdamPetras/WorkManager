@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using WorkManager.BL.Facades.BaseClasses;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
@@ -18,9 +20,14 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public ICollection<IImageModel> GetAllImagesByTask(Guid id)
+		public IEnumerable<IImageModel> GetAllImagesByTask(Guid id)
 		{
-			return Repository.GetAllImagesByTask(id).Select(Mapper.Map).ToList();
+			return Repository.GetAllImagesByTask(id).Select(Mapper.Map);
 		}
-	}
+
+        public async Task<IEnumerable<IImageModel>> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
+        {
+			return (await Repository.GetAllImagesByTaskAsync(id, token)).Select(Mapper.Map);
+        }
+    }
 }

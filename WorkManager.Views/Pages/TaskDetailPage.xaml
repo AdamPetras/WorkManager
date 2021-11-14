@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
-             xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
-             xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
+             xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              x:Class="WorkManager.Views.Pages.TaskDetailPage"
              x:DataType="pages:TaskDetailPageViewModel"
              Title="{Binding Text, Source={x:Reference NameEntry}}">
@@ -23,74 +22,72 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <ContentPage.Content>
-        <Grid VerticalOptions="Center" Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
+    <Grid VerticalOptions="Center" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Name}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
+        <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{ Binding SelectedTask.Name}"></Entry>
+        <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Description}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{ Binding SelectedTask.Description}"></Entry>
+        <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.ActualDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
+        <DatePicker Grid.Row="2" Grid.Column="1" Date="{ Binding SelectedTask.ActualDateTime}"></DatePicker>
+        <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.TaskDoneDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
+        <DatePicker Grid.Row="3" Grid.Column="1" Date="{ Binding SelectedTask.TaskDoneDateTime}"></DatePicker>
+        <Label Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding SelectedTask.WorkTime}"></TimePicker>
+        <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Priority}" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Picker Grid.Row="5" Grid.Column="1" SelectedItem="{Binding SelectedTask.Priority}" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EPriority}}}"></Picker>
+        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="80"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Name}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-            <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{ Binding SelectedTask.Name}"></Entry>
-            <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Description}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-            <Entry Grid.Row="1" Grid.Column="1" Text="{ Binding SelectedTask.Description}"></Entry>
-            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.ActualDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-            <DatePicker Grid.Row="2" Grid.Column="1" Date="{ Binding SelectedTask.ActualDateTime}"></DatePicker>
-            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.TaskDoneDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-            <DatePicker Grid.Row="3" Grid.Column="1" Date="{ Binding SelectedTask.TaskDoneDateTime}"></DatePicker>
-            <Label Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" TextColor="{StaticResource SecondaryTextColor}"></Label>
-            <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding SelectedTask.WorkTime}"></TimePicker>
-            <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Priority}" TextColor="{StaticResource SecondaryTextColor}"></Label>
-            <Picker Grid.Row="5" Grid.Column="1" SelectedItem="{Binding SelectedTask.Priority}" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EPriority}}}"></Picker>
-            <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <CollectionView Grid.Column="0" ItemsSource="{Binding PhotoPaths}" Margin="5">
-                    <CollectionView.EmptyView>
-                        <Image VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-                            <Image.Source>
-                                <FontImageSource Color="{x:StaticResource primaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
-                            </Image.Source>
-                        </Image>
-                    </CollectionView.EmptyView>
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="5" SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="interfaces:IImageModel">
-                            <Grid>
-                                <Image Source="{Binding Path}">
-                                    <Image.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding ShowDetailImageDialogCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}" CommandParameter="{Binding Path=Path}"></TapGestureRecognizer>
-                                    </Image.GestureRecognizers>
-                                </Image>
-                                <ImageButton VerticalOptions="Start" HorizontalOptions="End" HeightRequest="20" Opacity="0.5" Margin="5" Command="{Binding DeletePhotoCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}" CommandParameter="{Binding .}">
-                                    <ImageButton.Source>
-                                        <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.TimesCircle}" FontFamily="fa-solid-900"></FontImageSource>
-                                    </ImageButton.Source>
-                                </ImageButton>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <Button Grid.Column="1" Command="{Binding TakePhotoCommand}" WidthRequest="80" HorizontalOptions="CenterAndExpand" Margin="5">
-                    <Button.ImageSource>
-                        <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.Plus}" FontFamily="fa-solid-900"></FontImageSource>
-                    </Button.ImageSource>
-                </Button>
-            </Grid>
-            <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SaveCommand}" Text="{x:Static resources:TranslatePagesSR.Save}"></Button>
+            <CollectionView Grid.Column="0" ItemsSource="{Binding PhotoPaths}" Margin="5">
+                <CollectionView.EmptyView>
+                    <Image VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                        <Image.Source>
+                            <FontImageSource Color="{StaticResource PrimaryColor}" FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}"></FontImageSource>
+                        </Image.Source>
+                    </Image>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="5" SnapPointsType="Mandatory" SnapPointsAlignment="End"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="interfaces:IImageModel">
+                        <Grid>
+                            <Image Source="{Binding Path}">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ShowDetailImageDialogCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}" CommandParameter="{Binding Path=Path}"></TapGestureRecognizer>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <ImageButton VerticalOptions="Start" HorizontalOptions="End" HeightRequest="20" Opacity="0.5" Margin="5" Command="{Binding DeletePhotoCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}" CommandParameter="{Binding .}">
+                                <ImageButton.Source>
+                                    <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.TrashAlt}" FontFamily="fa-solid-900"></FontImageSource>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Grid.Column="1" Command="{Binding TakePhotoCommand}" WidthRequest="80" HorizontalOptions="CenterAndExpand" Margin="5">
+                <Button.ImageSource>
+                    <FontImageSource Color="{StaticResource PrimaryColor}" Glyph="{x:Static resources:IconFont.Plus}" FontFamily="fa-solid-900"></FontImageSource>
+                </Button.ImageSource>
+            </Button>
         </Grid>
-    </ContentPage.Content>
+        <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SaveCommand}" Text="{x:Static resources:TranslatePagesSR.Save}"></Button>
+    </Grid>
 </ContentPage>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
@@ -17,7 +19,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override IEnumerable<WorkRecordEntity> GetAllInt(IQueryable<WorkRecordEntity> dbSet)
+		protected override ICollection<WorkRecordEntity> GetAllInt(IQueryable<WorkRecordEntity> dbSet)
 		{
 			return dbSet.Include(s => s.Company).ToList();
 		}
@@ -32,7 +34,7 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public IEnumerable<WorkRecordEntity> GetAllRecordsByCompany(Guid companyId, EFilterType filterType)
+		public ICollection<WorkRecordEntity> GetAllRecordsByCompany(Guid companyId, EFilterType filterType)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -50,5 +52,24 @@ namespace WorkManager.DAL.Repositories
 				};
 			}
 		}
-	}
+
+        public async Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, EFilterType filterType, CancellationToken token)
+        {
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return filterType switch
+                {
+                    EFilterType.None => await dbContext.WorkSet.Where(s => s.Company.Id == companyId).Include(s => s.Company).ThenInclude(s => s.User).ToListAsync(token),
+                    EFilterType.ThisYear => await dbContext.WorkSet.Where(s => s.Company.Id == companyId)
+                        .Where(s => s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
+                        .ToListAsync(token),
+                    EFilterType.ThisMonth => await dbContext.WorkSet.Where(s => s.Company.Id == companyId).Include(s => s.Company)
+                        .Where(s => s.ActualDateTime.Month == DateTime.Today.Month &&
+                                    s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
+                        .ToListAsync(token),
+                    _ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
+                };
+            }
+		}
+    }
 }

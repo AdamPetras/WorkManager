@@ -8,8 +8,8 @@ namespace WorkManager.DAL.Repositories.Interfaces
 {
 	public interface ITaskRepository : IRepository<TaskEntity>
 	{
-		IEnumerable<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId);
-		IEnumerable<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
-		Task<IEnumerable<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
+        ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId);
+        ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
+		Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
 	}
 }

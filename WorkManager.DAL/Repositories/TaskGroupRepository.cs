@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
@@ -16,7 +18,7 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		public IEnumerable<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId)
+		public ICollection<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
@@ -24,7 +26,15 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		protected override IEnumerable<TaskGroupEntity> GetAllInt(IQueryable<TaskGroupEntity> dbSet)
+        public async Task<ICollection<TaskGroupEntity>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.TaskGroupSet.Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToListAsync(token);
+            }
+		}
+
+        protected override ICollection<TaskGroupEntity> GetAllInt(IQueryable<TaskGroupEntity> dbSet)
 		{
 			return dbSet.Include(s => s.User).ToList();
 		}

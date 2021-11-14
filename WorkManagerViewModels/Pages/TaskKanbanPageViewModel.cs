@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,26 +42,26 @@ namespace WorkManager.ViewModels.Pages
 			_dialogEventService = dialogEventService;
 			BackCommand = new DelegateCommand<ITaskModel>(async (t) => await PushTaskBackAsync(t));
 			CompleteCommand = new DelegateCommand<ITaskModel>(async (t) => await CompleteTaskAsync(t));
-			DeleteCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteAsync(t));
-			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanganStateChangedAsync(t));
+            DeleteTaskCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteTaskAsync(t));
+			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanbanStateChangedAsync(t));
 			SelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
-			EditCommand = new DelegateCommand(async () => await EditAsync(), () => SelectedTask != null && !IsDialogThrown);
-			ShowTaskKanbanSettingsCommand = new DelegateCommand(async () => await ShowTaskKanbanSettings());
-			InitDialogCommands();
+            RefreshCommand = new DelegateCommand(async()=> await RefreshAsync(SelectedKanbanState));
+			EditCommand = new DelegateCommand<ITaskModel>(async (s) => await EditAsync(s), (s) => s != null && !IsDialogThrown);
+            InitDialogCommands();
 		}
 
-		public DelegateCommand ClearWholeOrDeleteSingleTaskCommand { get; private set; }
+        public DelegateCommand RefreshCommand { get; set; }
+        public DelegateCommand ClearTasksCommand { get; private set; }
 		public DelegateCommand ShowAddTaskDialogCommand { get; private set; }
 		public DelegateCommand<IKanbanStateModel> KanbanStateChangedCommand { get; }
 		public DelegateCommand<ITaskModel> BackCommand { get; }
 		public DelegateCommand<ITaskModel> CompleteCommand { get; }
-		public DelegateCommand<ITaskModel> DeleteCommand { get; }
+        public DelegateCommand<ITaskModel> DeleteTaskCommand { get; }
 		public DelegateCommand<ITaskModel> SelectTaskCommand { get; }
-		public DelegateCommand EditCommand { get; }
-		public DelegateCommand ShowTaskKanbanSettingsCommand { get; }
+		public DelegateCommand<ITaskModel> EditCommand { get; }
 
 
-		private IKanbanStateModel _selectedKanbanState;
+        private IKanbanStateModel _selectedKanbanState;
 		public IKanbanStateModel SelectedKanbanState
 		{
 			get => _selectedKanbanState;
@@ -146,10 +147,10 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		protected override void InitializeInt()
+        protected override async Task InitializeAsyncInt()
 		{
-			base.InitializeInt();
-			KanbanStates = new ObservableCollection<IKanbanStateModel>(_kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id));
+			await base.InitializeAsyncInt();
+			KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id));
 		}
 
 		protected override void OnNavigatedToInt(INavigationParameters parameters)
@@ -163,15 +164,15 @@ namespace WorkManager.ViewModels.Pages
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= ShowAddTaskDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ClearWholeOrDeleteSingleTaskCommand.RaiseCanExecuteChanged;
+			DialogThrownEvent -= ClearTasksCommand.RaiseCanExecuteChanged;
 		}
 
 		private void InitDialogCommands()
 		{
 			ShowAddTaskDialogCommand = new DelegateCommand(async () => await ShowAddTaskDialogAsync(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowAddTaskDialogCommand.RaiseCanExecuteChanged;
-			ClearWholeOrDeleteSingleTaskCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTaskAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ClearWholeOrDeleteSingleTaskCommand.RaiseCanExecuteChanged;
+			ClearTasksCommand = new DelegateCommand(async () => await ClearWholeOrDeleteSingleTaskAsync(), () => !IsDialogThrown);
+			DialogThrownEvent += ClearTasksCommand.RaiseCanExecuteChanged;
 		}
 
 		private void UpdateButtonsVisibility(IKanbanStateModel kanbanState)
@@ -197,7 +198,7 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task MoveWithTask(ITaskModel obj, bool isMoveToComplete)
 		{
-			IKanbanStateModel model = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).FirstOrDefault(s => s.StateOrder == SelectedKanbanState.StateOrder + (isMoveToComplete ? +1 : -1));
+			IKanbanStateModel model = (await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id)).FirstOrDefault(s => s.StateOrder == SelectedKanbanState.StateOrder + (isMoveToComplete ? +1 : -1));
 			if (model != null)
 			{
 				Tasks.Remove(obj);
@@ -222,44 +223,30 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ClearWholeOrDeleteSingleTaskAsync()
 		{
 			BeginProcess();
-			if (_selectedTask != null)
+			IsDialogThrown = true;
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.TaskClearTasksMessage,
+				TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 			{
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-					TranslateViewModelsSR.SelectedTaskDeleteMessageFormat(_selectedTask.Name),
-					TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
-				{
-					await _taskFacade.RemoveAsync(_selectedTask.Id);
-					Tasks.Remove(_selectedTask);
-					_selectedTask = null;
-				}
+				await _taskFacade.ClearAsync();
+				Tasks.Clear();
 			}
-			else
-			{
-				IsDialogThrown = true;
-				if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.TaskClearTasksMessage,
-					TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
-				{
-					await _taskFacade.ClearAsync();
-					Tasks.Clear();
-				}
-				IsDialogThrown = false;
-			}
+			IsDialogThrown = false;
 			EndProcess();
 		}
 
-		private async Task DeleteAsync(ITaskModel obj)
+		private async Task DeleteTaskAsync(ITaskModel obj)
 		{
 			Tasks.Remove(obj);
 			await _taskFacade.RemoveAsync(obj.Id);
 		}
 
-		private async Task KanganStateChangedAsync(IKanbanStateModel model)
+		private async Task KanbanStateChangedAsync(IKanbanStateModel model)
 		{
+            if (model == null)
+                return;
 			BeginProcess();
-			if (model == null)
-				return;
 			SelectedKanbanState = model;
-			Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
+            await RefreshAsync(model);
 			UpdateButtonsVisibility(model);
 			EndProcess();
 		}
@@ -269,18 +256,20 @@ namespace WorkManager.ViewModels.Pages
 			SelectedTask = obj;
 		}
 
-		private async Task EditAsync()
+		private async Task EditAsync(ITaskModel task)
 		{
 			BeginProcess();
-			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", SelectedTask } });
+			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", task } });
 			EndProcess();
 		}
 
-		private async Task ShowTaskKanbanSettings()
-		{
+        private async Task RefreshAsync(IKanbanStateModel model)
+        {
+            if (model == null)
+                return;
 			BeginProcess();
-			await NavigationService.NavigateAsync("TaskKanbanSettingsPage", new NavigationParameters() { { "TaskGroup", _currentTaskGroupProvider.GetModel() } });
+            Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
 			EndProcess();
 		}
-	}
+    }
 }
