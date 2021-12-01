@@ -65,7 +65,7 @@
                                         <SwipeView.LeftItems>
                                             <SwipeItemView IsVisible="{Binding IsBackwardButtonVisible, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}">
                                                 <StackLayout Orientation="Horizontal">
-                                                    <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" CommandParameter="{Binding .}">
+                                                    <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding BackCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                                         <ImageButton.Source>
                                                             <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.ArrowLeft}" Color="{StaticResource PrimaryLightColor}"/>
                                                         </ImageButton.Source>
@@ -76,12 +76,12 @@
                                         <SwipeView.RightItems>
                                             <SwipeItemView>
                                                 <StackLayout Orientation="Horizontal">
-                                                    <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteTaskCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" CommandParameter="{Binding .}">
+                                                    <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteTaskCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                                         <ImageButton.Source>
                                                             <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
                                                         </ImageButton.Source>
                                                     </ImageButton>
-                                                    <ImageButton Margin="5" BackgroundColor="Transparent"  IsVisible="{Binding IsCompleteButtonVisible, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" CommandParameter="{Binding .}">
+                                                    <ImageButton Margin="5" BackgroundColor="Transparent"  IsVisible="{Binding IsCompleteButtonVisible, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" effects:TouchEffect.Command="{Binding CompleteCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                                         <ImageButton.Source>
                                                             <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.ArrowRight}" Color="{StaticResource PrimaryLightColor}"/>
                                                         </ImageButton.Source>

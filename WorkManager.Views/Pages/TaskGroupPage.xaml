@@ -54,14 +54,14 @@
                                     <SwipeView.RightItems>
                                         <SwipeItemView>
                                             <StackLayout Orientation="Horizontal">
-                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}"
-                                                             CommandParameter="{Binding .}">
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}"
+                                                             effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                                     <ImageButton.Source>
                                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Edit}" Color="{StaticResource PrimaryLightColor}"/>
                                                     </ImageButton.Source>
                                                 </ImageButton>
-                                                <ImageButton Margin="5" BackgroundColor="Transparent" Command="{Binding DeleteTaskGroupCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}" 
-                                                         CommandParameter="{Binding .}">
+                                                <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteTaskGroupCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}" 
+                                                             effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                                     <ImageButton.Source>
                                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
                                                     </ImageButton.Source>

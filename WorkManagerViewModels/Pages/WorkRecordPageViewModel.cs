@@ -43,10 +43,12 @@ namespace WorkManager.ViewModels.Pages
 			_selectedFilter = EFilterType.ThisMonth;
 			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
+            RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
 			InitDialogCommands();
 		}
 
         public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
+        public DelegateCommand RefreshCommand { get; }
 		public DelegateCommand ClearRecordsCommand { get; private set; }
 		public DelegateCommand<IWorkRecordModelBase> DeleteRecordCommand { get; private set; }
 		public DelegateCommand ShowFilterDialogCommand { get; private set; }
@@ -71,11 +73,10 @@ namespace WorkManager.ViewModels.Pages
 
 		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
 
-
-		protected override async Task InitializeAsyncInt()
+        protected override async Task InitializeAsyncInt()
 		{
 			await base.InitializeAsyncInt();
-			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+            await RefreshAsync();
 			UpdateTotalPrices();
 		}
 
@@ -88,13 +89,10 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async void OnNavigatedToInt(INavigationParameters parameters)
 		{
 			base.OnNavigatedToInt(parameters);
-			FilteredRecords ??= new FilteredObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
-			if (FilteredRecords?.WholeCollection.Count == 0)
-				FilteredRecords.WholeCollection = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(_workFacade.GetAllRecordsByCompany(_companyModelProvider.GetModel().Id, EFilterType.None)
-					.OrderByDescending(s => s.ActualDateTime));
+            await RefreshAsync();
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
 			UpdateTotalPrices();
@@ -176,7 +174,14 @@ namespace WorkManager.ViewModels.Pages
 			EndProcess();
 		}
 
-        private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
+        private async Task RefreshAsync()
+        {
+			BeginProcess();
+            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+			EndProcess();
+        }
+
+		private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
         {
 			BeginProcess();
             if (workRecordModelBase != null)
