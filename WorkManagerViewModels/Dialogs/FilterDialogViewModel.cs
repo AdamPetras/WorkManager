@@ -1,6 +1,8 @@
-﻿using Prism.Commands;
+﻿using System;
+using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
+using WorkManager.BL.NavigationParams;
 using WorkManager.DAL.Enums;
 using WorkManager.ViewModels.BaseClasses;
 
@@ -17,29 +19,42 @@ namespace WorkManager.ViewModels.Dialogs
 		public DelegateCommand ConfirmCommand { get; }
 		public DelegateCommand CancelCommand { get; }
 		
-		private EFilterType _selectedFilter;
-		public EFilterType SelectedFilter
-		{
-			get => _selectedFilter;
-			set
-			{
-				if (_selectedFilter == value) return;
-				_selectedFilter = value;
-				RaisePropertyChanged();
-			}
-		}
+        private DateTime _dateFrom;
+        public DateTime DateFrom
+        {
+            get => _dateFrom;
+            set
+            {
+                if (_dateFrom == value) return;
+                _dateFrom = value;
+                RaisePropertyChanged();
+            }
+        }
 
-
-		protected override void OnDialogOpenedInt(IDialogParameters parameters)
+        private DateTime _dateTo;
+        public DateTime DateTo
+        {
+            get => _dateTo;
+            set
+            {
+                if (_dateTo == value) return;
+                _dateTo = value;
+                RaisePropertyChanged();
+            }
+        }
+		
+        protected override void OnDialogOpenedInt(IDialogParameters parameters)
 		{
 			base.OnDialogOpenedInt(parameters);
-			_selectedFilter = parameters.GetValue<EFilterType>("Filter");
-			RaisePropertyChanged(nameof(SelectedFilter));
-		}
+            FilterNavigationParameters navParams = new FilterNavigationParameters(parameters);
+            DateFrom = navParams.DateFrom;
+            DateTo = navParams.DateTo;
+
+        }
 
 		private void Confirm()
 		{
-			OnRequestClose(new DialogParameters() { { "Filter", _selectedFilter } });
+			OnRequestClose(new FilterNavigationParameters(DateFrom,DateTo));
 		}
 
 		private void Cancel()

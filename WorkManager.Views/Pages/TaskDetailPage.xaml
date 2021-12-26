@@ -13,6 +13,14 @@
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Save}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="Register"
                      Order="Primary"
                      Priority="0"
@@ -22,9 +30,8 @@
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <Grid VerticalOptions="Center" Margin="5">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -88,6 +95,5 @@
                 </Button.ImageSource>
             </Button>
         </Grid>
-        <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SaveCommand}" Text="{x:Static resources:TranslatePagesSR.Save}"></Button>
     </Grid>
 </ContentPage>

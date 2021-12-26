@@ -6,7 +6,7 @@ namespace WorkManager.Extensions
 	{
 		public static bool IsBetween(this DateTime input, DateTime from, DateTime to)
 		{
-			return (input > from && input < to);
+			return (input.Date >= from.Date && input.Date <= to.Date);
 		}
 	}
 }

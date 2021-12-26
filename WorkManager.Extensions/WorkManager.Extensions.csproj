@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="Unity.Abstractions" Version="5.11.7" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
 
   <ItemGroup>

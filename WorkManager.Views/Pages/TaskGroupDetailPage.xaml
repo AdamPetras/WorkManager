@@ -7,7 +7,8 @@
              xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
              x:Class="WorkManager.Views.Pages.TaskGroupDetailPage"
-             x:DataType="pages:TaskGroupDetailPageViewModel">
+             x:DataType="pages:TaskGroupDetailPageViewModel"
+             Title="{Binding SelectedTaskGroup.Name}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"
                      Order="Primary"

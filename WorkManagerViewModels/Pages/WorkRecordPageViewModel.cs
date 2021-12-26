@@ -11,9 +11,11 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
 using WorkManager.Core;
 using WorkManager.DAL.Enums;
+using WorkManager.Extensions;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -29,7 +31,9 @@ namespace WorkManager.ViewModels.Pages
 		private readonly DialogEventService _dialogEventService;
 		private readonly IPageDialogService _pageDialogService;
 
-		private EFilterType _selectedFilter;
+        private DateTime _filterDateFrom;
+		private DateTime _filterDateTo;
+
 
 		public WorkRecordPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
 			IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
@@ -40,7 +44,8 @@ namespace WorkManager.ViewModels.Pages
 			_dialogService = dialogService;
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
-			_selectedFilter = EFilterType.ThisMonth;
+            _filterDateFrom = DateTime.Today;
+            _filterDateTo = DateTime.Today.AddDays(31);
 			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
             RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
@@ -136,16 +141,23 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowFilterDialog()
 		{
 			IsDialogThrown = true;
-			IDialogParameters parameters =
-				(await _dialogService.ShowDialogAsync("FilterDialogView",
-					new DialogParameters() { { "Filter", _selectedFilter } })).Parameters;
-			if (parameters.Any())   //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
-				_selectedFilter = parameters.GetValue<EFilterType>("Filter");
-			FilteredRecords.Filter = CreateFilterByEnum(_selectedFilter);
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialogView", new FilterNavigationParameters(_filterDateFrom, _filterDateTo))).Parameters;
+            if (parameters.Any()) //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
+            {
+				FilterNavigationParameters filterParams = (FilterNavigationParameters) parameters;
+                _filterDateFrom = filterParams.DateFrom;
+                _filterDateTo = filterParams.DateTo;
+            }
+			FilteredRecords.Filter = CreateFilterByDate(_filterDateFrom,_filterDateTo);
 			IsDialogThrown = false;
 		}
 
-		private Func<IWorkRecordModelBase, bool> CreateFilterByEnum(EFilterType filterType)
+        private Func<IWorkRecordModelBase, bool> CreateFilterByDate(DateTime dateFrom, DateTime dateTo)
+        {
+            return s => s.ActualDateTime.IsBetween(dateFrom, dateTo);
+        }
+
+        private Func<IWorkRecordModelBase, bool> CreateFilterByEnum(EFilterType filterType)
 		{
 			return filterType switch
 			{
@@ -177,7 +189,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByEnum(_selectedFilter));
+            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByDate(_filterDateFrom,_filterDateTo));
 			EndProcess();
         }
 

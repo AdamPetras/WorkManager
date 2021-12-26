@@ -1,5 +1,6 @@
 ﻿using System;
 using WorkManager.DAL.Enums;
+using WorkManager.Models.Annotations;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 
@@ -17,6 +18,11 @@ namespace WorkManager.Models
 			Name = name;
 			User = user;
 		}
+
+        public CompanyModel([NotNull]ICompanyModel model) : this(model.Id,model.Name, model.User)
+        {
+            
+        }
 
 		public string Name { get; set; }
 		public IUserModel User { get; set; }

@@ -69,8 +69,10 @@ namespace WorkManager.ViewModels.Pages
 
 		private async Task Save()
 		{
+            IsDialogThrown = true;
 			await _workRecordFacade.UpdateAsync(RecordModel.Single());
 			await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new UpdateAfterDialogCloseDialogEvent<IWorkRecordModelBase>(RecordModel.Single()) } });
+            IsDialogThrown = false;
 		}
 	}
 }

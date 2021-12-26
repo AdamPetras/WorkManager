@@ -8,7 +8,8 @@
              xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
              xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:DataType="pages:CompanyPageViewModel"
-             x:Class="WorkManager.Views.Pages.CompanyPage">
+             x:Class="WorkManager.Views.Pages.CompanyPage"
+             Title="{x:Static resources:TranslatePagesSR.CompanyPageTitle}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>

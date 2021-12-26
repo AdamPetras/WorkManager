@@ -12,7 +12,9 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
+using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -259,7 +261,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task EditAsync(ITaskModel task)
 		{
 			BeginProcess();
-			await NavigationService.NavigateAsync("TaskDetailPage", new NavigationParameters() { { "Task", task } });
+			await NavigationService.NavigateAsync("TaskDetailPage", new TaskNavigationParameters(new TaskModel(task)));
 			EndProcess();
 		}
 

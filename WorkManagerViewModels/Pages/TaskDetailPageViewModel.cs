@@ -11,6 +11,7 @@ using Prism.Services;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
+using WorkManager.BL.NavigationParams;
 using WorkManager.Core;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -77,7 +78,8 @@ namespace WorkManager.ViewModels.Pages
 		{
 			BeginProcess();
 			base.OnNavigatedToInt(parameters);
-			SelectedTask = new TaskModel(parameters.GetValue<ITaskModel>("Task"));  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
+            TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
+			SelectedTask = navigationParameters.TaskModel;
 			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
 			EndProcess();

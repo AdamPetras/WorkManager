@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WorkManager.DAL\WorkManager.DAL.csproj" />
   </ItemGroup>
 

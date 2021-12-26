@@ -2,8 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:DataType="pages:SettingsPageViewModel"
-             x:Class="WorkManager.Views.Pages.SettingsPage">
+             x:Class="WorkManager.Views.Pages.SettingsPage"
+             Title="{x:Static resources:TranslatePagesSR.SettingsTitle}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>

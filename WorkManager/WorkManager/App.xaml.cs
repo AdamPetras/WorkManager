@@ -162,9 +162,10 @@ namespace WorkManager
 			containerRegistry.RegisterForNavigation<UserDetailPage, UserDetailPageViewModel>();
 			containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 			containerRegistry.RegisterForNavigation<TaskGroupDetailPage, TaskGroupDetailPageViewModel>();
+			containerRegistry.RegisterForNavigation<CompanyDetailPage, CompanyDetailPageViewModel>();
 
 
-			containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();
+            containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();
 			containerRegistry.RegisterDialog<AddCompanyDialogView, AddCompanyDialogViewModel>();
 			containerRegistry.RegisterDialog<AddTaskGroupDialogView, AddTaskGroupDialogViewModel>();
 			containerRegistry.RegisterDialog<AddTaskDialogView, AddTaskDialogViewModel>();

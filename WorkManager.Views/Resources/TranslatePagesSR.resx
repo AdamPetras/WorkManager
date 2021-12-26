@@ -120,6 +120,9 @@
   <data name="ActualDate" xml:space="preserve">
     <value>Aktuální datum</value>
   </data>
+  <data name="CompanyPageTitle" xml:space="preserve">
+    <value>Správa prací</value>
+  </data>
   <data name="ContinueWithoutLogin" xml:space="preserve">
     <value>Pokračovat bez přihlášení</value>
   </data>
@@ -171,6 +174,9 @@
   <data name="Save" xml:space="preserve">
     <value>Uložit</value>
   </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>Nastavení</value>
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Přijmení</value>
   </data>
@@ -198,8 +204,14 @@
   <data name="Username" xml:space="preserve">
     <value>Přihlašovací jméno</value>
   </data>
+  <data name="UserProfileTitle" xml:space="preserve">
+    <value>Profil uživatele</value>
+  </data>
   <data name="Version" xml:space="preserve">
     <value>Verze</value>
+  </data>
+  <data name="WorkRecordTitle" xml:space="preserve">
+    <value>Záznamy</value>
   </data>
   <data name="WorkTime" xml:space="preserve">
     <value>Čas práce</value>

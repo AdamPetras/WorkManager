@@ -13,16 +13,9 @@ namespace WorkManager.Models
 		{
 		}
 
-		public TaskModel([NotNull] ITaskModel task): base(task.Id)
+		public TaskModel([NotNull] ITaskModel task): this(task.Id,task.ActualDateTime,task.Name,task.Description,task.TaskDoneDateTime,task.TaskGroup,task.State,task.Priority,task.WorkTime)
 		{
-			ActualDateTime = task.ActualDateTime;
-			Name = task.Name;
-			Description = task.Description;
-			TaskDoneDateTime = task.TaskDoneDateTime;
-			TaskGroup = task.TaskGroup;
-			State = task.State;
-			Priority = task.Priority;
-			WorkTime = task.WorkTime;
+			
 		}
 
 		public TaskModel(Guid id, DateTime actualDateTime, string name, string description, DateTime taskDoneDateTime,

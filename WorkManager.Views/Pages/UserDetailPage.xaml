@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:resources="clr-namespace:WorkManager.ViewModels.Resources;assembly=WorkManager.ViewModels"
+             xmlns:resources1="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.UserDetailPage"
-             x:DataType="pages:UserDetailPageViewModel">
+             x:DataType="pages:UserDetailPageViewModel"
+             Title="{x:Static resources1:TranslatePagesSR.UserProfileTitle}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>

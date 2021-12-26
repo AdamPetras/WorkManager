@@ -19,7 +19,6 @@
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.Forms" Version="8.1.97" />
     <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,12 +26,6 @@
     <ProjectReference Include="..\WorkManager.DAL\WorkManager.DAL.csproj" />
     <ProjectReference Include="..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
     <ProjectReference Include="..\WorkManager.Models\WorkManager.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Xamarin.AndroidX.Annotation">
-      <HintPath>C:\Program Files (x86)\Microsoft\Xamarin\NuGet\xamarin.androidx.annotation\1.1.0.8\lib\monoandroid90\Xamarin.AndroidX.Annotation.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,7 @@
     <converters:HasFlagToVisibilityConverter x:Key="HasFlagToVisibilityConverter" ></converters:HasFlagToVisibilityConverter>
     <converters:VisibleIfAnyConverter x:Key="VisibleIfAnyConverter" ></converters:VisibleIfAnyConverter>
     <converters:StringIsNullOrEmptyToVisibilityConverter x:Key="StringIsNullOrEmptyToVisibilityConverter"></converters:StringIsNullOrEmptyToVisibilityConverter>
+    <converters:ToStringConverter x:Key="ToStringConverter"></converters:ToStringConverter>
 
     <Color x:Key="PrimaryColor">#005288</Color>
     <Color x:Key="PrimaryLightColor">#497eb8</Color>

@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="Prism.Forms" Version="8.1.97" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
 
   <ItemGroup>

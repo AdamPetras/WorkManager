@@ -9,7 +9,8 @@
              xmlns:templateSelectors="clr-namespace:WorkManager.Views.TemplateSelectors;assembly=WorkManager.Views"
              xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="WorkManager.Views.Pages.WorkRecordPage"
-             x:DataType="pages:WorkRecordPageViewModel">
+             x:DataType="pages:WorkRecordPageViewModel"
+             Title="{x:Static resources:TranslatePagesSR.WorkRecordTitle}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>

@@ -8,14 +8,14 @@
              xmlns:templateSelectors="clr-namespace:WorkManager.Views.TemplateSelectors;assembly=WorkManager.Views"
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              x:Class="WorkManager.Views.Pages.WorkRecordDetailPage"
-             x:DataType="pages:WorkRecordDetailPageViewModel">
+             x:DataType="pages:WorkRecordDetailPageViewModel"
+             Title="{Binding RecordModel[0].ActualDateTime, StringFormat='{0:d}'}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
-                <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Grid HorizontalOptions="CenterAndExpand">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
+                    <Label x:Name="RecordDatePicker" Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
                     <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
@@ -36,13 +36,11 @@
                     <Entry Grid.Row="3" Grid.Column="1" Text="{Binding Pieces}" Keyboard="Numeric"></Entry>
                     <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerPiece}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
-                <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Grid HorizontalOptions="CenterAndExpand">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -63,13 +61,11 @@
                     <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding WorkTime}" Format="HH:mm"></TimePicker>
                     <Label Grid.Row="4" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerHour}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="4" Grid.Column="1" Text="{Binding PricePerHour}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
-                <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Grid HorizontalOptions="CenterAndExpand">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -96,13 +92,20 @@
                     <Entry Grid.Row="5" Grid.Column="1" Text="{Binding Pieces}" Keyboard="Numeric"></Entry>
                     <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.PricePerPiece}" VerticalTextAlignment="Center"></Label>
                     <Entry Grid.Row="6" Grid.Column="1" Text="{Binding PricePerPiece}" Keyboard="Numeric"></Entry>
-                    <Button Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Button>
                 </Grid>
             </DataTemplate>
             <templateSelectors:WorkRecordTemplateSelector x:Key="RecordTemplateSelector" BothRecordDataTemplate="{StaticResource BothRecordTemplate}" PiecesRecordDataTemplate="{StaticResource PiecesRecordTemplate}" TimeRecordDataTemplate="{StaticResource TimeRecordTemplate}"></templateSelectors:WorkRecordTemplateSelector>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Save}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem Text="Register"
                      Order="Primary"
                      Priority="0"

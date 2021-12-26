@@ -8,7 +8,9 @@ using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
+using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
+using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -138,7 +140,9 @@ namespace WorkManager.ViewModels.Pages
 
 		private void Edit(ICompanyModel companyModel)
 		{
-
+            BeginProcess();
+            NavigationService.NavigateAsync("CompanyDetailPage", new CompanyNavigationParameters(new CompanyModel(companyModel)));
+            EndProcess();
 		}
 	}
 }
