@@ -65,6 +65,11 @@
     <Compile Update="Pages\WorkRecordPage.xaml.cs">
       <DependentUpon>WorkRecordPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Resources\TranslateControlsSR.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TranslateControlsSR.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\TranslateDialogsSR.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -89,6 +94,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Controls\IconLabel.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\Loading.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Controls\SwitchText.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -140,6 +151,10 @@
     <EmbeddedResource Update="Pages\WorkRecordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TranslateControlsSR.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TranslateControlsSR.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\TranslateDialogsSR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TranslateDialogsSR.Designer.cs</LastGenOutput>
@@ -158,7 +173,7 @@
       <LastGenOutput>TranslatePagesSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\TranslateViewsSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TranslateViewsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Styles\SharedStyles.xaml">

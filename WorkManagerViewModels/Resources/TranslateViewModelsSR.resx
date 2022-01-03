@@ -147,6 +147,9 @@
   <data name="DialogYes" xml:space="preserve">
     <value>Ano</value>
   </data>
+  <data name="FilterTitle" xml:space="preserve">
+    <value>Filtrovat</value>
+  </data>
   <data name="FirstName" xml:space="preserve">
     <value>Jméno</value>
   </data>

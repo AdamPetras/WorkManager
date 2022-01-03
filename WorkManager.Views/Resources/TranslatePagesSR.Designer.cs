@@ -106,6 +106,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        internal static string Id {
+            get {
+                return ResourceManager.GetString("Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Přihlásit.
         /// </summary>
         internal static string Login {
@@ -241,6 +250,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stavy.
+        /// </summary>
+        internal static string States {
+            get {
+                return ResourceManager.GetString("States", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Přijmení.
         /// </summary>
         internal static string Surname {
@@ -250,7 +268,16 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Datum kdy má být hotov.
+        ///   Looks up a localized string similar to Datum vytvoření.
+        /// </summary>
+        internal static string TaskCreateDate {
+            get {
+                return ResourceManager.GetString("TaskCreateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datum dokončení.
         /// </summary>
         internal static string TaskDoneDate {
             get {

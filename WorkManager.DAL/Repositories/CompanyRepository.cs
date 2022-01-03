@@ -41,7 +41,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<ICollection<CompanyEntity>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token)
         {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
                 return await dbContext.CompanySet.Where(s => s.User.Id == userId).Include(s => s.User).ToListAsync(token);
             }

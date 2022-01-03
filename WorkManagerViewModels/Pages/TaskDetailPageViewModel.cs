@@ -76,9 +76,13 @@ namespace WorkManager.ViewModels.Pages
 
 		protected override async void OnNavigatedToInt(INavigationParameters parameters)
 		{
-			BeginProcess();
 			base.OnNavigatedToInt(parameters);
-            TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
+            if (!parameters.Any())
+            {
+                return;
+            }
+            BeginProcess();
+			TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
 			SelectedTask = navigationParameters.TaskModel;
 			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
@@ -116,7 +120,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task DeleteAsync()
 		{
 			IsDialogThrown = true;
-			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.SelectedTaskDeleteMessageFormat(SelectedTask.Name), TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
+			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.SelectedTaskDeleteMessage.Format(SelectedTask.Name), TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
 			{
 				await _taskFacade.RemoveAsync(SelectedTask.Id);
 				await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new RemoveAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask) } });
@@ -128,7 +132,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("SelectPictureOrCaptureCameraDialog")).Parameters;
 			string path = parameters.GetValue<string>("Path");
-			if (path != null)
+			if (!string.IsNullOrWhiteSpace(path))
 			{
 				PhotoPaths.Add(new ImageModel(Guid.NewGuid(), path, "", SelectedTask));
 			}

@@ -8,6 +8,7 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.Core;
 using WorkManager.DAL.Enums;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -71,7 +72,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			if (_taskGroupFacade.GetAll().Any(s => s.Name == Name))
 			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExistsFormat(Name));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
 				Cancel();
 				return;
 			}

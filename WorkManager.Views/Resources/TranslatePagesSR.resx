@@ -132,6 +132,9 @@
   <data name="Firstname" xml:space="preserve">
     <value>Jméno</value>
   </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Přihlásit</value>
   </data>
@@ -177,11 +180,17 @@
   <data name="SettingsTitle" xml:space="preserve">
     <value>Nastavení</value>
   </data>
+  <data name="States" xml:space="preserve">
+    <value>Stavy</value>
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Přijmení</value>
   </data>
+  <data name="TaskCreateDate" xml:space="preserve">
+    <value>Datum vytvoření</value>
+  </data>
   <data name="TaskDoneDate" xml:space="preserve">
-    <value>Datum kdy má být hotov</value>
+    <value>Datum dokončení</value>
   </data>
   <data name="TaskGroupPageTitle" xml:space="preserve">
     <value>Skupiny úkolů</value>

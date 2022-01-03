@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WorkManager.Views.Controls.IconLabel"
+             x:Name="this">
+  <StackLayout Orientation="Horizontal">
+        <Image Source="{Binding ImageSource, Source={x:Reference this}}" HeightRequest="{Binding IconHeight, Source={x:Reference this}}"/>
+        <Label Text="{Binding Text, Source={x:Reference this}}" VerticalTextAlignment="Center"/>
+  </StackLayout>
+</ContentView>

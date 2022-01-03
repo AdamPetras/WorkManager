@@ -9,6 +9,7 @@
                     xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
                     xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
                     xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+                    xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
                     x:Class="WorkManager.Views.Pages.TaskKanbanPage"
                     x:DataType="pages:TaskKanbanPageViewModel"
                     androidSpecific:TabbedPage.ToolbarPlacement="Bottom"
@@ -37,18 +38,16 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
-        </StackLayout>
+        <controls:Loading IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
         <Grid IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <RefreshView Grid.Row="0" IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshCommand}">
-                <CollectionView x:Name="Collection" SelectionMode="None" Margin="5" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding SelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+            <RefreshView Grid.Row="0" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
+                <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding SelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
+                        <LinearItemsLayout  Orientation="Vertical" SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
                     </CollectionView.ItemsLayout>
                     <CollectionView.EmptyView>
                         <ContentView>
@@ -60,7 +59,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="interfaces:ITaskModel">
                             <StackLayout BackgroundColor="White">
-                                <pancakeView:PancakeView x:Name="Pancake" Border="{StaticResource PancakeBorder}" CornerRadius="15">
+                                <pancakeView:PancakeView x:Name="Pancake" Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
                                     <SwipeView Margin="5">
                                         <SwipeView.LeftItems>
                                             <SwipeItemView IsVisible="{Binding IsBackwardButtonVisible, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}">
@@ -93,7 +92,6 @@
                                               effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
@@ -103,7 +101,7 @@
                                                 <RowDefinition Height="Auto"></RowDefinition>
                                                 <RowDefinition Height="*"></RowDefinition>
                                             </Grid.RowDefinitions>
-                                            <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                                            <StackLayout Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Orientation="Horizontal">
                                                 <Image IsVisible="{Binding Priority, Converter={StaticResource PriorityToVisibilityConverter}}">
                                                     <Image.Source>
                                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.ExclamationTriangle}" Color="{Binding Priority, Converter={StaticResource TaskPriorityToColorConverter}}"/>
@@ -115,11 +113,19 @@
                                                     </Image.Source>
                                                 </Image>
                                             </StackLayout>
-                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
-                                            <Label Grid.Row="0" Grid.Column="2" Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="TailTruncation" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}" HorizontalTextAlignment="Center"></Label>
-                                            <Label Grid.Row="0" Grid.Column="3" Text="{Binding TaskDoneDateTime, StringFormat='{0:dd. MM. yyyy}'}" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}" HorizontalTextAlignment="End"></Label>
-                                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
-                                            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation" TextColor="{StaticResource BodyTextColor}"></Label>
+                                            <controls:IconLabel Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" IconHeight="20">
+                                                <controls:IconLabel.ImageSource>
+                                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.HourglassStart}" Color="Black"></FontImageSource>
+                                                </controls:IconLabel.ImageSource>
+                                            </controls:IconLabel>
+                                            <controls:IconLabel Grid.Row="1" Grid.Column="0" Text="{Binding TaskDoneDateTime, StringFormat='{0:dd. MM. yyyy}'}" IconHeight="20">
+                                                <controls:IconLabel.ImageSource>
+                                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.HourglassEnd}" Color="Black"></FontImageSource>
+                                                </controls:IconLabel.ImageSource>
+                                            </controls:IconLabel>
+                                            <Label Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Name}" FontAttributes="Bold" LineBreakMode="TailTruncation" MaxLines="2" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}" HorizontalTextAlignment="Center"></Label>
+                                            <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Description}" MaxLines="2" LineBreakMode="TailTruncation" TextColor="{StaticResource BodyTextColor}"></Label>
                                         </Grid>
                                     </SwipeView>
                                 </pancakeView:PancakeView>

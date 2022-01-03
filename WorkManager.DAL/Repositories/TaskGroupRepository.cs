@@ -28,7 +28,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<ICollection<TaskGroupEntity>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token)
         {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
                 return await dbContext.TaskGroupSet.Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToListAsync(token);
             }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
@@ -23,10 +24,10 @@ namespace WorkManager.DAL.Repositories
 				return dbContext.UserSet.FirstOrDefault(s => s.Username == username);
 		}
 
-		public async Task<UserEntity> GetByUserNameAsync(string username)
+		public async Task<UserEntity> GetByUserNameAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username);
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+				return await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, cancellationToken: token);
 		}
 
 		public string GetPasswordByUserName(string username)
@@ -35,10 +36,10 @@ namespace WorkManager.DAL.Repositories
 				return dbContext.UserSet.FirstOrDefault(s => s.Username == username)?.Password;
 		}
 
-		public async Task<string> GetPasswordByUserNameAsync(string username)
+		public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return (await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username))?.Password;
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+				return (await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, token))?.Password;
 		}
 
 		public bool Exists(string username)
@@ -47,10 +48,10 @@ namespace WorkManager.DAL.Repositories
 				return dbContext.UserSet.Any(s => s.Username == username);
 		}
 
-		public async Task<bool> ExistsAsync(string username)
+		public async Task<bool> ExistsAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return await dbContext.UserSet.AnyAsync(s => s.Username == username);
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+				return await dbContext.UserSet.AnyAsync(s => s.Username == username, token);
 		}
 
 		protected override ICollection<UserEntity> GetAllInt(IQueryable<UserEntity> dbSet)

@@ -117,64 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActualDateTime" xml:space="preserve">
-    <value>Datum</value>
-  </data>
-  <data name="Camera" xml:space="preserve">
-    <value>Fotoaparát</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Ukončit</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Potvrdit</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Popis</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>Od</value>
-  </data>
-  <data name="Gallery" xml:space="preserve">
-    <value>Galerie</value>
-  </data>
-  <data name="Icon" xml:space="preserve">
-    <value>Ikona</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Jméno</value>
-  </data>
-  <data name="NameItem" xml:space="preserve">
-    <value>Název</value>
-  </data>
-  <data name="Pieces" xml:space="preserve">
-    <value>Kusy</value>
-  </data>
-  <data name="PricePerHour" xml:space="preserve">
-    <value>Částka za hodinu</value>
-  </data>
-  <data name="PricePerPiece" xml:space="preserve">
-    <value>Částka za kus</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Priorita</value>
-  </data>
-  <data name="SelectIcon" xml:space="preserve">
-    <value>Vyberte ikonu</value>
-  </data>
-  <data name="TaskDoneDate" xml:space="preserve">
-    <value>Datum dokončení</value>
-  </data>
-  <data name="TaskStartDate" xml:space="preserve">
-    <value>Počátek práce</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>Do</value>
-  </data>
-  <data name="WorkTime" xml:space="preserve">
-    <value>Čas práce</value>
-  </data>
-  <data name="WorkType" xml:space="preserve">
-    <value>Typ práce</value>
+  <data name="Loading" xml:space="preserve">
+    <value>Načítání</value>
   </data>
 </root>

@@ -42,7 +42,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<ICollection<KanbanStateEntity>> GetKanbanStateByTaskGroupAsync(Guid taskGroupId, CancellationToken token)
         {
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
                 return await dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToListAsync(token);
             }

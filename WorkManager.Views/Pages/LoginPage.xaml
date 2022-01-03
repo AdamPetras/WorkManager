@@ -5,6 +5,7 @@
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
              xmlns:components="clr-namespace:WorkManager.Views.Components;assembly=WorkManager.Views"
+             xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.LoginPage"
              x:DataType="pages:LoginPageViewModel"
              Title="{x:Static resources:TranslatePagesSR.LoginTitle}" IsEnabled="{Binding IsBusy, Converter={x:StaticResource NegateBooleanConverter}}">
@@ -36,7 +37,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ActivityIndicator Grid.Row="0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            <controls:Loading Grid.Row="0" IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
             <Label Grid.Row="1" Text="{x:Static resources:TranslatePagesSR.Username}" HorizontalOptions="Start"></Label>
             <Entry Margin="15,0,0,0" Grid.Row="2" Text="{Binding Username}" ></Entry>
             <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Password}"></Label>

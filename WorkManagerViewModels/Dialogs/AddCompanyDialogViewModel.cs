@@ -9,6 +9,7 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.Core;
 using WorkManager.DAL.Enums;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -57,7 +58,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			if (_companyFacade.GetAll().Any(s => s.Name == Name))
 			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExistsFormat(Name));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExists.Format(Name));
 				Cancel();
 				return;
 			}

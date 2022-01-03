@@ -22,15 +22,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Id}}"></Label>
+        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Id}}"></Label>
         <Label Grid.Row="0" Grid.Column="1" Text="{Binding User.Id}"></Label>
-        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.FirstName}}"></Label>
+        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Firstname}}"></Label>
         <Entry Grid.Row="1" Grid.Column="1" Text="{Binding User.FirstName}"></Entry>
-        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Surname}}"></Label>
+        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Surname}}"></Label>
         <Entry Grid.Row="2" Grid.Column="1" Text="{Binding User.Surname}"></Entry>
-        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Username}}"></Label>
+        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Username}}"></Label>
         <Entry Grid.Row="3" Grid.Column="1" Text="{Binding User.Username}"></Entry>
-        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslateViewModelsSR.Password}}"></Label>
+        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Password}}"></Label>
         <Entry Grid.Row="4" Grid.Column="1" Text="{Binding User.Password}" IsPassword="True"></Entry>
     </Grid>
 </ContentPage>

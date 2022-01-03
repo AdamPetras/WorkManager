@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             x:Class="WorkManager.Views.Controls.Loading"
+             x:Name="this"
+             IsVisible="{Binding Path = IsLoadingVisible, Source={x:Reference this}}">
+    <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+        <ActivityIndicator IsRunning="{Binding Path = IsLoadingVisible, Source={x:Reference this}}"/>
+        <Label Text="{x:Static resources:TranslateControlsSR.Loading}" HorizontalTextAlignment="Center"/>
+    </StackLayout>
+</ContentView>

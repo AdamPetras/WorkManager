@@ -22,7 +22,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class WorkRecordPageViewModel : ViewModelBase
+	public class WorkRecordPageViewModel : CollectionViewModelBase
 	{
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
 		private readonly IRecordTotalCalculatorService _recordTotalCalculatorService;
@@ -48,7 +48,11 @@ namespace WorkManager.ViewModels.Pages
             _filterDateTo = DateTime.Today.AddDays(31);
 			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
-            RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
+			RefreshCommand = new DelegateCommand(async () => {
+				BeginRefresh();
+				await RefreshAsync();
+				EndRefresh();
+			});
 			InitDialogCommands();
 		}
 
@@ -141,7 +145,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowFilterDialog()
 		{
 			IsDialogThrown = true;
-            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialogView", new FilterNavigationParameters(_filterDateFrom, _filterDateTo))).Parameters;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialogView", new FilterNavigationParameters(TranslateViewModelsSR.FilterTitle, _filterDateFrom, _filterDateTo))).Parameters;
             if (parameters.Any()) //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
             {
 				FilterNavigationParameters filterParams = (FilterNavigationParameters) parameters;

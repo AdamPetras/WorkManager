@@ -4,6 +4,7 @@
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:viewModels="clr-namespace:WorkManager.ViewModels;assembly=WorkManager.ViewModels"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.RegisterPage"
              x:DataType="pages:RegisterPageViewModel"
              IsEnabled="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"
@@ -30,7 +31,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ActivityIndicator Grid.Row="0" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}"/>
+            <controls:Loading Grid.Row="0" IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
             <Label Grid.Row="1" Text="{x:Static resources:TranslatePagesSR.Firstname}" HorizontalOptions="Start"></Label>
             <Entry Margin="10,0,0,0" Grid.Row="2" Text="{Binding FirstName}" ></Entry>
             <Label Grid.Row="3" Text="{x:Static resources:TranslatePagesSR.Surname}" HorizontalOptions="Start"></Label>

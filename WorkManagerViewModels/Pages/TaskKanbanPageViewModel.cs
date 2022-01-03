@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,7 @@ using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -21,7 +23,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class TaskKanbanPageViewModel : ViewModelBase
+	public class TaskKanbanPageViewModel : CollectionViewModelBase
 	{
 		private readonly IDialogService _dialogService;
 		private readonly IPageDialogService _pageDialogService;
@@ -47,7 +49,11 @@ namespace WorkManager.ViewModels.Pages
             DeleteTaskCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteTaskAsync(t));
 			KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async(t)=> await KanbanStateChangedAsync(t));
 			SelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
-            RefreshCommand = new DelegateCommand(async()=> await RefreshAsync(SelectedKanbanState));
+            RefreshCommand = new DelegateCommand(async () => {
+                BeginRefresh();
+                await RefreshAsync(SelectedKanbanState);
+                EndRefresh();
+            });
 			EditCommand = new DelegateCommand<ITaskModel>(async (s) => await EditAsync(s), (s) => s != null && !IsDialogThrown);
             InitDialogCommands();
 		}

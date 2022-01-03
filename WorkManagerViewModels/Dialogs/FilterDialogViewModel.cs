@@ -5,6 +5,7 @@ using Prism.Services.Dialogs;
 using WorkManager.BL.NavigationParams;
 using WorkManager.DAL.Enums;
 using WorkManager.ViewModels.BaseClasses;
+using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Dialogs
 {
@@ -19,6 +20,18 @@ namespace WorkManager.ViewModels.Dialogs
 		public DelegateCommand ConfirmCommand { get; }
 		public DelegateCommand CancelCommand { get; }
 		
+        private string _dialogTitle;
+        public string DialogTitle
+        {
+            get => _dialogTitle;
+            set
+            {
+                if (_dialogTitle == value) return;
+                _dialogTitle = value;
+                RaisePropertyChanged();
+            }
+        }
+
         private DateTime _dateFrom;
         public DateTime DateFrom
         {
@@ -47,6 +60,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			base.OnDialogOpenedInt(parameters);
             FilterNavigationParameters navParams = new FilterNavigationParameters(parameters);
+            DialogTitle = navParams.Title;
             DateFrom = navParams.DateFrom;
             DateTo = navParams.DateTo;
 
@@ -54,7 +68,7 @@ namespace WorkManager.ViewModels.Dialogs
 
 		private void Confirm()
 		{
-			OnRequestClose(new FilterNavigationParameters(DateFrom,DateTo));
+			OnRequestClose(new FilterNavigationParameters(DialogTitle,DateFrom,DateTo));
 		}
 
 		private void Cancel()

@@ -34,7 +34,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\TranslateViewModelsSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TranslateViewModelsSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

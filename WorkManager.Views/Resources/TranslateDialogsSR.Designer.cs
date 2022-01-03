@@ -196,7 +196,7 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Datum předběžného dokončení.
+        ///   Looks up a localized string similar to Datum dokončení.
         /// </summary>
         internal static string TaskDoneDate {
             get {

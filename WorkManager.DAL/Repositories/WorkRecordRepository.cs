@@ -55,7 +55,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, EFilterType filterType, CancellationToken token)
         {
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
                 return filterType switch
                 {

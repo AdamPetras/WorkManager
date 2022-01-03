@@ -32,7 +32,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<ICollection<TEntity>> GetAllAsync(CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(token);
 			}
@@ -48,9 +48,9 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, cancellationToken: token);
+				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, token);
 			}
 		}
 
@@ -72,7 +72,18 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<bool> RemoveAsync(Guid id, CancellationToken token)
 		{
-			return await Task.Run(() => Remove(id), token);
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            {
+                TEntity entity = await GetByIdAsync(id, token);
+                if (entity == null)
+                    return false;
+                if (dbContext.GetDatabaseByType<TEntity>().Remove(entity) != null)
+                {
+                    await dbContext.SaveChangesAsync(token);
+                    return true;
+                }
+            }
+            return false;
 		}
 
 		public virtual TEntity Add(TEntity entity)
@@ -96,7 +107,19 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<TEntity> AddAsync(TEntity entity, CancellationToken token)
 		{
-			return await Task.Run(() => Add(entity), token);
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            {
+                if (entity == null)
+                    throw new ArgumentNullException();
+                if (!await ExistsAsync(entity, token))
+                    if (await dbContext.GetDatabaseByType<TEntity>().AddAsync(entity,token) != null)
+                    {
+                        AddInt(entity, dbContext);
+                        await dbContext.SaveChangesAsync(token);
+                        return entity;
+                    }
+            }
+            return default;
 		}
 
 		public void Update(TEntity entity)
@@ -110,7 +133,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 				TEntity entry = dbContext.GetDatabaseByType<TEntity>().FirstOrDefault(s => s.Id == entity.Id);
 				if (entry != null)
 				{
-					dbContext.Entry<TEntity>(entry).CurrentValues.SetValues(entity);
+					dbContext.Entry(entry).CurrentValues.SetValues(entity);
 					dbContext.SaveChanges();
 				}
 			}
@@ -118,7 +141,19 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task UpdateAsync(TEntity entity, CancellationToken token)
 		{
-			await Task.Run(() => Update(entity), token);
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            {
+                if (entity == null)
+                    throw new ArgumentNullException();
+                if (await dbContext.GetDatabaseByType<TEntity>().AllAsync(s => s.Id != entity.Id, token))
+                    dbContext.GetDatabaseByType<TEntity>().Add(entity);
+                TEntity entry = await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == entity.Id, token);
+                if (entry != null)
+                {
+                    dbContext.Entry(entry).CurrentValues.SetValues(entity);
+                    await dbContext.SaveChangesAsync(token);
+                }
+            }
 		}
 
 		public bool Exists(TEntity entity)
@@ -131,7 +166,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
 			}
@@ -144,7 +179,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
 				foreach (var id in dbSet.Select(e => e.Id))
 				{
-					var entity = new TEntity() { Id = id };
+					var entity = new TEntity { Id = id };
 					dbSet.Attach(entity);
 					dbSet.Remove(entity);
 				}
@@ -154,12 +189,12 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task ClearAsync(CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
 				foreach (var id in dbSet.Select(e => e.Id))
 				{
-					var entity = new TEntity() { Id = id };
+					var entity = new TEntity { Id = id };
 					dbSet.Attach(entity);
 					dbSet.Remove(entity);
 				}

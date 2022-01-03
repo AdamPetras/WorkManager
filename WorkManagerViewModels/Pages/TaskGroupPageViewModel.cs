@@ -16,7 +16,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class TaskGroupPageViewModel : ViewModelBase
+	public class TaskGroupPageViewModel : CollectionViewModelBase
 	{
 		private readonly ICurrentModelProvider<IUserModel> _currentUserProvider;
 		private readonly IPageDialogService _pageDialogService;
@@ -37,7 +37,11 @@ namespace WorkManager.ViewModels.Pages
 			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
 			DeleteTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await DeleteTaskGroupAsync(t));
 			EditCommand = new DelegateCommand<ITaskGroupModel>(async(s) => await EditAsync(s));
-            RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
+			RefreshCommand = new DelegateCommand(async () => {
+				BeginRefresh();
+				await RefreshAsync();
+				EndRefresh();
+			});
 			InitDialogCommands();
 		}
 

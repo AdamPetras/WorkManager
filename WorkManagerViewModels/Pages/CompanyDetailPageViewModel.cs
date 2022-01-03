@@ -4,6 +4,7 @@ using Prism.Navigation;
 using Prism.Services;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.NavigationParams;
+using WorkManager.Core;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -57,7 +58,7 @@ namespace WorkManager.ViewModels.Pages
         {
             IsDialogThrown = true;
             if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-                    TranslateViewModelsSR.SelectedCompanyDeleteDialogMessageFormat(SelectedCompany.Name), TranslateViewModelsSR.DialogYes,
+                    TranslateViewModelsSR.SelectedCompanyDeleteDialogMessage.Format(SelectedCompany.Name), TranslateViewModelsSR.DialogYes,
                     TranslateViewModelsSR.DialogNo))
             {
                 await _companyFacade.RemoveAsync(SelectedCompany.Id);

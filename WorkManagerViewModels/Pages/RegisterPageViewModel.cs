@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using WorkManager.BL.Exceptions;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.Core;
 using WorkManager.Models;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -98,7 +99,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			catch (UserAlreadyExistsException)
 			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.UserAlreadyExistsFormat(Username));
+				_toastMessageService.LongAlert(TranslateViewModelsSR.UserAlreadyExists.Format(Username));
 			}
 			catch (UserNotExistsException e)
 			{

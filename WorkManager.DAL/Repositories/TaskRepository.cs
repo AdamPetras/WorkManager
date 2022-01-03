@@ -23,30 +23,11 @@ namespace WorkManager.DAL.Repositories
 			return dbSet.Include(s => s.TaskGroup).ToList();
 		}
 
-		public override TaskEntity Add(TaskEntity entity)
-		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-			{
-				if (entity == null)
-					throw new ArgumentNullException();
-				if (!Exists(entity))
-				{
-					dbContext.Entry(entity.State).State = EntityState.Unchanged;
-					if (dbContext.TaskSet.Add(entity) != null)
-					{
-						AddInt(entity, dbContext);
-						dbContext.SaveChanges();
-						return entity;
-					}
-				}
-			}
-			return default;
-		}
-
 		protected override void AddInt(TaskEntity entity, WorkManagerDbContext dbContext)
 		{
 			if (entity.TaskGroup != null)
 			{
+				dbContext.Entry(entity.State).State = EntityState.Unchanged;
 				dbContext.Entry(entity.TaskGroup.User).State = EntityState.Unchanged;
 				dbContext.Entry(entity.TaskGroup).State = EntityState.Unchanged;
 			}
@@ -72,7 +53,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
 		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
 			{
 				return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
 					.ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)

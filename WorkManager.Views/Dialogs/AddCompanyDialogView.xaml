@@ -5,6 +5,7 @@
              xaml:DialogLayout.CloseOnBackgroundTapped="True"
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
              xmlns:xaml="http://prismlibrary.com"
+             xaml:DialogLayout.RelativeWidthRequest="0.8"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
              x:DataType="dialogs:AddCompanyDialogViewModel"

@@ -38,4 +38,7 @@
     <SolidColorBrush  x:Key="BodySelectedBrush" Color="{StaticResource BodySelectedColor}"></SolidColorBrush>
 
     <pancakeView:Border x:Key="PancakeBorder" Thickness="3" Color="{StaticResource BorderColor}"></pancakeView:Border>
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource SecondaryTextColor}"></Setter>
+    </Style>
 </ResourceDictionary>

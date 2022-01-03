@@ -8,6 +8,7 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:templateSelectors="clr-namespace:WorkManager.Views.TemplateSelectors;assembly=WorkManager.Views"
              xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.WorkRecordPage"
              x:DataType="pages:WorkRecordPageViewModel"
              Title="{x:Static resources:TranslatePagesSR.WorkRecordTitle}">
@@ -181,15 +182,13 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsBusy}">
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" ></ActivityIndicator>
-        </StackLayout>
+        <controls:Loading IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
         <Grid IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
                 <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
                                 SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                     <CollectionView.ItemsLayout>

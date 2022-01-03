@@ -7,6 +7,7 @@
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
              xmlns:xaml="http://prismlibrary.com"
+             xaml:DialogLayout.RelativeWidthRequest="0.8"
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              x:DataType="dialogs:AddTaskDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddTaskDialogView">

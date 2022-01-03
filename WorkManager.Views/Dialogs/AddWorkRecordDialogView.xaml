@@ -8,6 +8,7 @@
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
              xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
+             xaml:DialogLayout.RelativeWidthRequest="0.8"
              xaml:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:AddWorkRecordDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddWorkRecordDialogView">

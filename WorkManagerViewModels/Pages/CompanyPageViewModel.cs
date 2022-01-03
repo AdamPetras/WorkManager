@@ -17,7 +17,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class CompanyPageViewModel : ViewModelBase
+	public class CompanyPageViewModel : CollectionViewModelBase
 	{
 		private readonly ICurrentModelProvider<IUserModel> _currentUserProvider;
 		private readonly ICurrentModelProviderManager<ICompanyModel> _companyModelProviderManager;
@@ -38,7 +38,11 @@ namespace WorkManager.ViewModels.Pages
 			ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async (s) => await ShowWorkPageAsync(s));
 			EditCommand = new DelegateCommand<ICompanyModel>(Edit);
 			DeleteCompanyCommand = new DelegateCommand<ICompanyModel>(async (s) => await DeleteCompanyAsync(s));
-            RefreshCommand = new DelegateCommand(async() => await RefreshAsync());
+            RefreshCommand = new DelegateCommand(async () => {
+                BeginRefresh();
+                await RefreshAsync();
+                EndRefresh();
+            });
 			InitDialogCommands();
 		}
 
