@@ -41,9 +41,9 @@ namespace WorkManager.ViewModels.Pages
             }
         }
 
-        protected override void OnNavigatedToInt(INavigationParameters parameters)
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
         {
-            base.OnNavigatedToInt(parameters);
+            await base.OnNavigatedToAsyncInt(parameters);
             CompanyNavigationParameters navParameters = new CompanyNavigationParameters(parameters);
             SelectedCompany = navParameters.CompanyModel;
         }

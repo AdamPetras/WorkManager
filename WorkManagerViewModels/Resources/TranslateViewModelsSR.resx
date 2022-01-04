@@ -147,6 +147,9 @@
   <data name="DialogYes" xml:space="preserve">
     <value>Ano</value>
   </data>
+  <data name="DoYouWantToSaveDialogMessage" xml:space="preserve">
+    <value>Chcete uložit změny?</value>
+  </data>
   <data name="FilterTitle" xml:space="preserve">
     <value>Filtrovat</value>
   </data>

@@ -5,6 +5,6 @@
              x:Name="this">
   <StackLayout Orientation="Horizontal">
         <Image Source="{Binding ImageSource, Source={x:Reference this}}" HeightRequest="{Binding IconHeight, Source={x:Reference this}}"/>
-        <Label Text="{Binding Text, Source={x:Reference this}}" VerticalTextAlignment="Center"/>
+        <Label Text="{Binding Text, Source={x:Reference this}}" TextColor="{Binding ImageSource.Color, Source={x:Reference this}}" VerticalTextAlignment="Center"/>
   </StackLayout>
 </ContentView>

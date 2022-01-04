@@ -4,8 +4,10 @@ using Microsoft.AppCenter.Crashes;
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Java.Lang;
 using Prism;
 using Prism.Ioc;
+using Xamarin.Forms;
 
 
 namespace WorkManager.Droid

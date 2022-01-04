@@ -73,9 +73,9 @@ namespace WorkManager.ViewModels.Pages
             await RefreshAsync();
 		}
 
-		protected override async void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
-			base.OnNavigatedToInt(parameters);
+			await base.OnNavigatedToAsyncInt(parameters);
             if (Companies == null || Companies.Count == 0)
                 await RefreshAsync();
         }

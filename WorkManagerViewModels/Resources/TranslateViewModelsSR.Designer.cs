@@ -151,6 +151,15 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chcete uložit změny?.
+        /// </summary>
+        internal static string DoYouWantToSaveDialogMessage {
+            get {
+                return ResourceManager.GetString("DoYouWantToSaveDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filtrovat.
         /// </summary>
         internal static string FilterTitle {

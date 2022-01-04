@@ -161,9 +161,9 @@ namespace WorkManager.ViewModels.Pages
 			KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id));
 		}
 
-		protected override void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
-			base.OnNavigatedFromInt(parameters);
+			await base.OnNavigatedFromAsyncInt(parameters);
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
 		}
@@ -190,11 +190,7 @@ namespace WorkManager.ViewModels.Pages
 			IsDeleteButtonVisible = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).Max(s => s.StateOrder) == kanbanState.StateOrder;
 		}
 
-		private async Task NavigateToTaskDetailPageAsync(ITaskModel obj)
-		{
-		}
-
-		private async Task PushTaskBackAsync(ITaskModel obj)
+        private async Task PushTaskBackAsync(ITaskModel obj)
 		{
 			await MoveWithTask(obj, false);
 		}

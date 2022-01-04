@@ -98,9 +98,9 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
-		protected override async void OnNavigatedToInt(INavigationParameters parameters)
+		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
-			base.OnNavigatedToInt(parameters);
+			await base.OnNavigatedToAsyncInt(parameters);
             await RefreshAsync();
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);

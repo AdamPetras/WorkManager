@@ -70,29 +70,39 @@ namespace WorkManager.ViewModels.BaseClasses
             return Task.CompletedTask;
         }
 
-		public void OnNavigatedFrom(INavigationParameters parameters)
+        /// <summary>
+        /// fire and forget nic jiného se nedá :/
+        /// </summary>
+        /// <param name="parameters"></param>
+        public async void OnNavigatedFrom(INavigationParameters parameters)
 		{
 			BeginProcess();
-			OnNavigatedFromInt(parameters);
+			await OnNavigatedFromAsyncInt(parameters);
 			EndProcess();
 		}
 
-		public void OnNavigatedTo(INavigationParameters parameters)
+		/// <summary>
+		/// fire and forget nic jiného se nedá :/
+		/// </summary>
+		/// <param name="parameters"></param>
+		public async void OnNavigatedTo(INavigationParameters parameters)
 		{
 			BeginProcess();
-			OnNavigatedToInt(parameters);
+			await OnNavigatedToAsyncInt(parameters);	
 			EndProcess();
 		}
 
-		protected virtual void OnNavigatedFromInt(INavigationParameters parameters)
+		protected virtual Task OnNavigatedFromAsyncInt(INavigationParameters parameters)
+        {
+            return Task.CompletedTask;
+        }
+
+		protected virtual Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
+            return Task.CompletedTask;
 		}
 
-		protected virtual void OnNavigatedToInt(INavigationParameters parameters)
-		{
-		}
-
-		public void Destroy()
+        public void Destroy()
 		{
 			DestroyInt();
 		}

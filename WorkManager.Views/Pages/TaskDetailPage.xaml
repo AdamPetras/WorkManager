@@ -7,29 +7,12 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              x:Class="WorkManager.Views.Pages.TaskDetailPage"
+             x:Name="this"
              x:DataType="pages:TaskDetailPageViewModel"
              Title="{Binding Text, Source={x:Reference NameEntry}}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add"
-                     Order="Primary"
-                     Priority="0"
-                     Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Save}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-        <ToolbarItem Text="Register"
-                     Order="Primary"
-                     Priority="0"
-                     Command="{Binding DeleteTaskCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -96,4 +79,22 @@
             </Button>
         </Grid>
     </Grid>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Save}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Text="Register"
+                     Order="Primary"
+                     Priority="0"
+                     Command="{Binding DeleteTaskCommand, Source={RelativeSource AncestorType={x:Type pages:TaskDetailPageViewModel}}}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
 </ContentPage>

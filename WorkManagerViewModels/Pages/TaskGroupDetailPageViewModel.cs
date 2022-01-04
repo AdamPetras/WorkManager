@@ -74,9 +74,9 @@ namespace WorkManager.ViewModels.Pages
             }
         }
 
-        protected override async void OnNavigatedToInt(INavigationParameters parameters)
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
         {
-            base.OnNavigatedToInt(parameters);
+            await base.OnNavigatedToAsyncInt(parameters);
             TaskGroupNavigationParameters navParams = new TaskGroupNavigationParameters(parameters);
             if (navParams.TaskGroupModel != null)
             {

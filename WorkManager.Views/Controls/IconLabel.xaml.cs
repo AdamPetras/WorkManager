@@ -13,7 +13,7 @@ namespace WorkManager.Views.Controls
     public partial class IconLabel : ContentView
     {
         public static readonly BindableProperty TextProperty = BindableProperty.Create(nameof(Text), typeof(string), typeof(IconLabel), default(string), BindingMode.TwoWay, propertyChanged: OnTextChanged);
-        public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(IconLabel), default(ImageSource), BindingMode.TwoWay, propertyChanged: OnImageSourceChanged);
+        public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(FontImageSource), typeof(IconLabel), default(FontImageSource), BindingMode.TwoWay, propertyChanged: OnImageSourceChanged);
         public static readonly BindableProperty IconHeightProperty = BindableProperty.Create(nameof(IconHeight), typeof(int), typeof(IconLabel), default(int), BindingMode.TwoWay, propertyChanged: OnIconHeightChanged);
 
         public IconLabel()
@@ -27,9 +27,9 @@ namespace WorkManager.Views.Controls
             set => SetValue(TextProperty, value);
         }
 
-        public ImageSource ImageSource
+        public FontImageSource ImageSource
         {
-            get => (ImageSource)GetValue(ImageSourceProperty);
+            get => (FontImageSource)GetValue(ImageSourceProperty);
             set => SetValue(ImageSourceProperty, value);
         }
 
@@ -46,7 +46,7 @@ namespace WorkManager.Views.Controls
 
         private static void OnImageSourceChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
-            ((IconLabel)bindable).ImageSource = (ImageSource)newvalue;
+            ((IconLabel)bindable).ImageSource = (FontImageSource)newvalue;
         }
 
         private static void OnIconHeightChanged(BindableObject bindable, object oldvalue, object newvalue)

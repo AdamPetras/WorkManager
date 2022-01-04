@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
@@ -17,6 +18,7 @@ using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
+using Xamarin.Forms;
 
 namespace WorkManager.ViewModels.Pages
 {
@@ -27,6 +29,8 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
 
+        private ITaskModel _defaultTask;
+
 		public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService, ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade) : base(navigationService)
 		{
 			_pageDialogService = pageDialogService;
@@ -36,7 +40,8 @@ namespace WorkManager.ViewModels.Pages
 			SaveCommand = new DelegateCommand(async () => await SaveAsync());
 			DeletePhotoCommand = new DelegateCommand<IImageModel>(DeletePhoto);
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
-			ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
+            GoBackCommand = new DelegateCommand(async () => await GoBackAsync());
+            ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
             PhotoPaths = new ObservableCollection<IImageModel>();
 			InitDialogCommands();
 		}
@@ -46,9 +51,10 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand DeleteTaskCommand { get; private set; }
 		public DelegateCommand TakePhotoCommand { get; }
 		public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
+        public DelegateCommand GoBackCommand { get; }
 
 
-		private ITaskModel _selectedTask;
+        private ITaskModel _selectedTask;
 		public ITaskModel SelectedTask
 		{
 			get => _selectedTask;
@@ -61,7 +67,8 @@ namespace WorkManager.ViewModels.Pages
 		}
 
 		private ObservableCollection<IImageModel> _photoPaths;
-		public ObservableCollection<IImageModel> PhotoPaths
+
+        public ObservableCollection<IImageModel> PhotoPaths
 		{
 			get => _photoPaths;
 			set
@@ -74,9 +81,10 @@ namespace WorkManager.ViewModels.Pages
 
 		private ICollection<IImageModel> InitImages { get; set; }
 
-		protected override async void OnNavigatedToInt(INavigationParameters parameters)
+
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
-			base.OnNavigatedToInt(parameters);
+			await base.OnNavigatedToAsyncInt(parameters);
             if (!parameters.Any())
             {
                 return;
@@ -84,12 +92,23 @@ namespace WorkManager.ViewModels.Pages
             BeginProcess();
 			TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
 			SelectedTask = navigationParameters.TaskModel;
+			_defaultTask = new TaskModel(navigationParameters.TaskModel);
 			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
 			EndProcess();
 		}
 
-		protected override void DestroyInt()
+        private async Task GoBackAsync()
+        {
+            if (!_defaultTask.Equals(SelectedTask))
+            {
+                if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleInfo, TranslateViewModelsSR.DoYouWantToSaveDialogMessage, TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
+                    await SaveAsync();
+            }
+            await NavigationService.GoBackAsync();
+		}
+
+        protected override void DestroyInt()
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= DeleteTaskCommand.RaiseCanExecuteChanged;
