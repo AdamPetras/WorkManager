@@ -8,6 +8,7 @@ namespace WorkManager.Models.Interfaces
 	{
 		string Name { get; set; }
 		string Description { get; set; }
+		uint TasksCount { get; set; }
 		IUserModel User { get; set; }
 	}
 }

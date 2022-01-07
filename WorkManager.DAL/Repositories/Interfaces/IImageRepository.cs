@@ -10,5 +10,6 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	{
 		ICollection<ImageEntity> GetAllImagesByTask(Guid id);
         Task<ICollection<ImageEntity>> GetAllImagesByTaskAsync(Guid id, CancellationToken token);
+        uint GetImagesCountByTask(Guid taskId);
     }
 }

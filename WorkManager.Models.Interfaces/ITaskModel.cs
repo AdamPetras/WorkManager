@@ -8,7 +8,8 @@ namespace WorkManager.Models.Interfaces
 	{
 		DateTime ActualDateTime { get; set; }
 		string Name { get; set; }
-		public string Description { get; set; }
+		uint ImagesCount { get; set; }
+		string Description { get; set; }
 		DateTime TaskDoneDateTime { get; set; }
 		ITaskGroupModel TaskGroup { get; set; }
 		IKanbanStateModel State { get; set; }

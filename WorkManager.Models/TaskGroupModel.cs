@@ -12,16 +12,18 @@ namespace WorkManager.Models
 
 		}
 
-		public TaskGroupModel(Guid id, string name, string description, IUserModel user) : base(id)
+		public TaskGroupModel(Guid id, string name, string description, uint tasksCount, IUserModel user) : base(id)
 		{
 			Name = name;
 			Description = description;
-			User = user;
+            TasksCount = tasksCount;
+            User = user;
 		}
 
 		public string Name { get; set; }
 		public string Description { get; set; }
-		public IUserModel User { get; set; }
+        public uint TasksCount { get; set; }
+        public IUserModel User { get; set; }
 
 		public bool Equals(ITaskGroupModel other)
 		{

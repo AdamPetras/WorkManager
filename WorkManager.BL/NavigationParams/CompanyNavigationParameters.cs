@@ -12,12 +12,12 @@ namespace WorkManager.BL.NavigationParams
         public CompanyNavigationParameters(ICompanyModel companyModel)
         {
             CompanyModel = companyModel;
-            Add("Company", companyModel);
+            Add(nameof(CompanyModel), companyModel);
         }
 
         public CompanyNavigationParameters(IParameters parameters)
         {
-            CompanyModel = parameters.GetValue<ICompanyModel>("Company");
+            CompanyModel = parameters.GetValue<ICompanyModel>(nameof(CompanyModel));
         }
     }
 }

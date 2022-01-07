@@ -107,7 +107,14 @@
                                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.ExclamationTriangle}" Color="{Binding Priority, Converter={StaticResource TaskPriorityToColorConverter}}"/>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image IsVisible="False">
+                                                <Image>
+                                                    <Image.IsVisible>
+                                                        <Binding Path="ImagesCount" Converter="{StaticResource NotVisibleIfEqualConverter}">
+                                                            <Binding.ConverterParameter>
+                                                                <x:UInt32>0</x:UInt32>
+                                                            </Binding.ConverterParameter>
+                                                        </Binding>
+                                                    </Image.IsVisible>
                                                     <Image.Source>
                                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Image}" Color="{StaticResource SecondaryTextColor}"/>
                                                     </Image.Source>
@@ -139,14 +146,14 @@
                 </CollectionView>
             </RefreshView>
             <StackLayout Grid.Row="1" HeightRequest="50" Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryLightColor}">
-                <CarouselView x:Name="KanbanList" ItemsSource="{Binding KanbanStates}" CurrentItemChangedCommand="{Binding KanbanStateChangedCommand}"
+                <CarouselView x:Name="KanbanList" ItemsSource="{Binding KanbanStates}" CurrentItem="{Binding SelectedKanbanState}" CurrentItemChangedCommand="{Binding KanbanStateChangedCommand}"
                               CurrentItemChangedCommandParameter="{Binding CurrentItem, Source={x:Reference KanbanList}}" Loop="False" PeekAreaInsets="50">
                     <CarouselView.ItemsLayout>
                         <LinearItemsLayout  Orientation="Horizontal" ItemSpacing="10" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
                     </CarouselView.ItemsLayout>
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="interfaces:IKanbanStateModel">
-                            <Grid>
+                            <Grid effects:TouchEffect.Command="{Binding ClickChangeKanbanCommand, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>

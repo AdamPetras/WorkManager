@@ -12,12 +12,12 @@ namespace WorkManager.BL.NavigationParams
         public TaskGroupNavigationParameters(ITaskGroupModel taskGroupModel)
         {
             TaskGroupModel = taskGroupModel;
-            Add("TaskGroup", taskGroupModel);
+            Add(nameof(TaskGroupModel), taskGroupModel);
         }
 
         public TaskGroupNavigationParameters(IParameters parameters)
         {
-            TaskGroupModel = parameters.GetValue<ITaskGroupModel>("TaskGroup");
+            TaskGroupModel = parameters.GetValue<ITaskGroupModel>(nameof(TaskGroupModel));
         }
     }
 }

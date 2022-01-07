@@ -34,5 +34,11 @@ namespace WorkManager.BL.Facades
 		{
 			return (await Repository.GetTasksByTaskGroupIdAndKanbanStateAsync(taskGroupId, kanbanStateName, cancellationToken)).Select(Mapper.Map);
 		}
+
+        public Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default)
+        {
+			return Repository.ClearTasksByKanbanStateAsync(kanbanStateId, token);
+
+		}
 	}
 }

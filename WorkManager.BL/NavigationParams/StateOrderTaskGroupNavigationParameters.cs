@@ -14,14 +14,14 @@ namespace WorkManager.BL.NavigationParams
         {
             StateOrder = stateOrder;
             TaskGroup = taskGroup;
-            Add("StateOrder",stateOrder);
-            Add("TaskGroup", taskGroup);
+            Add(nameof(StateOrder),stateOrder);
+            Add(nameof(TaskGroup), taskGroup);
         }
 
         public StateOrderTaskGroupNavigationParameters(IParameters parameters)
         {
-            StateOrder = parameters.GetValue<int>("StateOrder");
-            TaskGroup = parameters.GetValue<ITaskGroupModel>("TaskGroup");
+            StateOrder = parameters.GetValue<int>(nameof(StateOrder));
+            TaskGroup = parameters.GetValue<ITaskGroupModel>(nameof(TaskGroup));
         }
     }
 }

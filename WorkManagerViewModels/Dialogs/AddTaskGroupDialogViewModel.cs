@@ -76,7 +76,7 @@ namespace WorkManager.ViewModels.Dialogs
 				Cancel();
 				return;
 			}
-			ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description, _currentUserProvider.GetModel());
+			ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description,0, _currentUserProvider.GetModel());
 			_taskGroupFacade.Add(model);
 			_kanbanStateFacade.CreateDefaultKanbanStateModels(model);
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });

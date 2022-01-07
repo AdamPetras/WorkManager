@@ -58,5 +58,13 @@ namespace WorkManager.DAL.Repositories
                 return await dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToListAsync(token);
             }
 		}
+
+        public uint GetImagesCountByTask(Guid taskId)
+        {
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return (uint) dbContext.ImageSet.Count(s=>s.Task.Id == taskId);
+            }
+		}
     }
 }

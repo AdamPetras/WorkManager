@@ -19,7 +19,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Image Grid.Row="0" Source="icon.png" Margin="5"></Image>
+                <Image Grid.Row="0" Source="icon.png" Margin="5" HeightRequest="200"></Image>
                 <StackLayout Grid.Row="1" Margin="5">
                     <Button Text="{x:Static resources:TranslatePagesSR.TaskGroupPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" CommandParameter="Page2"></Button>
                     <Button Text="{x:Static resources:TranslatePagesSR.CompanyPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" CommandParameter="Page2"></Button>

@@ -11,5 +11,7 @@ namespace WorkManager.DAL.Repositories.Interfaces
         ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId);
         ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
 		Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
-	}
+        uint GetTasksCountByTaskGroupId(Guid taskGroupId);
+        Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token);
+    }
 }

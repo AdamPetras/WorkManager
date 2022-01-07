@@ -14,12 +14,12 @@ namespace WorkManager.BL.NavigationParams
         public TaskNavigationParameters(ITaskModel taskModel)
         {
             TaskModel = taskModel;
-            Add("Task", taskModel);
+            Add(nameof(TaskModel), taskModel);
         }
 
         public TaskNavigationParameters(IParameters parameters)
         {
-            TaskModel = parameters.GetValue<ITaskModel>("Task");
+            TaskModel = parameters.GetValue<ITaskModel>(nameof(TaskModel));
         }
     }
 }

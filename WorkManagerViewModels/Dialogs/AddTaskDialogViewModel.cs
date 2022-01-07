@@ -15,6 +15,7 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.BL.NavigationParams;
 using WorkManager.DAL.Enums;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -31,6 +32,8 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
 		private readonly IKanbanStateFacade _kanbanStateFacade;
+
+        private IKanbanStateModel _selectedKanbanState;
 
 		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, 
 			ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, IKanbanStateFacade kanbanStateFacade) : base(navigationService)
@@ -129,7 +132,7 @@ namespace WorkManager.ViewModels.Dialogs
 		}
 
 		private ObservableCollection<string> _photoPaths;
-		public ObservableCollection<string> PhotoPaths
+        public ObservableCollection<string> PhotoPaths
 		{
 			get => _photoPaths;
 			set
@@ -145,11 +148,18 @@ namespace WorkManager.ViewModels.Dialogs
 			OnRequestClose(null);
 		}
 
-		private void Confirm()
+        protected override void OnDialogOpenedInt(IDialogParameters parameters)
+        {
+            base.OnDialogOpenedInt(parameters);
+            KanbanStateNavigationParameters navParameters = new KanbanStateNavigationParameters(parameters);
+            if (navParameters.KanbanState != null)
+                _selectedKanbanState = navParameters.KanbanState;
+        }
+
+        private void Confirm()
 		{
-			IKanbanStateModel firstKanban = _kanbanStateFacade.GetKanbanStatesByTaskGroup(_currentTaskGroupProvider.GetModel().Id).Single(s => s.StateOrder == 0);
-			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, Description, TaskDoneDate,
-				_currentTaskGroupProvider.GetModel(), firstKanban, Priority, WorkTime);
+			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
+				_currentTaskGroupProvider.GetModel(), _selectedKanbanState, Priority, WorkTime);
 			_taskFacade.Add(model);
 			foreach (string path in PhotoPaths)
 			{

@@ -72,14 +72,23 @@
                                       effects:TouchEffect.Command="{Binding NavigateToTasksPageCommand, Source={RelativeSource AncestorType={x:Type pages:TaskGroupPageViewModel}}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"></RowDefinition>
-                                            <RowDefinition Height="Auto"></RowDefinition>
                                             <RowDefinition Height="*"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
-                                        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" Margin="5" VerticalTextAlignment="Center"  HorizontalTextAlignment="Center"></Label>
+                                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                                        <controls:IconLabel Grid.Row="1" Grid.Column="1" Text="{Binding TasksCount}" IconHeight="20" Margin="5"  HorizontalOptions="End" VerticalOptions="CenterAndExpand">
+                                            <controls:IconLabel.ImageSource>
+                                                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Receipt}" Color="{StaticResource SecondaryTextColor}"/>
+                                            </controls:IconLabel.ImageSource>
+                                        </controls:IconLabel>
+                                        <controls:IconLabel Grid.Row="1" Grid.Column="0" Text="{Binding Description}" IconHeight="20" Margin="5" HorizontalOptions="Start" VerticalOptions="CenterAndExpand">
+                                            <controls:IconLabel.ImageSource>
+                                                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clipboard}" Color="{StaticResource SecondaryTextColor}"/>
+                                            </controls:IconLabel.ImageSource>
+                                        </controls:IconLabel>
                                     </Grid>
                                 </SwipeView>
                                 <BoxView HeightRequest="2" BackgroundColor="{StaticResource BorderColor}"></BoxView>

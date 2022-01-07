@@ -16,165 +16,171 @@
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
-                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItemView>
-                                <StackLayout Orientation="Horizontal">
-                                    <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
+                <StackLayout BackgroundColor="White">
+                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItemView>
+                                    <StackLayout Orientation="Horizontal">
+                                        <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
                                                  effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
-                                        <ImageButton.Source>
-                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
-                                        </ImageButton.Source>
-                                    </ImageButton>
-                                </StackLayout>
-                            </SwipeItemView>
-                        </SwipeView.RightItems>
-                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                                            <ImageButton.Source>
+                                                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeView.RightItems>
+                            <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
                                 effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
                                 effects:TouchEffect.CommandParameter="{Binding .}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
-                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
-                            <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding Pieces}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Boxes}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding Pieces}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Boxes}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerPiece}" IconHeight="20">
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
-                        </Grid>
-                    </SwipeView>
-                </pancakeView:PancakeView>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerPiece}" IconHeight="20">
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
+                                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
+                            </Grid>
+                        </SwipeView>
+                    </pancakeView:PancakeView>
+                </StackLayout>
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
-                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItemView>
-                                <StackLayout Orientation="Horizontal">
-                                    <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
+                <StackLayout BackgroundColor="White">
+                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItemView>
+                                    <StackLayout Orientation="Horizontal">
+                                        <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
                                                  effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
-                                        <ImageButton.Source>
-                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
-                                        </ImageButton.Source>
-                                    </ImageButton>
-                                </StackLayout>
-                            </SwipeItemView>
-                        </SwipeView.RightItems>
-                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                                            <ImageButton.Source>
+                                                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeView.RightItems>
+                            <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
                               effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
                               effects:TouchEffect.CommandParameter="{Binding .}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
-                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerHour}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
-                        </Grid>
-                    </SwipeView>
-                </pancakeView:PancakeView>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerHour}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
+                                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
+                            </Grid>
+                        </SwipeView>
+                    </pancakeView:PancakeView>
+                </StackLayout>
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
-                <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15">
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItemView>
-                                <StackLayout Orientation="Horizontal">
-                                    <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}" 
+                <StackLayout BackgroundColor="White">
+                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItemView>
+                                    <StackLayout Orientation="Horizontal">
+                                        <ImageButton Margin="5" BackgroundColor="Transparent" effects:TouchEffect.Command="{Binding DeleteRecordCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}" 
                                                  effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
-                                        <ImageButton.Source>
-                                            <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
-                                        </ImageButton.Source>
-                                    </ImageButton>
-                                </StackLayout>
-                            </SwipeItemView>
-                        </SwipeView.RightItems>
-                        <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
+                                            <ImageButton.Source>
+                                                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" Color="{StaticResource PrimaryLightColor}"/>
+                                            </ImageButton.Source>
+                                        </ImageButton>
+                                    </StackLayout>
+                                </SwipeItemView>
+                            </SwipeView.RightItems>
+                            <Grid Margin="5" effects:TouchEffect.NativeAnimation="True"
                               effects:TouchEffect.Command="{Binding EditCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}"
                               effects:TouchEffect.CommandParameter="{Binding .}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:d}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold"></Label>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:d}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold"></Label>
+                                <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
-                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerHour}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="1" Text="{Binding PricePerHour}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="2" Text="{Binding Pieces}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Boxes}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="2" Text="{Binding Pieces}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Boxes}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <controls:IconLabel Grid.Row="2" Grid.Column="3" Text="{Binding PricePerPiece}" IconHeight="20" >
-                                <controls:IconLabel.ImageSource>
-                                    <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
-                                </controls:IconLabel.ImageSource>
-                            </controls:IconLabel>
+                                <controls:IconLabel Grid.Row="2" Grid.Column="3" Text="{Binding PricePerPiece}" IconHeight="20" >
+                                    <controls:IconLabel.ImageSource>
+                                        <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
+                                    </controls:IconLabel.ImageSource>
+                                </controls:IconLabel>
 
-                            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
-                        </Grid>
-                    </SwipeView>
-                </pancakeView:PancakeView>
+                                <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="{StaticResource SecondaryTextColor}" HorizontalOptions="Start" IsVisible="{Binding Description, Converter={StaticResource StringIsNullOrEmptyToVisibilityConverter}}"></Label>
+                            </Grid>
+                        </SwipeView>
+                    </pancakeView:PancakeView>
+                </StackLayout>
             </DataTemplate>
             <templateSelectors:WorkRecordTemplateSelector x:Key="RecordTemplateSelector" BothRecordDataTemplate="{StaticResource BothRecordTemplate}" PiecesRecordDataTemplate="{StaticResource PiecesRecordTemplate}" TimeRecordDataTemplate="{StaticResource TimeRecordTemplate}"></templateSelectors:WorkRecordTemplateSelector>
         </ResourceDictionary>
@@ -216,7 +222,7 @@
                 <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
                                 SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout  Orientation="Vertical" ItemSpacing="5"  SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
+                        <LinearItemsLayout  Orientation="Vertical" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
                     </CollectionView.ItemsLayout>
                     <CollectionView.EmptyView>
                         <views:WorkRecordEmptyView></views:WorkRecordEmptyView>

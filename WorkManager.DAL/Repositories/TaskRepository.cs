@@ -12,53 +12,74 @@ using WorkManager.DAL.Repositories.Interfaces;
 
 namespace WorkManager.DAL.Repositories
 {
-	public class TaskRepository : RepositoryBase<TaskEntity>, ITaskRepository
-	{
-		public TaskRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
-		{
-		}
+    public class TaskRepository : RepositoryBase<TaskEntity>, ITaskRepository
+    {
+        public TaskRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
+        {
+        }
 
-		protected override ICollection<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
-		{
-			return dbSet.Include(s => s.TaskGroup).ToList();
-		}
+        protected override ICollection<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
+        {
+            return dbSet.Include(s => s.TaskGroup).ToList();
+        }
 
-		protected override void AddInt(TaskEntity entity, WorkManagerDbContext dbContext)
-		{
-			if (entity.TaskGroup != null)
-			{
-				dbContext.Entry(entity.State).State = EntityState.Unchanged;
-				dbContext.Entry(entity.TaskGroup.User).State = EntityState.Unchanged;
-				dbContext.Entry(entity.TaskGroup).State = EntityState.Unchanged;
-			}
-		}
+        protected override void AddInt(TaskEntity entity, WorkManagerDbContext dbContext)
+        {
+            if (entity.TaskGroup != null)
+            {
+                dbContext.Entry(entity.State).State = EntityState.Unchanged;
+                dbContext.Entry(entity.TaskGroup.User).State = EntityState.Unchanged;
+                dbContext.Entry(entity.TaskGroup).State = EntityState.Unchanged;
+            }
+        }
 
-		public ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId)
-		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-			{
-				return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s=>s.TaskGroup).ThenInclude(s=>s.User).ToList();
-			}
-		}
+        public ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup).ThenInclude(s => s.User).ToList();
+            }
+        }
 
-		public ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
-		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-			{
-				return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
-					.ThenInclude(s => s.User).Include(s=>s.State).Where(s=>s.State.Name == kanbanStateName)
-					.ToList();
-			}
-		}
+        public ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
+                    .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
+                    .ToList();
+            }
+        }
 
-		public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
-		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
-			{
-				return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
-					.ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
-					.ToListAsync(cancellationToken);
-			}
-		}
-	}
+        public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+        {
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
+            {
+                return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
+                    .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
+                    .ToListAsync(cancellationToken);
+            }
+        }
+
+        public uint GetTasksCountByTaskGroupId(Guid taskGroupId)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return (uint)dbContext.TaskSet.Count(s => s.TaskGroup.Id == taskGroupId);
+            }
+        }
+
+        public async Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            {
+                foreach (TaskEntity entity in dbContext.TaskSet.Where(s => s.State.Id == kanbanStateId))
+                {
+                    dbContext.TaskSet.Attach(entity);
+                    dbContext.TaskSet.Remove(entity);
+                }
+                await dbContext.SaveChangesAsync(token);
+            }
+        }
+    }
 }

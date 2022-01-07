@@ -12,5 +12,6 @@ namespace WorkManager.BL.Interfaces.Facades
         IEnumerable<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId);
         IEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
 		Task<IEnumerable<ITaskModel>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
-	}
+        Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default);
+    }
 }
