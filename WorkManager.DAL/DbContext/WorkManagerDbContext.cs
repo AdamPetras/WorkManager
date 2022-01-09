@@ -7,6 +7,7 @@ using WorkManager.DAL.Entities;
 using WorkManager.DAL.Entities.BaseClasses;
 using WorkManager.DAL.Entities.Interfaces;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using PCLAppConfig;
 using Xamarin.Forms;
 
 namespace WorkManager.DAL.DbContext
@@ -75,7 +76,7 @@ namespace WorkManager.DAL.DbContext
             base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                PostgreSqlConnectionStringBuilder builder = new PostgreSqlConnectionStringBuilder("postgres://plpekwrkyjokly:03258622b48fe3f025f4f3cd0c720445afc20128666325d726cce619b6617614@ec2-54-170-163-224.eu-west-1.compute.amazonaws.com:5432/db9bje5v2vp5ti")
+                PostgreSqlConnectionStringBuilder builder = new PostgreSqlConnectionStringBuilder(ConfigurationManager.AppSettings["connectionstring"])
                 {
                     Pooling = true,
                     TrustServerCertificate = true,

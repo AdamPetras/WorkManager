@@ -5,6 +5,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Java.Lang;
+using PCLAppConfig;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
@@ -27,6 +28,7 @@ namespace WorkManager.Droid
             base.OnCreate(savedInstanceState);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             LoadApplication(new App(new AndroidInitializer()));
         }
 

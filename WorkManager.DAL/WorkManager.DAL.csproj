@@ -29,6 +29,7 @@
     <PackageReference Include="Npgsql" Version="5.0.11" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="PCLAppConfig" Version="1.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="5.1.0" />
     <PackageReference Include="System.Linq.Async" Version="5.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
