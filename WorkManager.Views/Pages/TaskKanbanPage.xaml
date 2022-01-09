@@ -38,13 +38,13 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <controls:Loading IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
-        <Grid IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
+        <controls:Loading  IsLoadingVisible="{Binding IsBusy}" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <RefreshView Grid.Row="0" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
+            <RefreshView Grid.Row="0" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}" IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}">
                 <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding Tasks}" SelectionChangedCommand="{Binding SelectTaskCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout  Orientation="Vertical" SnapPointsType="Mandatory" SnapPointsAlignment="Center"></LinearItemsLayout>
@@ -145,7 +145,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </RefreshView>
-            <StackLayout Grid.Row="1" HeightRequest="50" Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryLightColor}">
+            <StackLayout Grid.Row="1" HeightRequest="50" Orientation="Horizontal" BackgroundColor="{StaticResource PrimaryLightColor}" VerticalOptions="End">
                 <CarouselView x:Name="KanbanList" ItemsSource="{Binding KanbanStates}" CurrentItem="{Binding SelectedKanbanState}" CurrentItemChangedCommand="{Binding KanbanStateChangedCommand}"
                               CurrentItemChangedCommandParameter="{Binding CurrentItem, Source={x:Reference KanbanList}}" Loop="False" PeekAreaInsets="50">
                     <CarouselView.ItemsLayout>

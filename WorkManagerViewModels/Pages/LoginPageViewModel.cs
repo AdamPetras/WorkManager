@@ -32,17 +32,12 @@ namespace WorkManager.ViewModels.Pages
 			_workManagerSettingsService = workManagerSettingsService;
 			LoginCommand = new DelegateCommand(async()=> await LoginAsync(), () => !IsBusy);
 			ShowRegisterCommand = new DelegateCommand(Register, () => !IsBusy);
-			ContinueWithoutLoginCommand = new DelegateCommand(async ()=>await ContinueWithoutLogin(), () => !IsBusy);
 			Username = _workManagerSettingsService.Username;
 			Password = _workManagerSettingsService.Password;
 			IsRememberCredentialsToggled = _workManagerSettingsService.SaveCredentials;
-#if DEBUG
-			LoginCommand.Execute();
-#endif
 		}
 
 		public DelegateCommand ShowRegisterCommand { get; }
-		public DelegateCommand ContinueWithoutLoginCommand { get; }
 		public DelegateCommand LoginCommand { get; }
 
 		private string _username;
@@ -151,24 +146,6 @@ namespace WorkManager.ViewModels.Pages
 				return false;
 			}
 			return true;
-		}
-
-		private async Task ContinueWithoutLogin()
-		{
-			BeginProcess();
-			try
-			{
-				await _registrationService.RegisterAndAuthenticateUserAsync(_testModel);
-			}
-			catch (UserAlreadyExistsException)
-			{
-				if (await _authenticationService.AuthenticateAsync(_testModel.Username, _testModel.Password) != null)
-					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
-			}
-			finally
-			{
-				EndProcess();
-			}
 		}
 	}
 }

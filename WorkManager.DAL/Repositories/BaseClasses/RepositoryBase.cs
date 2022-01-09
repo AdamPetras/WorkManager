@@ -1,9 +1,10 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities.Interfaces;
@@ -34,7 +35,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(token);
+				return await AsyncEnumerable.ToListAsync(dbContext.GetDatabaseByType<TEntity>(), token);
 			}
 		}
 
@@ -50,7 +51,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, token);
+				return await AsyncEnumerable.FirstOrDefaultAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id == id, token);
 			}
 		}
 
@@ -145,9 +146,9 @@ namespace WorkManager.DAL.Repositories.BaseClasses
             {
                 if (entity == null)
                     throw new ArgumentNullException();
-                if (await dbContext.GetDatabaseByType<TEntity>().AllAsync(s => s.Id != entity.Id, token))
+                if (await AsyncEnumerable.AllAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id != entity.Id, token))
                     dbContext.GetDatabaseByType<TEntity>().Add(entity);
-                TEntity entry = await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == entity.Id, token);
+                TEntity entry = await AsyncEnumerable.FirstOrDefaultAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id == entity.Id, token);
                 if (entry != null)
                 {
                     dbContext.Entry(entry).CurrentValues.SetValues(entity);
@@ -168,7 +169,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await dbContext.GetDatabaseByType<TEntity>().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
+				return await AsyncEnumerable.AnyAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
 			}
 		}
 
@@ -177,7 +178,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
-				foreach (var id in dbSet.Select(e => e.Id))
+				foreach (var id in dbSet.AsQueryable().Select(e => e.Id))
 				{
 					var entity = new TEntity { Id = id };
 					dbSet.Attach(entity);
@@ -192,7 +193,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
-				foreach (var id in dbSet.Select(e => e.Id))
+				foreach (var id in dbSet.AsQueryable().Select(e => e.Id))
 				{
 					var entity = new TEntity { Id = id };
 					dbSet.Attach(entity);

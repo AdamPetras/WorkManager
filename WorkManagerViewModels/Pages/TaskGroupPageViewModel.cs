@@ -10,6 +10,7 @@ using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
+using WorkManager.Extensions;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -34,7 +35,7 @@ namespace WorkManager.ViewModels.Pages
 			_dialogService = dialogService;
 			_taskGroupFacade = taskGroupFacade;
 			_dialogEventService = dialogEventService;
-			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksPageAsync(model));
+			NavigateToTasksPageCommand = new DelegateCommand<ITaskGroupModel>(async (model)=> await NavigateToTasksKanbanPageAsync(model));
 			DeleteTaskGroupCommand = new DelegateCommand<ITaskGroupModel>(async (t) => await DeleteTaskGroupAsync(t));
 			EditCommand = new DelegateCommand<ITaskGroupModel>(async(s) => await EditAsync(s));
 			RefreshCommand = new DelegateCommand(async () => {
@@ -65,13 +66,13 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
 			await base.OnNavigatedToAsyncInt(parameters);
             await RefreshAsync();
         }
 
-		protected override void DestroyInt()
+        protected override void DestroyInt()
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= ShowAddTaskGroupDialogCommand.RaiseCanExecuteChanged;
@@ -86,7 +87,7 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent += ClearTaskGroupsCommand.RaiseCanExecuteChanged;
 		}
 
-		private async Task NavigateToTasksPageAsync(ITaskGroupModel obj)
+		private async Task NavigateToTasksKanbanPageAsync(ITaskGroupModel obj)
 		{
 			BeginProcess();
 			_currentTaskGroupProvider.SetItem(obj);
@@ -130,7 +131,8 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
 		{
 			BeginProcess();
-			TaskGroups = new ObservableCollection<ITaskGroupModel>(await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id));
+            TaskGroups = new ObservableCollection<ITaskGroupModel>();
+			TaskGroups.AddRange(await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id));
 			EndProcess();
 		}
 

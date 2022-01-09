@@ -10,11 +10,9 @@ namespace WorkManager.DAL.DbContext
 {
 	public class WorkManagerDbContextFactory: Interfaces.IDBContextFactory<WorkManagerDbContext>
 	{
-		private readonly DatabaseVersionChecker _databaseVersionChecker;
 
-		public WorkManagerDbContextFactory(DatabaseVersionChecker databaseVersionChecker)
+		public WorkManagerDbContextFactory()
 		{
-			_databaseVersionChecker = databaseVersionChecker;
 		}
 
 		public WorkManagerDbContext CreateDbContext()
@@ -22,14 +20,8 @@ namespace WorkManager.DAL.DbContext
 			WorkManagerDbContext postDatabaseContext = (WorkManagerDbContext)Activator.CreateInstance(typeof(WorkManagerDbContext));
 			if (postDatabaseContext == null)
 				throw new TypeLoadException(nameof(WorkManagerDbContext));
-			if (postDatabaseContext.Database.EnsureCreated())
-			{
-				//zápis verze do databáze aby bylo možné aplikaci spustit
-				_databaseVersionChecker.CreateTableVersionIfNotExists(postDatabaseContext.DatabasePath);
-				_databaseVersionChecker.WriteLatestVersion(postDatabaseContext.DatabasePath);
-			}
-			if(postDatabaseContext.Database.GetAppliedMigrations() == null)
-				postDatabaseContext.Database.Migrate();
+            postDatabaseContext.Database.EnsureCreated();
+			postDatabaseContext.Database.Migrate();
 			return postDatabaseContext;
 		}
 
@@ -38,14 +30,8 @@ namespace WorkManager.DAL.DbContext
             WorkManagerDbContext postDatabaseContext = (WorkManagerDbContext)Activator.CreateInstance(typeof(WorkManagerDbContext));
             if (postDatabaseContext == null)
                 throw new TypeLoadException(nameof(WorkManagerDbContext));
-            if (await postDatabaseContext.Database.EnsureCreatedAsync(token))
-            {
-                //zápis verze do databáze aby bylo možné aplikaci spustit
-                _databaseVersionChecker.CreateTableVersionIfNotExists(postDatabaseContext.DatabasePath);
-                _databaseVersionChecker.WriteLatestVersion(postDatabaseContext.DatabasePath);
-            }
-            if (await postDatabaseContext.Database.GetAppliedMigrationsAsync(token) == null)
-                await postDatabaseContext.Database.MigrateAsync(token);
+            await postDatabaseContext.Database.EnsureCreatedAsync(token);
+            await postDatabaseContext.Database.MigrateAsync(token);
             return postDatabaseContext;
         }
 	}

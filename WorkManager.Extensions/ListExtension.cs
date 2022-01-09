@@ -63,5 +63,10 @@ namespace WorkManager.Extensions
             removeList.ForEach(s => clearedList.Remove(s));
             return clearedList;
         }
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumeration)
+        {
+            return enumeration == null || !enumeration.Any();
+        }
     }
 }

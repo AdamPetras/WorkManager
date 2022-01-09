@@ -37,7 +37,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup).ThenInclude(s => s.User).ToList();
+                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup).ThenInclude(s => s.User).ToList();
             }
         }
 
@@ -45,7 +45,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
+                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
                     .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
                     .ToList();
             }
@@ -55,7 +55,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
             {
-                return await dbContext.TaskSet.Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
+                return await dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
                     .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
                     .ToListAsync(cancellationToken);
             }
@@ -73,7 +73,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                foreach (TaskEntity entity in dbContext.TaskSet.Where(s => s.State.Id == kanbanStateId))
+                foreach (TaskEntity entity in dbContext.TaskSet.AsQueryable().Where(s => s.State.Id == kanbanStateId))
                 {
                     dbContext.TaskSet.Attach(entity);
                     dbContext.TaskSet.Remove(entity);

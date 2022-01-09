@@ -159,15 +159,11 @@ namespace WorkManager.ViewModels.Pages
             }
         }
 
-        protected override async Task InitializeAsyncInt()
-        {
-            await base.InitializeAsyncInt();
-            KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id));
-        }
-
         protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
         {
             await base.OnNavigatedFromAsyncInt(parameters);
+            if(KanbanStates.IsNullOrEmpty())
+                KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id));
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
         }

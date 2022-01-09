@@ -22,7 +22,7 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.TaskGroupSet.Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToList();
+				return dbContext.TaskGroupSet.AsQueryable().Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToList();
 			}
 		}
 
@@ -30,7 +30,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                return await dbContext.TaskGroupSet.Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToListAsync(token);
+                return await dbContext.TaskGroupSet.AsQueryable().Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToListAsync(token);
             }
 		}
 

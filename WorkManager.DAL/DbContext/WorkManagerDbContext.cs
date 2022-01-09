@@ -6,15 +6,13 @@ using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Entities.BaseClasses;
 using WorkManager.DAL.Entities.Interfaces;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Xamarin.Forms;
 
 namespace WorkManager.DAL.DbContext
 {
 	public class WorkManagerDbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
 	{
-		private readonly DatabaseVersionChecker _databaseVersionChecker;
-		private const string DatabaseName = "WorkManager.db";
-		public string DatabasePath { get; private set; }
 		public DbSet<UserEntity> UserSet { get; set; }
 		public DbSet<WorkRecordEntity> WorkSet { get; set; }
 		public DbSet<CompanyEntity> CompanySet { get; set; }
@@ -25,16 +23,7 @@ namespace WorkManager.DAL.DbContext
 
 		public WorkManagerDbContext()
 		{
-			_databaseVersionChecker = new DatabaseVersionChecker();
 		}
-
-        public WorkManagerDbContext(string databasePath)
-        {
-			_databaseVersionChecker = new DatabaseVersionChecker();
-	        if (!Directory.Exists(databasePath))
-		        Directory.CreateDirectory(databasePath);
-	        DatabasePath = databasePath;
-        }
 
         public DbSet<T> GetDatabaseByType<T>() where T : class, IEntity
         {
@@ -84,32 +73,17 @@ namespace WorkManager.DAL.DbContext
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            switch (Device.RuntimePlatform)
+            if (!optionsBuilder.IsConfigured)
             {
-	            case Device.iOS:
-		            SQLitePCL.Batteries_V2.Init();
-		            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "..", "Library", DatabaseName); ;
-		            break;
-	            case Device.Android:
-		            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), DatabaseName);
-		            break;
-	            default:
-		            throw new NotImplementedException("Platform not supported");
-            }
+                PostgreSqlConnectionStringBuilder builder = new PostgreSqlConnectionStringBuilder("postgres://plpekwrkyjokly:03258622b48fe3f025f4f3cd0c720445afc20128666325d726cce619b6617614@ec2-54-170-163-224.eu-west-1.compute.amazonaws.com:5432/db9bje5v2vp5ti")
+                {
+                    Pooling = true,
+                    TrustServerCertificate = true,
+                    SslMode = SslMode.Require
+                };
 
-			if (File.Exists(DatabasePath))
-			{
-				if (!_databaseVersionChecker.IsVersionTableInsideDatabase(DatabasePath))
-				{
-					File.Delete(DatabasePath);  //pokud není tabulka verzí v databázi nemělo by se stávat vůbec je to zatím pro ty co měly nainstalováno jako interní testy
-				}
-				else if (!_databaseVersionChecker.IsDatabaseCorrectVersion(DatabasePath, Assembly.GetExecutingAssembly().GetName().Version.ToString()))
-				{
-					//tady by měla být implementována změna z verze xx na yy zatím není nasazeno tak nebudu dělat
-					File.Delete(DatabasePath);  //pokud není správná verze databáze
-				}
+                optionsBuilder.UseNpgsql(builder.ConnectionString);
 			}
-			optionsBuilder.UseSqlite("Filename=" + DatabasePath);
         }
     }
 }

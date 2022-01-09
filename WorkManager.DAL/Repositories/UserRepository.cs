@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
-using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Repositories.Interfaces;
 
