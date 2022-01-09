@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
@@ -26,7 +27,7 @@ namespace WorkManager.ViewModels.Dialogs
 			_workRecordDetailFacade = workRecordDetailFacade;
 			_workRecordModelFactory = workRecordModelFactory;
 			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(Confirm);
+			ConfirmCommand = new DelegateCommand(async ()=> await ConfirmAsync());
 			SetupDefaultValues();
 		}
 
@@ -125,11 +126,11 @@ namespace WorkManager.ViewModels.Dialogs
 			PricePerPiece = 0;
 		}
 
-		private void Confirm()
+		private async Task ConfirmAsync()
 		{
 			IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
 				PricePerHour, Pieces, PricePerPiece, SelectedWorkType, Description, _companyModelProvider.GetModel());
-			_workRecordDetailFacade.Add(model);
+			await _workRecordDetailFacade.AddAsync(model);
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
 		}
 

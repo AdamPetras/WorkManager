@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
@@ -34,7 +35,7 @@ namespace WorkManager.ViewModels.Dialogs
 			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
 			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(Confirm);
+			ConfirmCommand = new DelegateCommand(async()=> await ConfirmAsync());
 		}
 
 		public DelegateCommand CancelCommand { get; }
@@ -68,18 +69,20 @@ namespace WorkManager.ViewModels.Dialogs
 			OnRequestClose(null);
 		}
 
-		private void Confirm()
+		private async Task ConfirmAsync()
 		{
-			if (_taskGroupFacade.GetAll().Any(s => s.Name == Name))
+			BeginProcess();
+			if ((await _taskGroupFacade.GetAllAsync()).Any(s => s.Name == Name))
 			{
 				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
 				Cancel();
 				return;
 			}
 			ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description,0, _currentUserProvider.GetModel());
-			_taskGroupFacade.Add(model);
+			await _taskGroupFacade.AddAsync(model);
 			_kanbanStateFacade.CreateDefaultKanbanStateModels(model);
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });
+			EndProcess();
 		}
 	}
 }

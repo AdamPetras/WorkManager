@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Navigation;
@@ -31,7 +32,7 @@ namespace WorkManager.ViewModels.Dialogs
 			_currentUserProvider = currentUserProvider;
 			_toastMessageService = toastMessageService;
 			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(Confirm);
+			ConfirmCommand = new DelegateCommand(async() => await Confirm());
 		}
 
 		public DelegateCommand CancelCommand { get; }
@@ -54,17 +55,19 @@ namespace WorkManager.ViewModels.Dialogs
 			OnRequestClose(null);
 		}
 
-		private void Confirm()
+		private async Task Confirm()
 		{
-			if (_companyFacade.GetAll().Any(s => s.Name == Name))
+			BeginProcess();
+			if ((await _companyFacade.GetAllAsync()).Any(s => s.Name == Name))
 			{
 				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExists.Format(Name));
 				Cancel();
 				return;
 			}
 			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, _currentUserProvider.GetModel());
-			_companyFacade.Add(model);
+			await _companyFacade.AddAsync(model);
 			OnRequestClose(new DialogParameters(){{"DialogEvent",new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) }});
+			EndProcess();
 		}
 	}
 }

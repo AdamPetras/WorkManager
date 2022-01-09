@@ -44,7 +44,7 @@ namespace WorkManager.ViewModels.Dialogs
 			_kanbanStateFacade = kanbanStateFacade;
 			_taskFacade = taskFacade;
 			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(Confirm);
+			ConfirmCommand = new DelegateCommand(async()=> await ConfirmAsync());
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
 			TaskDoneDate = DateTime.Now;
@@ -156,16 +156,18 @@ namespace WorkManager.ViewModels.Dialogs
                 _selectedKanbanState = navParameters.KanbanState;
         }
 
-        private void Confirm()
+        private async Task ConfirmAsync()
 		{
+			BeginProcess();
 			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
 				_currentTaskGroupProvider.GetModel(), _selectedKanbanState, Priority, WorkTime);
-			_taskFacade.Add(model);
+			await _taskFacade.AddAsync(model);
 			foreach (string path in PhotoPaths)
 			{
-				_imageFacade.Add(new ImageModel(Guid.NewGuid(), path, "", model));
+				await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model));
 			}
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model)} });
+			EndProcess();
 		}
 
 		private async Task TakePhotoAsync()
