@@ -24,8 +24,7 @@ namespace WorkManager.BL.Mappers
 				Name = model.Name,
 				StateOrder = model.StateOrder,
 				IconName= model.IconName,
-				IdTaskGroup = model.TaskGroup.Id,
-				TaskGroup = _taskGroupMapper.Map(model.TaskGroup)
+				TaskGroupId = model.TaskGroupId,
 			};
 		}
 
@@ -33,7 +32,7 @@ namespace WorkManager.BL.Mappers
 		{
 			if (entity == null)
 				return new KanbanStateModel();
-			return new KanbanStateModel(entity.Id, entity.Name, entity.StateOrder, entity.IconName, _taskGroupMapper.Map(entity.TaskGroup));
+			return new KanbanStateModel(entity.Id, entity.Name, entity.StateOrder, entity.IconName, entity.TaskGroupId);
 		}
 	}
 }

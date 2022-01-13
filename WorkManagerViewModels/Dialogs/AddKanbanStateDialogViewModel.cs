@@ -77,7 +77,7 @@ namespace WorkManager.ViewModels.Dialogs
 
 		private void Confirm()
 		{
-            IKanbanStateModel stateModel = new KanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup);
+            IKanbanStateModel stateModel = new KanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup.Id);
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<IKanbanStateModel>(stateModel) } });
 		}
 	}

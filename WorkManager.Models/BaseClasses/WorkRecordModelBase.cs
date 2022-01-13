@@ -10,18 +10,18 @@ namespace WorkManager.Models.BaseClasses
 	{
 		private readonly IRecordCalculatorService _recordCalculatorService;
 
-		protected WorkRecordModelBase(Guid id, DateTime actualDateTime, EWorkType type, ICompanyModel company, string description) : base(id)
+		protected WorkRecordModelBase(Guid id, DateTime actualDateTime, EWorkType type, Guid companyId, string description) : base(id)
 		{
 			ActualDateTime = actualDateTime;
 			Type = type;
-			Company = company;
+            CompanyId = companyId;
 			Description = description;
 			_recordCalculatorService = ServiceLocator.Current.GetInstance<IRecordCalculatorService>();
 		}
 
 		public DateTime ActualDateTime { get; set; }
 		public EWorkType Type { get; set; }
-		public ICompanyModel Company { get; set; }
+		public Guid CompanyId { get; set; }
 		public string Description { get; set; }
 		public double CalculatedPrice => _recordCalculatorService.Calculate(this);
 
@@ -32,7 +32,7 @@ namespace WorkManager.Models.BaseClasses
 
 		protected bool Equals(WorkRecordModelBase other)
 		{
-			return ActualDateTime.Equals(other.ActualDateTime) && Type == other.Type && Equals(Company, other.Company) && Description == other.Description;
+			return ActualDateTime.Equals(other.ActualDateTime) && Type == other.Type && CompanyId == other.CompanyId && Description == other.Description;
 		}
 
 		public override bool Equals(object obj)
@@ -44,7 +44,7 @@ namespace WorkManager.Models.BaseClasses
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(ActualDateTime, (int) Type, Company, Description);
+			return HashCode.Combine(ActualDateTime, (int) Type, CompanyId, Description);
 		}
 	}
 }

@@ -21,7 +21,6 @@ namespace WorkManager.DAL.DbContext
 			if (postDatabaseContext == null)
 				throw new TypeLoadException(nameof(WorkManagerDbContext));
             postDatabaseContext.Database.EnsureCreated();
-			postDatabaseContext.Database.Migrate();
 			return postDatabaseContext;
 		}
 
@@ -30,8 +29,7 @@ namespace WorkManager.DAL.DbContext
             WorkManagerDbContext postDatabaseContext = (WorkManagerDbContext)Activator.CreateInstance(typeof(WorkManagerDbContext));
             if (postDatabaseContext == null)
                 throw new TypeLoadException(nameof(WorkManagerDbContext));
-            await postDatabaseContext.Database.EnsureCreatedAsync(token);
-            await postDatabaseContext.Database.MigrateAsync(token);
+            postDatabaseContext.Database.EnsureCreated();
             return postDatabaseContext;
         }
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using WorkManager.DAL.Entities.Interfaces;
 
 namespace WorkManager.DAL.Entities.BaseClasses
@@ -8,7 +9,7 @@ namespace WorkManager.DAL.Entities.BaseClasses
 		protected EntityBase()
 		{
 		}
-
-		public Guid Id { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 	}
 }

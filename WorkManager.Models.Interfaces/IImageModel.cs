@@ -6,6 +6,6 @@ namespace WorkManager.Models.Interfaces
 	{
 		public string Path { get; set; }
 		public string Description { get; set; }
-		public ITaskModel Task { get; set; }
+		public Guid TaskId { get; set; }
 	}
 }

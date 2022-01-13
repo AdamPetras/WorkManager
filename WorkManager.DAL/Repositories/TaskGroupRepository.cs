@@ -22,7 +22,7 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.TaskGroupSet.AsQueryable().Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToList();
+				return dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToList();
 			}
 		}
 
@@ -30,13 +30,13 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                return await dbContext.TaskGroupSet.AsQueryable().Where(s => s.User.Id == userId).Include(s => s.User).AsNoTracking().ToListAsync(token);
+                return await dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToListAsync(token);
             }
 		}
 
         protected override ICollection<TaskGroupEntity> GetAllInt(IQueryable<TaskGroupEntity> dbSet)
 		{
-			return dbSet.Include(s => s.User).ToList();
+			return dbSet.ToList();
 		}
 
 		protected override void AddInt(TaskGroupEntity entity, WorkManagerDbContext dbContext)

@@ -57,8 +57,7 @@ namespace WorkManager.BL.Mappers
 				WorkTime = workTime,
 				PricePerHour = pricePerHour,
 				Description = model.Description,
-				IdCompany = model.Company.Id,
-				Company = _companyMapper.Map(model.Company)
+				CompanyId = model.CompanyId,
 			};
 		}
 
@@ -67,8 +66,7 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
 				return new WorkBothRecordModel();
 			return _workRecordModelFactory.CreateWorkRecord(entity.Id, entity.ActualDateTime, entity.WorkTime,
-				entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description,
-				_companyMapper.Map(entity.Company));
+				entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description, entity.CompanyId);
 		}
 	}
 }

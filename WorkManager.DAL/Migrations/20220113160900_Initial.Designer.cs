@@ -4,41 +4,39 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkManager.DAL.DbContext;
 
 namespace WorkManager.DAL.Migrations
 {
     [DbContext(typeof(WorkManagerDbContext))]
-    [Migration("20220109071516_initial")]
-    partial class initial
+    [Migration("20220113160900_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.13")
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.13");
 
             modelBuilder.Entity("WorkManager.DAL.Entities.CompanyEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Type")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdUser");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CompanySet");
                 });
@@ -47,16 +45,16 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Path")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<Guid>("TaskId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
@@ -69,23 +67,23 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("IconName")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IdTaskGroup")
-                        .HasColumnType("uuid");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("StateOrder")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TaskGroupId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdTaskGroup");
+                    b.HasIndex("TaskGroupId");
 
                     b.ToTable("KanbanSet");
                 });
@@ -94,37 +92,37 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ActualDateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IdState")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("IdTaskGroup")
-                        .HasColumnType("uuid");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Priority")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StateId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("TaskDoneDateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("TaskGroupId")
+                        .HasColumnType("char(36)");
 
                     b.Property<TimeSpan>("WorkTime")
-                        .HasColumnType("interval");
+                        .HasColumnType("time(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdState");
+                    b.HasIndex("StateId");
 
-                    b.HasIndex("IdTaskGroup");
+                    b.HasIndex("TaskGroupId");
 
                     b.ToTable("TaskSet");
                 });
@@ -133,20 +131,20 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uuid");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdUser");
+                    b.HasIndex("UserId");
 
                     b.ToTable("TaskGroupSet");
                 });
@@ -155,19 +153,19 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Password")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Username")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -178,35 +176,35 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("ActualDateTime")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
-                    b.Property<Guid>("IdCompany")
-                        .HasColumnType("uuid");
-
-                    b.Property<long>("Pieces")
-                        .HasColumnType("bigint");
+                    b.Property<uint>("Pieces")
+                        .HasColumnType("int unsigned");
 
                     b.Property<double>("PricePerHour")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.Property<double>("PricePerPiece")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double");
 
                     b.Property<int>("Type")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("WorkTime")
-                        .HasColumnType("interval");
+                        .HasColumnType("time(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCompany");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("WorkSet");
                 });
@@ -215,7 +213,7 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.HasOne("WorkManager.DAL.Entities.UserEntity", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -237,7 +235,7 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.HasOne("WorkManager.DAL.Entities.TaskGroupEntity", "TaskGroup")
                         .WithMany()
-                        .HasForeignKey("IdTaskGroup")
+                        .HasForeignKey("TaskGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -248,13 +246,13 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.HasOne("WorkManager.DAL.Entities.KanbanStateEntity", "State")
                         .WithMany()
-                        .HasForeignKey("IdState")
+                        .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WorkManager.DAL.Entities.TaskGroupEntity", "TaskGroup")
                         .WithMany()
-                        .HasForeignKey("IdTaskGroup")
+                        .HasForeignKey("TaskGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -267,7 +265,7 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.HasOne("WorkManager.DAL.Entities.UserEntity", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -278,7 +276,7 @@ namespace WorkManager.DAL.Migrations
                 {
                     b.HasOne("WorkManager.DAL.Entities.CompanyEntity", "Company")
                         .WithMany()
-                        .HasForeignKey("IdCompany")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

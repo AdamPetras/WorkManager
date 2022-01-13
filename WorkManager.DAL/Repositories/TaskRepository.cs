@@ -20,7 +20,7 @@ namespace WorkManager.DAL.Repositories
 
         protected override ICollection<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
         {
-            return dbSet.Include(s => s.TaskGroup).ToList();
+            return dbSet.ToList();
         }
 
         protected override void AddInt(TaskEntity entity, WorkManagerDbContext dbContext)
@@ -37,7 +37,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup).ThenInclude(s => s.User).ToList();
+                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).ToList();
             }
         }
 
@@ -45,8 +45,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
-                    .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
+                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroupId == taskGroupId).Where(s => s.State.Name == kanbanStateName)
                     .ToList();
             }
         }
@@ -55,8 +54,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
             {
-                return await dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Include(s => s.TaskGroup)
-                    .ThenInclude(s => s.User).Include(s => s.State).Where(s => s.State.Name == kanbanStateName)
+                return await dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Where(s => s.State.Name == kanbanStateName)
                     .ToListAsync(cancellationToken);
             }
         }

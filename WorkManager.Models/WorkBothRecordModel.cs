@@ -7,12 +7,12 @@ namespace WorkManager.Models
 {
 	public class WorkBothRecordModel : WorkRecordModelBase, IWorkBothRecordModel
 	{
-		public WorkBothRecordModel() : base(Guid.Empty, DateTime.Today, EWorkType.Both, null, string.Empty)
+		public WorkBothRecordModel() : base(Guid.Empty, DateTime.Today, EWorkType.Both, Guid.Empty, string.Empty)
 		{
 
 		}
 
-		public WorkBothRecordModel(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour, uint pieces, double pricePerPiece, EWorkType type, string description, ICompanyModel company):base(id, actualDateTime, type, company, description)
+		public WorkBothRecordModel(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour, uint pieces, double pricePerPiece, EWorkType type, string description, Guid companyId):base(id, actualDateTime, type, companyId, description)
 		{
 			WorkTime = workTime;
 			PricePerHour = pricePerHour;

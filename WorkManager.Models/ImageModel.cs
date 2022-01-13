@@ -11,16 +11,16 @@ namespace WorkManager.Models
 			
 		}
 
-		public ImageModel(Guid id, string path, string description, ITaskModel task) : base(id)
+		public ImageModel(Guid id, string path, string description, Guid taskId) : base(id)
 		{
 			Path = path;
 			Description = description;
-			Task = task;
+			TaskId = taskId;
 		}
 
 		public string Path { get; set; }
 		public string Description { get; set; }
-		public ITaskModel Task { get; set; }
+		public Guid TaskId { get; set; }
 
 		public bool Equals(IImageModel other)
 		{
@@ -29,7 +29,7 @@ namespace WorkManager.Models
 
 		protected bool Equals(ImageModel other)
 		{
-			return Path == other.Path && Description == other.Description && Equals(Task, other.Task);
+			return Path == other.Path && Description == other.Description && TaskId ==  other.TaskId;
 		}
 
 		public override bool Equals(object obj)
@@ -41,7 +41,7 @@ namespace WorkManager.Models
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Path, Description, Task);
+			return HashCode.Combine(Path, Description, TaskId);
 		}
 	}
 }

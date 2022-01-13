@@ -64,7 +64,7 @@ namespace WorkManager.ViewModels.Dialogs
 				Cancel();
 				return;
 			}
-			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, _currentUserProvider.GetModel());
+			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, _currentUserProvider.GetModel().Id);
 			await _companyFacade.AddAsync(model);
 			OnRequestClose(new DialogParameters(){{"DialogEvent",new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) }});
 			EndProcess();

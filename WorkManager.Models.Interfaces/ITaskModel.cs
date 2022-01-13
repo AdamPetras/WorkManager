@@ -11,8 +11,8 @@ namespace WorkManager.Models.Interfaces
 		uint ImagesCount { get; set; }
 		string Description { get; set; }
 		DateTime TaskDoneDateTime { get; set; }
-		ITaskGroupModel TaskGroup { get; set; }
-		IKanbanStateModel State { get; set; }
+		Guid TaskGroupId { get; set; }
+        Guid StateId { get; set; }
 		EPriority Priority { get; set; }
 		TimeSpan WorkTime { get; set; }
 	}

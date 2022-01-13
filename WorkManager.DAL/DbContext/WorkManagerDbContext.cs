@@ -1,14 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using PCLAppConfig;
 using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
-using WorkManager.DAL.Entities.BaseClasses;
 using WorkManager.DAL.Entities.Interfaces;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using PCLAppConfig;
-using Xamarin.Forms;
 
 namespace WorkManager.DAL.DbContext
 {
@@ -68,23 +63,17 @@ namespace WorkManager.DAL.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			
-        }
+
+		}
 		 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
-                PostgreSqlConnectionStringBuilder builder = new PostgreSqlConnectionStringBuilder(ConfigurationManager.AppSettings["connectionstring"])
-                {
-                    Pooling = true,
-                    TrustServerCertificate = true,
-                    SslMode = SslMode.Require
-                };
-
-                optionsBuilder.UseNpgsql(builder.ConnectionString);
-			}
-        }
+                string connStr = ConfigurationManager.AppSettings["connectionstring"];	//při migraci je potřeba vykopírovat
+                optionsBuilder.UseMySql(connStr, ServerVersion.AutoDetect(connStr));
+            }
+		}
     }
 }

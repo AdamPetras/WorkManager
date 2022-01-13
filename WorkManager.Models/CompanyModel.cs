@@ -13,19 +13,19 @@ namespace WorkManager.Models
 
 		}
 
-		public CompanyModel(Guid id, string name, IUserModel user) : base(id)
+		public CompanyModel(Guid id, string name, Guid userId) : base(id)
 		{
 			Name = name;
-			User = user;
+            UserId = userId;
 		}
 
-        public CompanyModel([NotNull]ICompanyModel model) : this(model.Id,model.Name, model.User)
+        public CompanyModel([NotNull]ICompanyModel model) : this(model.Id,model.Name, model.UserId)
         {
             
         }
 
 		public string Name { get; set; }
-		public IUserModel User { get; set; }
+		public Guid UserId { get; set; }
 
 		public bool Equals(ICompanyModel other)
 		{
@@ -34,7 +34,7 @@ namespace WorkManager.Models
 
 		protected bool Equals(CompanyModel other)
 		{
-			return Name == other.Name && Equals(User, other.User);
+			return Name == other.Name && UserId == other.UserId;
 		}
 
 		public override bool Equals(object obj)
@@ -46,7 +46,7 @@ namespace WorkManager.Models
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Name, User);
+			return HashCode.Combine(Name, UserId);
 		}
 	}
 }

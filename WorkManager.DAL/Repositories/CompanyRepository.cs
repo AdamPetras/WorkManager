@@ -20,7 +20,7 @@ namespace WorkManager.DAL.Repositories
 
 		protected override ICollection<CompanyEntity> GetAllInt(IQueryable<CompanyEntity> dbSet)
 		{
-			return dbSet.Include(s => s.User).ToList();
+			return dbSet.ToList();
 		}
 
 		protected override void AddInt(CompanyEntity entity , WorkManagerDbContext dbContext)
@@ -35,7 +35,7 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.CompanySet.AsQueryable().Where(s => s.User.Id == userId).Include(s=>s.User).ToList();
+				return dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToList();
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                return await dbContext.CompanySet.AsQueryable().Where(s => s.User.Id == userId).Include(s => s.User).ToListAsync(token);
+                return await dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToListAsync(token);
             }
 		}
     }

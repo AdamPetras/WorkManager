@@ -20,7 +20,7 @@ namespace WorkManager.DAL.Repositories
 
 		protected override ICollection<ImageEntity> GetAllInt(IQueryable<ImageEntity> dbSet)
 		{
-			return dbSet.Include(s => s.Task).ToList();
+			return dbSet.ToList();
 		}
 
 		protected override void AddInt(ImageEntity entity, WorkManagerDbContext dbContext)
@@ -47,7 +47,7 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToList();
+				return dbContext.ImageSet.Where(s => s.TaskId == id).ToList();
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace WorkManager.DAL.Repositories
         {
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                return await dbContext.ImageSet.Include(s => s.Task).Where(s => s.Task.Id == id).ToListAsync(token);
+                return await dbContext.ImageSet.Where(s => s.TaskId == id).ToListAsync(token);
             }
 		}
 
@@ -63,7 +63,7 @@ namespace WorkManager.DAL.Repositories
         {
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return (uint) dbContext.ImageSet.Count(s=>s.Task.Id == taskId);
+                return (uint) dbContext.ImageSet.Count(s=>s.TaskId == taskId);
             }
 		}
     }

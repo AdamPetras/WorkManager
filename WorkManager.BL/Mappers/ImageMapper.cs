@@ -20,14 +20,13 @@ namespace WorkManager.BL.Mappers
 			{
 				Path = model.Path,
 				Description = model.Description,
-				TaskId = model.Task.Id,
-				Task = _taskMapper.Map(model.Task)
+				TaskId = model.TaskId,
 			};
 		}
 
 		public IImageModel Map(ImageEntity entity)
 		{
-			return new ImageModel(entity.Id, entity.Path, entity.Description, _taskMapper.Map(entity.Task));
+			return new ImageModel(entity.Id, entity.Path, entity.Description, entity.TaskId);
 		}
 	}
 }

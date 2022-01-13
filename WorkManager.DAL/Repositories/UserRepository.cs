@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.BaseClasses;
@@ -49,7 +50,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<bool> ExistsAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return await dbContext.UserSet.AnyAsync(s => s.Username == username, token);
 		}
 

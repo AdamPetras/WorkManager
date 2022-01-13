@@ -34,9 +34,9 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		public async Task<ICollection<TEntity>> GetAllAsync(CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
-			{
-				return await AsyncEnumerable.ToListAsync(dbContext.GetDatabaseByType<TEntity>(), token);
-			}
+            {
+                return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(token);
+            }
 		}
 
 		public TEntity GetById(Guid id)
@@ -51,7 +51,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await AsyncEnumerable.FirstOrDefaultAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id == id, token);
+				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, token);
 			}
 		}
 
@@ -146,9 +146,9 @@ namespace WorkManager.DAL.Repositories.BaseClasses
             {
                 if (entity == null)
                     throw new ArgumentNullException();
-                if (await AsyncEnumerable.AllAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id != entity.Id, token))
+                if (await dbContext.GetDatabaseByType<TEntity>().AllAsync(s => s.Id != entity.Id, token))
                     dbContext.GetDatabaseByType<TEntity>().Add(entity);
-                TEntity entry = await AsyncEnumerable.FirstOrDefaultAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Id == entity.Id, token);
+                TEntity entry = await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == entity.Id, token);
                 if (entry != null)
                 {
                     dbContext.Entry(entry).CurrentValues.SetValues(entity);
@@ -169,7 +169,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
 			{
-				return await AsyncEnumerable.AnyAsync(dbContext.GetDatabaseByType<TEntity>(), s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
+				return await dbContext.GetDatabaseByType<TEntity>().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
 			}
 		}
 

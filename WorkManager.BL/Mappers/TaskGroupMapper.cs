@@ -28,8 +28,7 @@ namespace WorkManager.BL.Mappers
                 Id = model.Id,
                 Description = model.Description,
                 Name = model.Name,
-                IdUser = model.User.Id,
-                User = _userMapper.Map(model.User),
+                UserId = model.UserId,
             };
         }
 
@@ -37,7 +36,7 @@ namespace WorkManager.BL.Mappers
         {
             if (entity == null)
                 return new TaskGroupModel();
-            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, _taskRepository.GetTasksCountByTaskGroupId(entity.Id), _userMapper.Map(entity.User));
+            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, _taskRepository.GetTasksCountByTaskGroupId(entity.Id), entity.UserId);
         }
     }
 }

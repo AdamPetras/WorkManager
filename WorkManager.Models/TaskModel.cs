@@ -13,21 +13,21 @@ namespace WorkManager.Models
         {
         }
 
-        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroup, task.State, task.Priority, task.WorkTime)
+        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroupId, task.StateId, task.Priority, task.WorkTime)
         {
 
         }
 
         public TaskModel(Guid id, DateTime actualDateTime, string name, uint imagesCount, string description, DateTime taskDoneDateTime,
-            ITaskGroupModel taskGroup, IKanbanStateModel state, EPriority priority, TimeSpan workTime) : base(id)
+            Guid taskGroupId, Guid stateId, EPriority priority, TimeSpan workTime) : base(id)
         {
             ActualDateTime = actualDateTime;
             Name = name;
             ImagesCount = imagesCount;
             Description = description;
             TaskDoneDateTime = taskDoneDateTime;
-            TaskGroup = taskGroup;
-            State = state;
+            TaskGroupId = taskGroupId;
+            StateId = stateId;
             Priority = priority;
             WorkTime = workTime;
         }
@@ -37,8 +37,8 @@ namespace WorkManager.Models
         public uint ImagesCount { get; set; }
         public string Description { get; set; }
         public DateTime TaskDoneDateTime { get; set; }
-        public ITaskGroupModel TaskGroup { get; set; }
-        public IKanbanStateModel State { get; set; }
+        public Guid TaskGroupId { get; set; }
+        public Guid StateId { get; set; }
         public EPriority Priority { get; set; }
         public TimeSpan WorkTime { get; set; }
 
@@ -50,8 +50,8 @@ namespace WorkManager.Models
         protected bool Equals(TaskModel other)
         {
             return ActualDateTime.Equals(other.ActualDateTime) && Name == other.Name && Description == other.Description &&
-                   TaskDoneDateTime.Equals(other.TaskDoneDateTime) && Equals(TaskGroup, other.TaskGroup) &&
-                   Equals(State, other.State) && Priority == other.Priority && WorkTime.Equals(other.WorkTime);
+                   TaskDoneDateTime.Equals(other.TaskDoneDateTime) && TaskGroupId == other.TaskGroupId &&
+                   StateId == other.StateId && Priority == other.Priority && WorkTime.Equals(other.WorkTime);
         }
 
         public override bool Equals(object obj)
@@ -63,7 +63,7 @@ namespace WorkManager.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroup, State, (int)Priority, WorkTime);
+            return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroupId, StateId, (int)Priority, WorkTime);
         }
     }
 }

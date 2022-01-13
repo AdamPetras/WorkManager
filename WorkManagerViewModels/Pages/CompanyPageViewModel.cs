@@ -67,17 +67,10 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-        protected override async Task InitializeAsyncInt()
-		{
-			await base.InitializeAsyncInt();
-            await RefreshAsync();
-		}
-
 		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
 			await base.OnNavigatedToAsyncInt(parameters);
-            if (Companies == null || Companies.Count == 0)
-                await RefreshAsync();
+            await RefreshAsync();
         }
 
 		protected override void DestroyInt()

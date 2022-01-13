@@ -7,6 +7,6 @@ namespace WorkManager.Models.Interfaces
 		string Name { get; set; }
 		int StateOrder { get; set; }
 		string IconName { get; set; }
-		ITaskGroupModel TaskGroup { get; set; }
+		Guid TaskGroupId { get; set; }
 	}
 }

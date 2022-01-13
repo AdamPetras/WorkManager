@@ -21,7 +21,7 @@ namespace WorkManager.DAL.Repositories
 
 		protected override ICollection<WorkRecordEntity> GetAllInt(IQueryable<WorkRecordEntity> dbSet)
 		{
-			return dbSet.Include(s => s.Company).ToList();
+			return dbSet.ToList();
 		}
 
 		protected override void AddInt(WorkRecordEntity entity, WorkManagerDbContext dbContext)
@@ -40,14 +40,9 @@ namespace WorkManager.DAL.Repositories
 			{
 				return filterType switch
 				{
-					EFilterType.None => dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId).Include(s=>s.Company).ThenInclude(s=>s.User).ToList(),
-					EFilterType.ThisYear => dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId)
-						.Where(s => s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
-						.ToList(),
-					EFilterType.ThisMonth => dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId).Include(s => s.Company)
-						.Where(s => s.ActualDateTime.Month == DateTime.Today.Month &&
-						            s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
-						.ToList(),
+					EFilterType.None => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).ToList(),
+					EFilterType.ThisYear => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == DateTime.Today.Year).ToList(),
+					EFilterType.ThisMonth => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Month == DateTime.Today.Month && s.ActualDateTime.Year == DateTime.Today.Year).ToList(),
 					_ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
 				};
 			}
@@ -59,14 +54,9 @@ namespace WorkManager.DAL.Repositories
             {
                 return filterType switch
                 {
-                    EFilterType.None => await dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId).Include(s => s.Company).ThenInclude(s => s.User).ToListAsync(token),
-                    EFilterType.ThisYear => await dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId)
-                        .Where(s => s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
-                        .ToListAsync(token),
-                    EFilterType.ThisMonth => await dbContext.WorkSet.AsQueryable().Where(s => s.Company.Id == companyId).Include(s => s.Company)
-                        .Where(s => s.ActualDateTime.Month == DateTime.Today.Month &&
-                                    s.ActualDateTime.Year == DateTime.Today.Year).Include(s => s.Company).ThenInclude(s => s.User)
-                        .ToListAsync(token),
+                    EFilterType.None => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).ToListAsync(token),
+                    EFilterType.ThisYear => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == DateTime.Today.Year).ToListAsync(token),
+                    EFilterType.ThisMonth => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Month == DateTime.Today.Month && s.ActualDateTime.Year == DateTime.Today.Year).ToListAsync(token),
                     _ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
                 };
             }

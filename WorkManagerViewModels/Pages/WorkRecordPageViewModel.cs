@@ -44,8 +44,8 @@ namespace WorkManager.ViewModels.Pages
 			_dialogService = dialogService;
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
-            _filterDateFrom = DateTime.Today;
-            _filterDateTo = DateTime.Today.AddDays(31);
+            _filterDateFrom = DateTime.Today.Subtract(TimeSpan.FromDays(31));
+            _filterDateTo = DateTime.Today;
 			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
 			RefreshCommand = new DelegateCommand(async () => {
@@ -81,13 +81,6 @@ namespace WorkManager.ViewModels.Pages
 		public double TotalPriceThisMonth => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords?.WholeCollection);
 
 		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
-
-        protected override async Task InitializeAsyncInt()
-		{
-			await base.InitializeAsyncInt();
-            await RefreshAsync();
-			UpdateTotalPrices();
-		}
 
 		protected override void DestroyInt()
 		{

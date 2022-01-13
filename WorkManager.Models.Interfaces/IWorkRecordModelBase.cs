@@ -7,7 +7,7 @@ namespace WorkManager.Models.Interfaces
 	{
 		DateTime ActualDateTime { get; set; }
 		EWorkType Type { get; set; }
-		ICompanyModel Company { get; set; }
+		Guid CompanyId { get; set; }
 		string Description { get; set; }
 		double CalculatedPrice { get; }
 	}

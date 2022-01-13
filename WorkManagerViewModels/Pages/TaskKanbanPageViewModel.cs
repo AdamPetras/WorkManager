@@ -206,7 +206,7 @@ namespace WorkManager.ViewModels.Pages
             if (model != null)
             {
                 Tasks.Remove(obj);
-                obj.State = model;
+                obj.StateId = model.Id;
                 await _taskFacade.UpdateAsync(obj);
             }
             else

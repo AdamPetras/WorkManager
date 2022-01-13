@@ -36,7 +36,7 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToList();
+				return dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).ToList();
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace WorkManager.DAL.Repositories
         {
 			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
             {
-                return await dbContext.KanbanSet.Include(s => s.TaskGroup).Where(s => s.IdTaskGroup == taskGroupId).ToListAsync(token);
+                return await dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).ToListAsync(token);
             }
 		}
     }

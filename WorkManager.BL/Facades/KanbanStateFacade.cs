@@ -23,9 +23,9 @@ namespace WorkManager.BL.Facades
 
 		public void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup)
 		{
-			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Todo", 0, "\uf46d", taskGroup)));
-			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "In Progress", 1, "\uf110", taskGroup)));
-			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Done", 2, "\uf46c", taskGroup)));
+			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Todo", 0, "\uf46d", taskGroup.Id)));
+			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "In Progress", 1, "\uf110", taskGroup.Id)));
+			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Done", 2, "\uf46c", taskGroup.Id)));
 		}
 
 		public IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId)

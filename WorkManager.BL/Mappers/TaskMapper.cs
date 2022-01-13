@@ -31,10 +31,8 @@ namespace WorkManager.BL.Mappers
 				Name = model.Name,
 				Description = model.Description,
 				TaskDoneDateTime = model.TaskDoneDateTime,
-				IdTaskGroup = model.TaskGroup.Id,
-				TaskGroup = _taskGroupMapper.Map(model.TaskGroup),
-				IdState = model.State.Id,
-				State = _kanbanMapper.Map(model.State),
+				TaskGroupId = model.TaskGroupId,
+				StateId = model.StateId,
 				Priority = model.Priority,
 				WorkTime = model.WorkTime,
 			};
@@ -45,7 +43,7 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
 				return new TaskModel();
 			return new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, _imageRepository.GetImagesCountByTask(entity.Id), entity.Description,
-				entity.TaskDoneDateTime, _taskGroupMapper.Map(entity.TaskGroup), _kanbanMapper.Map(entity.State), entity.Priority,entity.WorkTime);
+				entity.TaskDoneDateTime, entity.TaskGroupId, entity.StateId, entity.Priority,entity.WorkTime);
 		}
 	}
 }

@@ -12,18 +12,18 @@ namespace WorkManager.Models
 
 		}
 
-		public KanbanStateModel(Guid id, string name, int stateOrder, string iconName, ITaskGroupModel taskGroup) : base(id)
+		public KanbanStateModel(Guid id, string name, int stateOrder, string iconName, Guid taskGroupId) : base(id)
 		{
 			Name = name;
 			StateOrder = stateOrder;
 			IconName = iconName;
-			TaskGroup = taskGroup;
+			TaskGroupId = taskGroupId;
 		}
 
 		public string Name { get; set; }
 		public int StateOrder { get; set; }
 		public string IconName { get; set; }
-		public ITaskGroupModel TaskGroup { get; set; }
+		public Guid TaskGroupId { get; set; }
 
 		public bool Equals(IKanbanStateModel other)
 		{
@@ -32,7 +32,7 @@ namespace WorkManager.Models
 
 		protected bool Equals(KanbanStateModel other)
 		{
-			return Name == other.Name && StateOrder == other.StateOrder && IconName == other.IconName && TaskGroup.Equals(other.TaskGroup);
+			return Name == other.Name && StateOrder == other.StateOrder && IconName == other.IconName && TaskGroupId == other.TaskGroupId;
 		}
 
 		public override bool Equals(object obj)
@@ -44,7 +44,7 @@ namespace WorkManager.Models
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Name, StateOrder, IconName, TaskGroup);
+			return HashCode.Combine(Name, StateOrder, IconName, TaskGroupId);
 		}
 	}
 }

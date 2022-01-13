@@ -160,11 +160,11 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			BeginProcess();
 			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
-				_currentTaskGroupProvider.GetModel(), _selectedKanbanState, Priority, WorkTime);
+				_currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority, WorkTime);
 			await _taskFacade.AddAsync(model);
 			foreach (string path in PhotoPaths)
 			{
-				await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model));
+				await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id));
 			}
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model)} });
 			EndProcess();

@@ -26,8 +26,7 @@ namespace WorkManager.BL.Mappers
 			{
 				Id = model.Id,
 				Name = model.Name,
-				IdUser = model.User.Id,
-				User = _userMapper.Map(model.User)
+				UserId = model.UserId,
 			};
 		}
 
@@ -35,7 +34,7 @@ namespace WorkManager.BL.Mappers
 		{
 			if (entity == null)
 				return new CompanyModel();
-			return new CompanyModel(entity.Id,entity.Name, _userMapper.Map(entity.User));
+			return new CompanyModel(entity.Id,entity.Name, entity.UserId);
 		}
 	}
 }

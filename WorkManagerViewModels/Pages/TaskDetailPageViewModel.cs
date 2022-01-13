@@ -153,7 +153,7 @@ namespace WorkManager.ViewModels.Pages
 			string path = parameters.GetValue<string>("Path");
 			if (!string.IsNullOrWhiteSpace(path))
 			{
-				PhotoPaths.Add(new ImageModel(Guid.NewGuid(), path, "", SelectedTask));
+				PhotoPaths.Add(new ImageModel(Guid.NewGuid(), path, "", SelectedTask.Id));
 			}
 		}
 
