@@ -22,14 +22,17 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompany(Guid companyId, EFilterType filterType)
+		public IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId, EFilterType filterType)
 		{
-			return Repository.GetAllRecordsByCompany(companyId, filterType).Select(Mapper.Map);
+			return Repository.GetAllRecordsByCompanyOrderedByDescendingDate(companyId, filterType).Select(Mapper.Map);
 		}
 
-        public async Task<IEnumerable<IWorkRecordModelBase>> GetAllRecordsByCompanyAsync(Guid companyId, EFilterType filterType, CancellationToken token = default)
+        public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, EFilterType filterType, CancellationToken token = default)
         {
-			return (await Repository.GetAllRecordsByCompanyAsync(companyId, filterType, token)).Select(Mapper.Map);
+            foreach (WorkRecordEntity workRecordEntity in await Repository.GetAllRecordsByCompanyOrderedByDescendingDateAsync(companyId,filterType,token))
+            {
+                yield return await Mapper.MapAsync(workRecordEntity, token);
+            }
 		}
 	}
 }

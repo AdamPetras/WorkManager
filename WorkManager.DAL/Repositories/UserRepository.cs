@@ -26,7 +26,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<UserEntity> GetByUserNameAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, cancellationToken: token);
 		}
 
@@ -38,7 +38,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 				return (await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, token))?.Password;
 		}
 

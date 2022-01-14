@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.DAL.Entities;
@@ -37,6 +39,26 @@ namespace WorkManager.BL.Mappers
             if (entity == null)
                 return new TaskGroupModel();
             return new TaskGroupModel(entity.Id, entity.Name, entity.Description, _taskRepository.GetTasksCountByTaskGroupId(entity.Id), entity.UserId);
+        }
+
+        public Task<TaskGroupEntity> MapAsync(ITaskGroupModel model, CancellationToken token)
+        {
+            if (model == null)
+                return Task.FromResult(new TaskGroupEntity());
+            return Task.FromResult(new TaskGroupEntity()
+            {
+                Id = model.Id,
+                Description = model.Description,
+                Name = model.Name,
+                UserId = model.UserId,
+            });
+        }
+
+        public async Task<ITaskGroupModel> MapAsync(TaskGroupEntity entity, CancellationToken token)
+        {
+            if (entity == null)
+                return new TaskGroupModel();
+            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, await _taskRepository.GetTasksCountByTaskGroupIdAsync(entity.Id,token), entity.UserId);
         }
     }
 }

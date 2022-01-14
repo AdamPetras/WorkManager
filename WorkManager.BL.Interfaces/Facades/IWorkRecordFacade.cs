@@ -9,7 +9,7 @@ namespace WorkManager.BL.Interfaces.Facades
 {
 	public interface IWorkRecordFacade: IFacade<IWorkRecordModelBase>
 	{
-        IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompany(Guid companyId, EFilterType filterType);
-        Task<IEnumerable<IWorkRecordModelBase>> GetAllRecordsByCompanyAsync(Guid companyId, EFilterType filterType, CancellationToken token = default);
+        IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId, EFilterType filterType);
+        IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, EFilterType filterType, CancellationToken token = default);
     }
 }

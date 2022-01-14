@@ -131,8 +131,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
 		{
 			BeginProcess();
-            TaskGroups = new ObservableCollection<ITaskGroupModel>();
-			TaskGroups.AddRange(await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id));
+            TaskGroups = await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id).ToObservableCollectionAsync();
 			EndProcess();
 		}
 

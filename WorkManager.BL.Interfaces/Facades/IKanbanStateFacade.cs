@@ -6,10 +6,14 @@ using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Interfaces.Facades
 {
-	public interface IKanbanStateFacade : IFacade<IKanbanStateModel>
-	{
-		void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup);
-		IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId);
-        Task<IEnumerable<IKanbanStateModel>> GetKanbanStatesByTaskGroupAsync(Guid taskGroupId, CancellationToken token = default);
+    public interface IKanbanStateFacade : IFacade<IKanbanStateModel>
+    {
+        void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup);
+        IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId);
+        IAsyncEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default);
+        IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder);
+        Task<IKanbanStateModel> GetNextKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default);
+        IKanbanStateModel GetPreviousKanbanState(Guid taskGroupId, int currentStateOrder);
+        Task<IKanbanStateModel> GetPreviousKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default);
     }
 }

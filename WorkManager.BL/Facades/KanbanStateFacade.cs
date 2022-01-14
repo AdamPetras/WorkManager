@@ -30,12 +30,36 @@ namespace WorkManager.BL.Facades
 
 		public IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId)
 		{
-			return Repository.GetKanbanStateByTaskGroup(taskGroupId).Select(Mapper.Map);
+			return Repository.GetKanbanStateByTaskOrderedByStateGroup(taskGroupId).Select(Mapper.Map);
 		}
 
-        public async Task<IEnumerable<IKanbanStateModel>> GetKanbanStatesByTaskGroupAsync(Guid taskGroupId, CancellationToken token = default)
+        public async IAsyncEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
         {
-			return (await Repository.GetKanbanStateByTaskGroupAsync(taskGroupId, token)).Select(Mapper.Map);
+            foreach (KanbanStateEntity kanbanStateEntity in await Repository.GetKanbanStateByTaskGroupOrderedByStateAsync(taskGroupId,token))
+            {
+                yield return await Mapper.MapAsync(kanbanStateEntity, token);
+            }
         }
-	}
+
+        public IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder)
+        {
+            return Mapper.Map(Repository.GetNextKanbanState(taskGroupId, currentStateOrder));
+
+        }
+
+        public async Task<IKanbanStateModel> GetNextKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default)
+        {
+            return await Mapper.MapAsync(await Repository.GetNextKanbanStateAsync(taskGroupId, currentStateOrder, token), token);
+        }
+
+        public IKanbanStateModel GetPreviousKanbanState(Guid taskGroupId, int currentStateOrder)
+        {
+            return Mapper.Map(Repository.GetPreviousKanbanState(taskGroupId, currentStateOrder));
+        }
+
+        public async Task<IKanbanStateModel> GetPreviousKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default)
+        {
+            return await Mapper.MapAsync(await Repository.GetPreviousKanbanStateAsync(taskGroupId, currentStateOrder, token), token);
+        }
+    }
 }

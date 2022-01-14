@@ -14,6 +14,7 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.NavigationParams;
 using WorkManager.Core;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -93,7 +94,7 @@ namespace WorkManager.ViewModels.Pages
 			TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
 			SelectedTask = navigationParameters.TaskModel;
 			_defaultTask = new TaskModel(navigationParameters.TaskModel);
-			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
+			PhotoPaths = await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id).ToObservableCollectionAsync();
 			InitImages = PhotoPaths.ToList();
 			EndProcess();
 		}

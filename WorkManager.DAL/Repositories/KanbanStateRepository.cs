@@ -32,20 +32,52 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-		public ICollection<KanbanStateEntity> GetKanbanStateByTaskGroup(Guid taskGroupId)
+		public ICollection<KanbanStateEntity> GetKanbanStateByTaskOrderedByStateGroup(Guid taskGroupId)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).ToList();
+				return dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToList();
 			}
 		}
 
-        public async Task<ICollection<KanbanStateEntity>> GetKanbanStateByTaskGroupAsync(Guid taskGroupId, CancellationToken token)
+        public async Task<ICollection<KanbanStateEntity>> GetKanbanStateByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token)
         {
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).ToListAsync(token);
+                return await dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToListAsync(token);
             }
 		}
-    }
+
+        public KanbanStateEntity GetNextKanbanState(Guid taskGroupId, int currentStateOrder)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return dbContext.KanbanSet.SingleOrDefault(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1);
+            }
+		}
+
+        public async Task<KanbanStateEntity> GetNextKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.KanbanSet.SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1, token);
+			}
+		}
+
+        public KanbanStateEntity GetPreviousKanbanState(Guid taskGroupId, int currentStateOrder)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return dbContext.KanbanSet.SingleOrDefault(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1);
+            }
+        }
+
+        public async Task<KanbanStateEntity> GetPreviousKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.KanbanSet.SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1, token);
+            }
+        }
+	}
 }

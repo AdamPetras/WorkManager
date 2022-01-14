@@ -186,7 +186,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>((await _workFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id, EFilterType.None)).OrderByDescending(s => s.ActualDateTime), CreateFilterByDate(_filterDateFrom,_filterDateTo));
+            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateAsync(_companyModelProvider.GetModel().Id, EFilterType.None).ToListAsync(), CreateFilterByDate(_filterDateFrom,_filterDateTo));
 			EndProcess();
         }
 

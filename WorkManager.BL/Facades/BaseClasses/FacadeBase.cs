@@ -71,9 +71,12 @@ namespace WorkManager.BL.Facades.BaseClasses
 			return Repository.GetAll().Select(Mapper.Map).ToList();
 		}
 
-		public async Task<IEnumerable<TModel>> GetAllAsync(CancellationToken token = default)
+		public async IAsyncEnumerable<TModel> GetAllAsync(CancellationToken token = default)
 		{
-			return (await Repository.GetAllAsync(token)).Select(Mapper.Map).ToList();
+            foreach (TEntity entity in await Repository.GetAllAsync(token))
+            {
+                yield return await Mapper.MapAsync(entity,token);
+            }
 		}
 
 		public TModel GetById(Guid id)
@@ -88,7 +91,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 			return tmp != null ? Mapper.Map(tmp) : default;
 		}
 
-		public bool ModelExists(Guid id)
+		public bool Exists(Guid id)
 		{
 			return Repository.GetAll().Any(s => Mapper.Map(s).Id == id);
 		}

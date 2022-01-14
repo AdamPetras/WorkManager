@@ -33,7 +33,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<ICollection<TEntity>> GetAllAsync(CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 return await dbContext.GetDatabaseByType<TEntity>().ToListAsync(token);
             }
@@ -49,7 +49,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().FirstOrDefaultAsync(s => s.Id == id, token);
 			}
@@ -73,7 +73,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<bool> RemoveAsync(Guid id, CancellationToken token)
 		{
-            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 TEntity entity = await GetByIdAsync(id, token);
                 if (entity == null)
@@ -108,7 +108,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<TEntity> AddAsync(TEntity entity, CancellationToken token)
 		{
-            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 if (entity == null)
                     throw new ArgumentNullException();
@@ -142,7 +142,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task UpdateAsync(TEntity entity, CancellationToken token)
 		{
-            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 if (entity == null)
                     throw new ArgumentNullException();
@@ -167,7 +167,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				return await dbContext.GetDatabaseByType<TEntity>().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
 			}
@@ -190,7 +190,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
 		public async Task ClearAsync(CancellationToken token)
 		{
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
 				DbSet<TEntity> dbSet = dbContext.GetDatabaseByType<TEntity>();
 				foreach (var id in dbSet.AsQueryable().Select(e => e.Id))

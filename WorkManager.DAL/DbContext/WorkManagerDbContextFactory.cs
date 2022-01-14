@@ -23,14 +23,5 @@ namespace WorkManager.DAL.DbContext
             postDatabaseContext.Database.EnsureCreated();
 			return postDatabaseContext;
 		}
-
-        public async Task<WorkManagerDbContext> CreateDbContextAsync(CancellationToken token)
-        {
-            WorkManagerDbContext postDatabaseContext = (WorkManagerDbContext)Activator.CreateInstance(typeof(WorkManagerDbContext));
-            if (postDatabaseContext == null)
-                throw new TypeLoadException(nameof(WorkManagerDbContext));
-            postDatabaseContext.Database.EnsureCreated();
-            return postDatabaseContext;
-        }
 	}
 }

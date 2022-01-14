@@ -9,7 +9,9 @@ namespace WorkManager.DAL.Repositories.Interfaces
 {
 	public interface IWorkRecordRepository : IRepository<WorkRecordEntity>
 	{
-        ICollection<WorkRecordEntity> GetAllRecordsByCompany(Guid companyId, EFilterType filterType);
-        Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, EFilterType filterType, CancellationToken token);
+        ICollection<WorkRecordEntity> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId, EFilterType filterType);
+        Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, EFilterType filterType, CancellationToken token);
+        uint GetRecordCountInCompany(Guid companyId);
+        Task<uint> GetRecordCountInCompanyAsync(Guid companyId, CancellationToken token);
     }
 }

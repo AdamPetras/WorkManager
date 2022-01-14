@@ -9,6 +9,7 @@ namespace WorkManager.BL.Interfaces.Facades
 	public interface ICompanyFacade : IFacade<ICompanyModel>
 	{
         IEnumerable<ICompanyModel> GetCompaniesByUserId(Guid userId);
-		Task<IEnumerable<ICompanyModel>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default);
-	}
+        IAsyncEnumerable<ICompanyModel> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default);
+        Task<bool> ExistsAsync(string companyName, CancellationToken token = default);
+    }
 }

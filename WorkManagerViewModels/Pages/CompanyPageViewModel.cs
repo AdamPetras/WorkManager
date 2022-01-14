@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
@@ -10,6 +11,7 @@ using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.NavigationParams;
 using WorkManager.BL.Services;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -131,7 +133,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-			Companies = new ObservableCollection<ICompanyModel>(await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id));
+			Companies = await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id).ToObservableCollectionAsync();
 			EndProcess();
 		}
 

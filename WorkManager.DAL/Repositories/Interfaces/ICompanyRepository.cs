@@ -10,5 +10,7 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	{
 		ICollection<CompanyEntity> GetCompaniesByUserId(Guid userId);
 		Task<ICollection<CompanyEntity>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token);
+        Task<bool> ExistsAsync(string companyName, CancellationToken token);
+
     }
 }

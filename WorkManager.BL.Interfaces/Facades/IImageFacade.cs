@@ -9,6 +9,6 @@ namespace WorkManager.BL.Interfaces.Facades
 	public interface IImageFacade : IFacade<IImageModel>
 	{
         IEnumerable<IImageModel> GetAllImagesByTask(Guid id);
-        Task<IEnumerable<IImageModel>> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default);
+        IAsyncEnumerable<IImageModel> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default);
 	}
 }

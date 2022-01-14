@@ -10,5 +10,6 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	{
         ICollection<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId);
         Task<ICollection<TaskGroupEntity>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token);
+        Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default);
     }
 }

@@ -163,7 +163,7 @@ namespace WorkManager.ViewModels.Pages
         {
             await base.OnNavigatedFromAsyncInt(parameters);
             if(KanbanStates.IsNullOrEmpty())
-                KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id));
+                KanbanStates = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id).ToObservableCollectionAsync();
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
         }
@@ -200,9 +200,9 @@ namespace WorkManager.ViewModels.Pages
             await MoveWithTask(obj, true);
         }
 
-        private async Task MoveWithTask(ITaskModel obj, bool isMoveToComplete)
+        private async Task MoveWithTask(ITaskModel obj, bool isMoveToNext)
         {
-            IKanbanStateModel model = (await _kanbanStateFacade.GetKanbanStatesByTaskGroupAsync(_currentTaskGroupProvider.GetModel().Id)).FirstOrDefault(s => s.StateOrder == SelectedKanbanState.StateOrder + (isMoveToComplete ? +1 : -1));
+            IKanbanStateModel model = isMoveToNext ? await _kanbanStateFacade.GetNextKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder) : await _kanbanStateFacade.GetPreviousKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder);
             if (model != null)
             {
                 Tasks.Remove(obj);
@@ -277,7 +277,7 @@ namespace WorkManager.ViewModels.Pages
             if (model == null)
                 return;
             BeginProcess();
-            Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
+            Tasks = await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name).ToObservableCollectionAsync();
             EndProcess();
         }
     }

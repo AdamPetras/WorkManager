@@ -72,7 +72,7 @@ namespace WorkManager.ViewModels.Dialogs
 		private async Task ConfirmAsync()
 		{
 			BeginProcess();
-			if ((await _taskGroupFacade.GetAllAsync()).Any(s => s.Name == Name))
+			if (await _taskGroupFacade.ExistsAsync(Name))
 			{
 				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
 				Cancel();

@@ -53,7 +53,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<ICollection<ImageEntity>> GetAllImagesByTaskAsync(Guid id, CancellationToken token)
         {
-			using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 return await dbContext.ImageSet.Where(s => s.TaskId == id).ToListAsync(token);
             }

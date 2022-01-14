@@ -50,12 +50,12 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+        public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default)
         {
-            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(cancellationToken))
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 return await dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Where(s => s.State.Name == kanbanStateName)
-                    .ToListAsync(cancellationToken);
+                    .ToListAsync(token);
             }
         }
 
@@ -63,13 +63,21 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return (uint)dbContext.TaskSet.Count(s => s.TaskGroup.Id == taskGroupId);
+                return (uint)dbContext.TaskSet.AsQueryable().Count(s => s.TaskGroup.Id == taskGroupId);
+            }
+        }
+
+        public async Task<uint> GetTasksCountByTaskGroupIdAsync(Guid taskGroupId, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return (uint)await dbContext.TaskSet.AsQueryable().CountAsync(s => s.TaskGroup.Id == taskGroupId, token);
             }
         }
 
         public async Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token)
         {
-            using (WorkManagerDbContext dbContext = await IdbContextFactory.CreateDbContextAsync(token))
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 foreach (TaskEntity entity in dbContext.TaskSet.AsQueryable().Where(s => s.State.Id == kanbanStateId))
                 {

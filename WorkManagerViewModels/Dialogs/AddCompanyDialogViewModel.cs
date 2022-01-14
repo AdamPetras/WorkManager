@@ -58,13 +58,13 @@ namespace WorkManager.ViewModels.Dialogs
 		private async Task Confirm()
 		{
 			BeginProcess();
-			if ((await _companyFacade.GetAllAsync()).Any(s => s.Name == Name))
+			if (await _companyFacade.ExistsAsync(Name))
 			{
 				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExists.Format(Name));
 				Cancel();
 				return;
 			}
-			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, _currentUserProvider.GetModel().Id);
+			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name,0, _currentUserProvider.GetModel().Id);
 			await _companyFacade.AddAsync(model);
 			OnRequestClose(new DialogParameters(){{"DialogEvent",new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) }});
 			EndProcess();

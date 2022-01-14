@@ -13,28 +13,30 @@ namespace WorkManager.Models
 
 		}
 
-		public CompanyModel(Guid id, string name, Guid userId) : base(id)
+		public CompanyModel(Guid id, string name, uint workRecordsCount, Guid userId) : base(id)
 		{
 			Name = name;
+            WorkRecordsCount = workRecordsCount;
             UserId = userId;
 		}
 
-        public CompanyModel([NotNull]ICompanyModel model) : this(model.Id,model.Name, model.UserId)
+        public CompanyModel([NotNull]ICompanyModel model) : this(model.Id,model.Name, model.WorkRecordsCount, model.UserId)
         {
             
         }
 
 		public string Name { get; set; }
+        public uint WorkRecordsCount { get; set; }
 		public Guid UserId { get; set; }
 
-		public bool Equals(ICompanyModel other)
+        public bool Equals(ICompanyModel other)
 		{
 			return Equals((CompanyModel) other);
 		}
 
 		protected bool Equals(CompanyModel other)
 		{
-			return Name == other.Name && UserId == other.UserId;
+			return Name == other.Name && UserId == other.UserId && WorkRecordsCount == other.WorkRecordsCount;
 		}
 
 		public override bool Equals(object obj)
@@ -46,7 +48,7 @@ namespace WorkManager.Models
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(Name, UserId);
+			return HashCode.Combine(Name, UserId, WorkRecordsCount);
 		}
 	}
 }

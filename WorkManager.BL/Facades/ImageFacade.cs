@@ -9,6 +9,7 @@ using WorkManager.BL.Interfaces.Facades;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Repositories.Interfaces;
 using WorkManager.Models.Interfaces;
+using Xamarin.Forms;
 
 namespace WorkManager.BL.Facades
 {
@@ -25,9 +26,12 @@ namespace WorkManager.BL.Facades
 			return Repository.GetAllImagesByTask(id).Select(Mapper.Map);
 		}
 
-        public async Task<IEnumerable<IImageModel>> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
+        public async IAsyncEnumerable<IImageModel> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
         {
-			return (await Repository.GetAllImagesByTaskAsync(id, token)).Select(Mapper.Map);
+            foreach (ImageEntity value in await Repository.GetAllImagesByTaskAsync(id, token))
+            {
+                yield return await Mapper.MapAsync(value, token);
+            }
         }
     }
 }

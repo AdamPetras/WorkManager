@@ -26,9 +26,17 @@ namespace WorkManager.BL.Facades
 			return Repository.GetCompaniesByUserId(userId).Select(Mapper.Map);
 		}
 
-        public async Task<IEnumerable<ICompanyModel>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default)
+        public async IAsyncEnumerable<ICompanyModel> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default)
         {
-            return (await Repository.GetCompaniesByUserIdAsync(userId, token)).Select(Mapper.Map);
+            foreach (CompanyEntity entity in await Repository.GetCompaniesByUserIdAsync(userId, token))
+            {
+                yield return await Mapper.MapAsync(entity, token);
+            }
+        }
+
+        public Task<bool> ExistsAsync(string companyName, CancellationToken token = default)
+        {
+            return Repository.ExistsAsync(companyName, token);
         }
     }
 }

@@ -10,8 +10,9 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	{
         ICollection<TaskEntity> GetTasksByTaskGroupId(Guid taskGroupId);
         ICollection<TaskEntity> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
-		Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
+		Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default);
         uint GetTasksCountByTaskGroupId(Guid taskGroupId);
+        Task<uint> GetTasksCountByTaskGroupIdAsync(Guid taskGroupId, CancellationToken token);
         Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token);
     }
 }

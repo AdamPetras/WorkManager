@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using WorkManager.BL.Interfaces;
 using WorkManager.DAL.Entities;
 using WorkManager.DAL.Enums;
@@ -68,5 +70,55 @@ namespace WorkManager.BL.Mappers
 			return _workRecordModelFactory.CreateWorkRecord(entity.Id, entity.ActualDateTime, entity.WorkTime,
 				entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description, entity.CompanyId);
 		}
-	}
+
+        public Task<WorkRecordEntity> MapAsync(IWorkRecordModelBase model, CancellationToken token)
+        {
+			if (model == null)
+                return Task.FromResult(new WorkRecordEntity());
+            uint pieces = 0;
+            double pricePerPiece = 0;
+            TimeSpan workTime = TimeSpan.Zero;
+            double pricePerHour = 0;
+            switch (model)
+            {
+                case IWorkBothRecordModel bothRecordModel:
+                    pieces = bothRecordModel.Pieces;
+                    pricePerPiece = bothRecordModel.PricePerPiece;
+                    workTime = bothRecordModel.WorkTime;
+                    pricePerHour = bothRecordModel.PricePerHour;
+                    break;
+                case IWorkPiecesRecordModel piecesRecordModel:
+                    pieces = piecesRecordModel.Pieces;
+                    pricePerPiece = piecesRecordModel.PricePerPiece;
+                    break;
+                case IWorkTimeRecordModel timeRecordModel:
+                    workTime = timeRecordModel.WorkTime;
+                    pricePerHour = timeRecordModel.PricePerHour;
+                    break;
+                default:
+                    throw new ArgumentException();
+            }
+
+            return Task.FromResult(new WorkRecordEntity()
+            {
+                Id = model.Id,
+                ActualDateTime = model.ActualDateTime,
+                Type = model.Type,
+                Pieces = pieces,
+                PricePerPiece = pricePerPiece,
+                WorkTime = workTime,
+                PricePerHour = pricePerHour,
+                Description = model.Description,
+                CompanyId = model.CompanyId,
+            });
+		}
+
+        public Task<IWorkRecordModelBase> MapAsync(WorkRecordEntity entity, CancellationToken token)
+        {
+			if (entity == null)
+                return Task.FromResult<IWorkRecordModelBase>(new WorkBothRecordModel());
+            return Task.FromResult(_workRecordModelFactory.CreateWorkRecord(entity.Id, entity.ActualDateTime, entity.WorkTime,
+                entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description, entity.CompanyId));
+		}
+    }
 }

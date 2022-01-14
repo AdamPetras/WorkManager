@@ -10,6 +10,7 @@ namespace WorkManager.BL.Interfaces.Facades
 	public interface ITaskGroupFacade : IFacade<ITaskGroupModel>
 	{
         IEnumerable<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId);
-        Task<IEnumerable<ITaskGroupModel>> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default);
+        IAsyncEnumerable<ITaskGroupModel> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default);
+        Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default);
     }
 }

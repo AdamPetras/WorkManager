@@ -16,10 +16,10 @@ namespace WorkManager.BL.Interfaces.Facades
 		void Update(TModel model);
 		Task UpdateAsync(TModel model, CancellationToken token = default);
         IEnumerable<TModel> GetAll();
-		Task<IEnumerable<TModel>> GetAllAsync(CancellationToken token = default);
+        IAsyncEnumerable<TModel> GetAllAsync(CancellationToken token = default);
 		TModel GetById(Guid id);
 		Task<TModel> GetByIdAsync(Guid id, CancellationToken token = default);
-		bool ModelExists(Guid id);
+		bool Exists(Guid id);
 		void Clear();
 		Task ClearAsync (CancellationToken token = default);
 	}
