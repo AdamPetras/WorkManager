@@ -4,11 +4,11 @@
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
-             xmlns:xaml="http://prismlibrary.com"
+             xmlns:prism="http://prismlibrary.com"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Dialogs.FilterDialogView"
-             xaml:DialogLayout.CloseOnBackgroundTapped="True"
-             xaml:DialogLayout.RelativeWidthRequest="0.9"
+             prism:DialogLayout.CloseOnBackgroundTapped="True"
+             prism:DialogLayout.RelativeWidthRequest="0.9"
              x:DataType="dialogs:FilterDialogViewModel"
              HorizontalOptions="FillAndExpand">
     <Frame.Resources>

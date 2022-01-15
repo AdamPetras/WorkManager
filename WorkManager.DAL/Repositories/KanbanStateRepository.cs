@@ -18,11 +18,6 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override ICollection<KanbanStateEntity> GetAllInt(IQueryable<KanbanStateEntity> dbSet)
-		{
-			return dbSet.ToList();
-		}
-
 		protected override void AddInt(KanbanStateEntity entity, WorkManagerDbContext dbContext)
 		{
 			if (entity.TaskGroup != null)

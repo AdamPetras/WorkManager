@@ -3,14 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
-             xmlns:xaml="http://prismlibrary.com"
-             xmlns:system="clr-namespace:System;assembly=netstandard"
+             xmlns:prism="http://prismlibrary.com"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:extensions="clr-namespace:WorkManager.Extensions;assembly=WorkManager.Extensions"
-             xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
              xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
-             xaml:DialogLayout.RelativeWidthRequest="0.8"
-             xaml:DialogLayout.CloseOnBackgroundTapped="True"
+             prism:DialogLayout.RelativeWidthRequest="0.8"
+             prism:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:AddWorkRecordDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddWorkRecordDialogView">
     <Frame.Resources>

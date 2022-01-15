@@ -25,11 +25,9 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return GetAllInt(dbContext.GetDatabaseByType<TEntity>().AsNoTracking()).ToList();
+				return dbContext.GetDatabaseByType<TEntity>().ToList();
 			}
 		}
-
-		protected abstract ICollection<TEntity> GetAllInt(IQueryable<TEntity> dbSet);
 
 		public async Task<ICollection<TEntity>> GetAllAsync(CancellationToken token)
 		{

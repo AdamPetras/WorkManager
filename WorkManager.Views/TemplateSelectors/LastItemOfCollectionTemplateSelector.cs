@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using WorkManager.Models.Interfaces;
+﻿using System.Collections;
 using Xamarin.Forms;
 
 namespace WorkManager.Views.TemplateSelectors

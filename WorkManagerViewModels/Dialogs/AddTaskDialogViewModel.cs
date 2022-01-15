@@ -166,6 +166,7 @@ namespace WorkManager.ViewModels.Dialogs
 			{
 				await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id));
 			}
+            _currentTaskGroupProvider.GetModel().TasksCount++;
 			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model)} });
 			EndProcess();
 		}

@@ -7,6 +7,8 @@ namespace WorkManager.Models
 {
     public class TaskGroupModel : ModelBase, ITaskGroupModel
     {
+        private uint _tasksCount;
+
         public TaskGroupModel() : base(Guid.Empty)
         {
 
@@ -22,7 +24,15 @@ namespace WorkManager.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public uint TasksCount { get; set; }
+        public uint TasksCount
+        {
+            get => _tasksCount;
+            set
+            {
+                _tasksCount = value;
+                RaisePropertyChanged();
+            }
+        }
         public Guid UserId { get; set; }
 
         public bool Equals(ITaskGroupModel other)

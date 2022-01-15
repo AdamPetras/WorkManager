@@ -159,11 +159,18 @@ namespace WorkManager.ViewModels.Pages
             }
         }
 
+        protected override async Task InitializeAsyncInt()
+        {
+            BeginProcess();
+            await base.InitializeAsyncInt();
+            if(KanbanStates.IsNullOrEmpty())
+                KanbanStates = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id).ToObservableCollectionAsync();
+            EndProcess();
+        }
+
         protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
         {
             await base.OnNavigatedFromAsyncInt(parameters);
-            if(KanbanStates.IsNullOrEmpty())
-                KanbanStates = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id).ToObservableCollectionAsync();
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
         }
@@ -233,6 +240,7 @@ namespace WorkManager.ViewModels.Pages
             {
                 await _taskFacade.ClearTasksByKanbanStateAsync(SelectedKanbanState.Id);
                 await RefreshAsync(SelectedKanbanState);
+                _currentTaskGroupProvider.GetModel().TasksCount = 0;
             }
             IsDialogThrown = false;
             EndProcess();
@@ -242,6 +250,7 @@ namespace WorkManager.ViewModels.Pages
         {
             Tasks.Remove(obj);
             await _taskFacade.RemoveAsync(obj.Id);
+            _currentTaskGroupProvider.GetModel().TasksCount--;
         }
 
         private async Task KanbanStateChangedAsync(IKanbanStateModel model)

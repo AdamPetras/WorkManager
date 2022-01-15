@@ -8,7 +8,9 @@ namespace WorkManager.Models
 {
 	public class CompanyModel:ModelBase, ICompanyModel
 	{
-		public CompanyModel():base(Guid.Empty)
+        private uint _workRecordsCount;
+
+        public CompanyModel():base(Guid.Empty)
 		{
 
 		}
@@ -26,7 +28,15 @@ namespace WorkManager.Models
         }
 
 		public string Name { get; set; }
-        public uint WorkRecordsCount { get; set; }
+        public uint WorkRecordsCount
+        {
+            get => _workRecordsCount;
+            set
+            {
+                _workRecordsCount = value;
+				RaisePropertyChanged();
+            }
+        }
 		public Guid UserId { get; set; }
 
         public bool Equals(ICompanyModel other)

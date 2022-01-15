@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
-             xmlns:viewModels="clr-namespace:WorkManager.ViewModels;assembly=WorkManager.ViewModels"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.RegisterPage"

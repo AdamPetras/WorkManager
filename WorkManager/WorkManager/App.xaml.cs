@@ -26,11 +26,8 @@ using WorkManager.Models.Interfaces;
 using WorkManager.Models.Interfaces.ModelServices;
 using WorkManager.ViewModels.Dialogs;
 using WorkManager.ViewModels.Pages;
-using WorkManager.ViewModels.Views;
 using WorkManager.Views.Dialogs;
 using WorkManager.Views.Pages;
-using WorkManager.Views.Resources;
-using WorkManager.Views.Views;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
@@ -174,9 +171,9 @@ namespace WorkManager
 			containerRegistry.RegisterDialog<ImageDetailDialog, ImageDetailDialogViewModel>();
 			containerRegistry.RegisterDialog<AddKanbanStateDialogView, AddKanbanStateDialogViewModel>();
 
-			ViewModelLocationProvider.Register<CompanyEmptyView, CompanyEmptyViewModel>();
-			ViewModelLocationProvider.Register<TaskGroupEmptyView, TaskGroupEmptyViewModel>();
-			ViewModelLocationProvider.Register<WorkRecordEmptyView, WorkRecordEmptyViewModel>();
+			//ViewModelLocationProvider.Register<CompanyEmptyView, CompanyEmptyViewModel>();
+			//ViewModelLocationProvider.Register<TaskGroupEmptyView, TaskGroupEmptyViewModel>();
+			//ViewModelLocationProvider.Register<WorkRecordEmptyView, WorkRecordEmptyViewModel>();
 		}
 	}
 }

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Frame xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xaml="http://prismlibrary.com"
+             xmlns:prism="http://prismlibrary.com"
              xmlns:dialogs="clr-namespace:WorkManager.ViewModels.Dialogs;assembly=WorkManager.ViewModels"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
-             xaml:DialogLayout.CloseOnBackgroundTapped="True"
-             xaml:DialogLayout.LayoutBounds="0.5, 0.5, -1, -1"
-             xaml:DialogLayout.RelativeWidthRequest="0.8"
+             prism:DialogLayout.CloseOnBackgroundTapped="True"
+             prism:DialogLayout.LayoutBounds="0.5, 0.5, -1, -1"
+             prism:DialogLayout.RelativeWidthRequest="0.8"
              x:DataType="dialogs:AddKanbanStateDialogViewModel"
              x:Class="WorkManager.Views.Dialogs.AddKanbanStateDialogView">
     <Frame.Resources>
@@ -35,7 +35,7 @@
         <Button Grid.Row="1" Grid.Column="2" Text="{x:Static resources:TranslateDialogsSR.SelectIcon}" Command="{Binding ShowHideSelectionCommand}"></Button>
         <CollectionView Grid.Row="2" Grid.Column="0" HeightRequest="250" Grid.ColumnSpan="3" IsVisible="{Binding IsIconSelectionVisible}" SelectedItem="{Binding SelectedIcon}" SelectionMode="Single" ItemsSource="{x:Static resources:IconFont.IconArray}">
             <CollectionView.Behaviors>
-                <xaml:EventToCommandBehavior EventName="SelectionChanged" Command="{Binding SelectionChangedCommand}"></xaml:EventToCommandBehavior>
+                <prism:EventToCommandBehavior EventName="SelectionChanged" Command="{Binding SelectionChangedCommand}"></prism:EventToCommandBehavior>
             </CollectionView.Behaviors>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout HorizontalItemSpacing="5" VerticalItemSpacing="5" SnapPointsAlignment="Center" SnapPointsType="Mandatory" Orientation="Vertical" Span="5"></GridItemsLayout>

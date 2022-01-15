@@ -7,7 +7,6 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              x:Class="WorkManager.Views.Pages.TaskDetailPage"
-             x:Name="this"
              x:DataType="pages:TaskDetailPageViewModel"
              Title="{Binding Text, Source={x:Reference NameEntry}}">
     <ContentPage.Resources>

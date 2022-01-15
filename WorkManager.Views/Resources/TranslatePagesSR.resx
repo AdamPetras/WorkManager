@@ -144,11 +144,20 @@
   <data name="Name" xml:space="preserve">
     <value>Název</value>
   </data>
+  <data name="NoCompaniesMessage" xml:space="preserve">
+    <value>Nejsou k dispozici žádné práce</value>
+  </data>
+  <data name="NoTaskGroupsMessage" xml:space="preserve">
+    <value>Nejsou k dispozici žádné skupiny úkolů</value>
+  </data>
   <data name="NoTaskMessage" xml:space="preserve">
-    <value>V tomto stavu není žádný úkol</value>
+    <value>Nejsou k dispozici žádné úkoly</value>
   </data>
   <data name="NotRememberCredentials" xml:space="preserve">
     <value>Nezapamatovat si údaje</value>
+  </data>
+  <data name="NoWorkRecordMessage" xml:space="preserve">
+    <value>Nejsou k dispozici žádné záznamy</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>

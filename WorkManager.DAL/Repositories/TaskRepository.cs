@@ -18,11 +18,6 @@ namespace WorkManager.DAL.Repositories
         {
         }
 
-        protected override ICollection<TaskEntity> GetAllInt(IQueryable<TaskEntity> dbSet)
-        {
-            return dbSet.ToList();
-        }
-
         protected override void AddInt(TaskEntity entity, WorkManagerDbContext dbContext)
         {
             if (entity.TaskGroup != null)

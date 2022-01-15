@@ -142,7 +142,25 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to V tomto stavu není žádný úkol.
+        ///   Looks up a localized string similar to Nejsou k dispozici žádné práce.
+        /// </summary>
+        internal static string NoCompaniesMessage {
+            get {
+                return ResourceManager.GetString("NoCompaniesMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nejsou k dispozici žádné skupiny úkolů.
+        /// </summary>
+        internal static string NoTaskGroupsMessage {
+            get {
+                return ResourceManager.GetString("NoTaskGroupsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nejsou k dispozici žádné úkoly.
         /// </summary>
         internal static string NoTaskMessage {
             get {
@@ -156,6 +174,15 @@ namespace WorkManager.Views.Resources {
         internal static string NotRememberCredentials {
             get {
                 return ResourceManager.GetString("NotRememberCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nejsou k dispozici žádné záznamy.
+        /// </summary>
+        internal static string NoWorkRecordMessage {
+            get {
+                return ResourceManager.GetString("NoWorkRecordMessage", resourceCulture);
             }
         }
         

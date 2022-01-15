@@ -131,7 +131,8 @@ namespace WorkManager.ViewModels.Dialogs
 			IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
 				PricePerHour, Pieces, PricePerPiece, SelectedWorkType, Description, _companyModelProvider.GetModel().Id);
 			await _workRecordDetailFacade.AddAsync(model);
-			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
+            _companyModelProvider.GetModel().WorkRecordsCount++;
+			OnRequestClose(new DialogParameters(){ { "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
 		}
 
 		private void Cancel()

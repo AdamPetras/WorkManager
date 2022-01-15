@@ -78,9 +78,29 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		public double TotalPriceThisMonth => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords?.WholeCollection);
+        private double _totalPriceThisMonth;
+        public double TotalPriceThisMonth
+        {
+            get => _totalPriceThisMonth;
+            set
+            {
+                if (_totalPriceThisMonth == value) return;
+                _totalPriceThisMonth = value;
+                RaisePropertyChanged();
+            }
+        }
 
-		public double TotalPriceThisYear => FilteredRecords?.WholeCollection == null ? 0 : _recordTotalCalculatorService.CalculateThisYear(FilteredRecords?.WholeCollection);
+        private double _totalPriceThisYear;
+        public double TotalPriceThisYear
+        {
+            get => _totalPriceThisYear;
+            set
+            {
+                if (_totalPriceThisYear == value) return;
+                _totalPriceThisYear = value;
+                RaisePropertyChanged();
+            }
+        }
 
 		protected override void DestroyInt()
 		{
@@ -91,19 +111,25 @@ namespace WorkManager.ViewModels.Pages
 			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
-		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
+        protected override async Task InitializeAsyncInt()
+        {
+            await base.InitializeAsyncInt();
+            await RefreshAsync();
+			UpdateTotalPrices();
+		}
+
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
 		{
 			await base.OnNavigatedToAsyncInt(parameters);
-            await RefreshAsync();
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
 			UpdateTotalPrices();
 		}
 
 		private void UpdateTotalPrices()
-		{
-			RaisePropertyChanged(nameof(TotalPriceThisMonth));
-			RaisePropertyChanged(nameof(TotalPriceThisYear));
+        {
+            TotalPriceThisMonth = _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords.WholeCollection);
+            TotalPriceThisYear = _recordTotalCalculatorService.CalculateThisYear(FilteredRecords.WholeCollection);
 		}
 
 		private void InitDialogCommands()
@@ -176,11 +202,11 @@ namespace WorkManager.ViewModels.Pages
 			{
 				await _workFacade.ClearAsync();
 				FilteredRecords.WholeCollection?.Clear();
+                _companyModelProvider.GetModel().WorkRecordsCount = 0;
 			}
-			IsDialogThrown = false;
-			RaisePropertyChanged(nameof(TotalPriceThisMonth));
-			RaisePropertyChanged(nameof(TotalPriceThisYear));
-			EndProcess();
+            IsDialogThrown = false;
+            UpdateTotalPrices();
+            EndProcess();
 		}
 
         private async Task RefreshAsync()
@@ -197,9 +223,9 @@ namespace WorkManager.ViewModels.Pages
             {
                 await _workFacade.RemoveAsync(workRecordModelBase.Id);
                 FilteredRecords.WholeCollection.Remove(workRecordModelBase);
-                RaisePropertyChanged(nameof(TotalPriceThisMonth));
-                RaisePropertyChanged(nameof(TotalPriceThisYear));
-			}
+                _companyModelProvider.GetModel().WorkRecordsCount--;
+                UpdateTotalPrices();
+            }
 			EndProcess();
 		}
 

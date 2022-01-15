@@ -54,11 +54,6 @@ namespace WorkManager.DAL.Repositories
 				return await dbContext.UserSet.AnyAsync(s => s.Username == username, token);
 		}
 
-		protected override ICollection<UserEntity> GetAllInt(IQueryable<UserEntity> dbSet)
-		{
-			return dbSet.ToList();
-		}
-
 		protected override void AddInt(UserEntity entity, WorkManagerDbContext dbContext)
 		{
 			//není žádná implementace protože není potřeba nastavovat changed context

@@ -2,7 +2,6 @@
 <FlyoutPage   xmlns="http://xamarin.com/schemas/2014/forms"
               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
-              xmlns:extensions="http://xamarin.com/schemas/2020/toolkit"
               xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
               xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
               x:DataType="pages:RootPageViewModel"

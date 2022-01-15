@@ -80,9 +80,6 @@
     <PackageReference Include="PCLAppConfig">
       <Version>1.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Unity.Forms">
-      <Version>8.1.97</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
     <PackageReference Include="Xamarin.Essentials.Interfaces" Version="1.7.0" />
   </ItemGroup>

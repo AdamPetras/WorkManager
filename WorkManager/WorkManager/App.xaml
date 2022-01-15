@@ -2,7 +2,5 @@
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="http://prismlibrary.com"
-             xmlns:converters="clr-namespace:WorkManager.Converters;assembly=WorkManager.Converters"
-             xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="WorkManager.App">
 </prism:PrismApplication>

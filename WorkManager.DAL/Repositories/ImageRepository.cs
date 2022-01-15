@@ -18,11 +18,6 @@ namespace WorkManager.DAL.Repositories
 		{
 		}
 
-		protected override ICollection<ImageEntity> GetAllInt(IQueryable<ImageEntity> dbSet)
-		{
-			return dbSet.ToList();
-		}
-
 		protected override void AddInt(ImageEntity entity, WorkManagerDbContext dbContext)
 		{
 			if (entity.Task != null)

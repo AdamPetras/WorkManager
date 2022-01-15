@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
@@ -27,9 +28,12 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ICompanyFacade _companyFacade;
 		private readonly DialogEventService _dialogEventService;
 		private readonly IPageDialogService _pageDialogService;
+        private readonly RecordTotalCalculatorService _recordTotalCalculatorService;
+        private readonly IWorkRecordFacade _workRecordFacade;
 
-		public CompanyPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, ICurrentModelProviderManager<ICompanyModel> companyModelProviderManager,
-			IDialogService dialogService, ICompanyFacade companyFacade, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
+        public CompanyPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, ICurrentModelProviderManager<ICompanyModel> companyModelProviderManager,
+			IDialogService dialogService, ICompanyFacade companyFacade, DialogEventService dialogEventService, IPageDialogService pageDialogService,RecordTotalCalculatorService recordTotalCalculatorService,
+            IWorkRecordFacade workRecordFacade) : base(navigationService)
 		{
 			_currentUserProvider = currentUserProvider;
 			_companyModelProviderManager = companyModelProviderManager;
@@ -37,7 +41,9 @@ namespace WorkManager.ViewModels.Pages
 			_companyFacade = companyFacade;
 			_dialogEventService = dialogEventService;
 			_pageDialogService = pageDialogService;
-			ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async (s) => await ShowWorkPageAsync(s));
+            _recordTotalCalculatorService = recordTotalCalculatorService;
+            _workRecordFacade = workRecordFacade;
+            ShowWorkPageCommand = new DelegateCommand<ICompanyModel>(async (s) => await ShowWorkPageAsync(s));
 			EditCommand = new DelegateCommand<ICompanyModel>(Edit);
 			DeleteCompanyCommand = new DelegateCommand<ICompanyModel>(async (s) => await DeleteCompanyAsync(s));
             RefreshCommand = new DelegateCommand(async () => {
@@ -55,7 +61,6 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand<ICompanyModel> EditCommand { get; }
 		public DelegateCommand<ICompanyModel> DeleteCompanyCommand { get; }
 
-
 		private ObservableCollection<ICompanyModel> _companies;
 		public ObservableCollection<ICompanyModel> Companies
 		{
@@ -69,10 +74,17 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
-		{
-			await base.OnNavigatedToAsyncInt(parameters);
+        protected override async Task InitializeAsyncInt()
+        {
+            await base.InitializeAsyncInt();
             await RefreshAsync();
+        }
+
+        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
+        {
+            await base.OnNavigatedFromAsyncInt(parameters);
+            IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
+            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Companies);
         }
 
 		protected override void DestroyInt()

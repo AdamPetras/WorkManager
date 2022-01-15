@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
-             xmlns:resources="clr-namespace:WorkManager.ViewModels.Resources;assembly=WorkManager.ViewModels"
-             xmlns:resources1="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
+             xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.CompanyDetailPage"
              x:DataType="pages:CompanyDetailPageViewModel"
              Title="{Binding Text, Source={x:Reference NameEntry}}">
@@ -13,7 +12,7 @@
                      Priority="0"
                      Command="{Binding SaveCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyDetailPageViewModel}}}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources1:IconFont.Save}" />
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Save}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
         <ToolbarItem Text="Remove"
@@ -21,7 +20,7 @@
                      Priority="0"
                      Command="{Binding DeleteCommand, Source={RelativeSource AncestorType={x:Type pages:CompanyDetailPageViewModel}}}">
             <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources1:IconFont.TrashAlt}" />
+                <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.TrashAlt}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -40,7 +39,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources1:TranslatePagesSR.Firstname}}" VerticalTextAlignment="Center"></Label>
+        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Firstname}}" VerticalTextAlignment="Center"></Label>
         <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCompany.Name}"></Entry>
     </Grid>
 </ContentPage>
