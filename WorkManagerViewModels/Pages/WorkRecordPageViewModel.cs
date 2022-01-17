@@ -50,6 +50,7 @@ namespace WorkManager.ViewModels.Pages
             _filterDateTo = DateTime.Today;
 			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
+            ShowStatisticsCommand = new DelegateCommand(async () => await ShowStatisticsAsync());
 			RefreshCommand = new DelegateCommand(async () => {
 				BeginRefresh();
 				await RefreshAsync();
@@ -107,8 +108,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			base.DestroyInt();
 			DialogThrownEvent -= ShowAddDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ShowStatisticsCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ShowFilterDialogCommand.RaiseCanExecuteChanged;
+            DialogThrownEvent -= ShowFilterDialogCommand.RaiseCanExecuteChanged;
 			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
 		}
 
@@ -129,16 +129,14 @@ namespace WorkManager.ViewModels.Pages
 
 		private void UpdateTotalPrices()
         {
-            TotalPriceThisMonth = _recordTotalCalculatorService.CalculateThisMonth(Records);
-            TotalPriceThisYear = _recordTotalCalculatorService.CalculateThisYear(Records);
+            TotalPriceThisMonth = _recordTotalCalculatorService.CalculatePriceThisMonth(Records);
+            TotalPriceThisYear = _recordTotalCalculatorService.CalculatePriceThisYear(Records);
 		}
 
 		private void InitDialogCommands()
 		{
 			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowAddDialogCommand.RaiseCanExecuteChanged;
-			ShowStatisticsCommand = new DelegateCommand(ShowStatistics, () => !IsDialogThrown);
-			DialogThrownEvent += ShowStatisticsCommand.RaiseCanExecuteChanged;
 			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowFilterDialogCommand.RaiseCanExecuteChanged;
 			ClearRecordsCommand = new DelegateCommand(async () => await ClearRecordsAsync(), () => !IsDialogThrown);
@@ -156,10 +154,11 @@ namespace WorkManager.ViewModels.Pages
 			IsDialogThrown = false;
 		}
 
-		private void ShowStatistics()
+		private async Task ShowStatisticsAsync()
 		{
-			IsDialogThrown = true;
-			IsDialogThrown = false;
+			BeginProcess();
+            await NavigationService.NavigateAsync("WorkRecordStatisticsPage");
+			EndProcess();
 		}
 
 		private async Task ShowFilterDialog()

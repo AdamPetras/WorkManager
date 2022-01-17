@@ -15,12 +15,12 @@ namespace WorkManager.BL.Services
 			return records.Where(s => s.ActualDateTime.IsBetween(from, to)).Sum(s => s.CalculatedPrice);
 		}
 
-		public double CalculateThisMonth<T>(T records) where T : IEnumerable<IWorkRecordModelBase>
+		public double CalculatePriceThisMonth<T>(T records) where T : IEnumerable<IWorkRecordModelBase>
 		{
 			return records.Where(s => s.ActualDateTime.Month == DateTime.Today.Month && s.ActualDateTime.Year == DateTime.Today.Year).Sum(s => s.CalculatedPrice);
 		}
 
-		public double CalculateThisYear<T>(T records) where T : IEnumerable<IWorkRecordModelBase>
+		public double CalculatePriceThisYear<T>(T records) where T : IEnumerable<IWorkRecordModelBase>
 		{
 			return records.Where(s => s.ActualDateTime.Year == DateTime.Today.Year).Sum(s => s.CalculatedPrice);
 		}

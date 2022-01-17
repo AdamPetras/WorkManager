@@ -14,5 +14,6 @@ namespace WorkManager.DAL.Repositories.Interfaces
         uint GetRecordCountInCompany(Guid companyId);
         Task<uint> GetRecordCountInCompanyAsync(Guid companyId, CancellationToken token);
         Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to, CancellationToken token);
+        Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token);
     }
 }

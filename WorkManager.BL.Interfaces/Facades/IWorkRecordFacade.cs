@@ -11,6 +11,7 @@ namespace WorkManager.BL.Interfaces.Facades
 	{
         IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId);
         IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token = default);
+        IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token = default);
         IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to, CancellationToken token = default);
     }
 }

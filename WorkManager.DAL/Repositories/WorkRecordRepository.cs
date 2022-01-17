@@ -74,5 +74,13 @@ namespace WorkManager.DAL.Repositories
                     .ToListAsync(token);
             }
         }
+
+        public async Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).ToListAsync(token);
+            }
+        }
     }
 }

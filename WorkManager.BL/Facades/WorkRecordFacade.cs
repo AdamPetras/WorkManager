@@ -35,6 +35,14 @@ namespace WorkManager.BL.Facades
             }
 		}
 
+        public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token = default)
+        {
+            foreach (WorkRecordEntity workRecordEntity in await Repository.GetAllRecordsByCompanyAsync(companyId, token))
+            {
+                yield return await Mapper.MapAsync(workRecordEntity, token);
+            }
+        }
+
         public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to,
             CancellationToken token = default)
         {

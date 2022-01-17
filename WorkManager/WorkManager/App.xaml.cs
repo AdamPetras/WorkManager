@@ -160,6 +160,7 @@ namespace WorkManager
 			containerRegistry.RegisterForNavigation<SettingsPage, SettingsPageViewModel>();
 			containerRegistry.RegisterForNavigation<TaskGroupDetailPage, TaskGroupDetailPageViewModel>();
 			containerRegistry.RegisterForNavigation<CompanyDetailPage, CompanyDetailPageViewModel>();
+			containerRegistry.RegisterForNavigation<WorkRecordStatisticsPage, WorkRecordStatisticsPageViewModel>();
 
 
             containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();
