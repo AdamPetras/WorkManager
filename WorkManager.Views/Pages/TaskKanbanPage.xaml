@@ -58,7 +58,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="interfaces:ITaskModel">
                             <StackLayout BackgroundColor="White">
-                                <pancakeView:PancakeView x:Name="Pancake" Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                                <pancakeView:PancakeView x:Name="Pancake" CornerRadius="15" Margin="5">
                                     <SwipeView Margin="5">
                                         <SwipeView.LeftItems>
                                             <SwipeItemView IsVisible="{Binding IsBackwardButtonVisible, Source={RelativeSource AncestorType={x:Type pages:TaskKanbanPageViewModel}}}">

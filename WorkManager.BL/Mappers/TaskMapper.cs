@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WorkManager.BL.Interfaces;
 using WorkManager.DAL.Entities;
+using WorkManager.DAL.Enums;
 using WorkManager.DAL.Repositories.Interfaces;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
@@ -35,7 +36,7 @@ namespace WorkManager.BL.Mappers
 				TaskDoneDateTime = model.TaskDoneDateTime,
 				TaskGroupId = model.TaskGroupId,
 				StateId = model.StateId,
-				Priority = model.Priority,
+				Priority = model.Priority.GetValue<EPriority>(),
 				WorkTime = model.WorkTime,
 			};
 		}
@@ -61,7 +62,7 @@ namespace WorkManager.BL.Mappers
                 TaskDoneDateTime = model.TaskDoneDateTime,
                 TaskGroupId = model.TaskGroupId,
                 StateId = model.StateId,
-                Priority = model.Priority,
+                Priority = model.Priority.GetValue<EPriority>(),
                 WorkTime = model.WorkTime,
             });
 		}

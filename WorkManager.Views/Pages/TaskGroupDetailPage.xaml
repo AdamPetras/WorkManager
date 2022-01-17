@@ -54,14 +54,14 @@
                 </Image>
             </StackLayout>
         </pancakeView:PancakeView>
-        <RefreshView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
-            <CollectionView ItemsSource="{Binding KanbanItems}" SelectionMode="None" HorizontalOptions="Center" VerticalOptions="Start">
+        <RefreshView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
+            <CollectionView x:Name="coll" ItemsSource="{Binding KanbanItems}" SelectionMode="None" HorizontalOptions="Center" VerticalOptions="Start">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="interfaces:IKanbanStateModel">
-                        <StackLayout BackgroundColor="White" WidthRequest="40" Padding="5">
+                        <StackLayout WidthRequest="40" Padding="5">
                             <pancakeView:PancakeView CornerRadius="20" VerticalOptions="FillAndExpand">
                                 <SwipeView>
                                     <SwipeView.RightItems>

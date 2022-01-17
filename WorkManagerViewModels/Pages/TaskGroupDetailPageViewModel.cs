@@ -18,7 +18,7 @@ using Xamarin.Forms.Internals;
 
 namespace WorkManager.ViewModels.Pages
 {
-    public class TaskGroupDetailPageViewModel : ViewModelBase
+    public class TaskGroupDetailPageViewModel : CollectionViewModelBase
     {
         private readonly ITaskGroupFacade _taskGroupFacade;
         private readonly IKanbanStateFacade _kanbanStateFacade;
@@ -38,6 +38,11 @@ namespace WorkManager.ViewModels.Pages
             DeleteCommand = new DelegateCommand(async () => await DeleteAsync());
             AddKanbanCommand = new DelegateCommand(async () => await AddKanbanAsync());
             DeleteKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(async (s) => await DeleteKanbanStateAsync(s));
+            RefreshCommand = new DelegateCommand(async () => {
+                BeginRefresh();
+                await RefreshAsync();
+                EndRefresh();
+            });
             MoveDownKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(MoveDownKanbanState);
             MoveUpKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(MoveUpKanbanState);
         }
@@ -82,7 +87,7 @@ namespace WorkManager.ViewModels.Pages
             if (navParams.TaskGroupModel != null)
             {
                 SelectedTaskGroup = navParams.TaskGroupModel;
-                KanbanItems = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(SelectedTaskGroup.Id).ToObservableCollectionAsync();
+                await RefreshAsync();
             }
         }
 
@@ -171,6 +176,13 @@ namespace WorkManager.ViewModels.Pages
             KanbanItems.Remove(kanbanStateModel);
             KanbanItems.Insert(index + 1, kanbanStateModel);
             UpdateKanbanStatesOrder();
+            EndProcess();
+        }
+
+        private async Task RefreshAsync()
+        {
+            BeginProcess();
+            KanbanItems = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(SelectedTaskGroup.Id).ToObservableCollectionAsync();
             EndProcess();
         }
 

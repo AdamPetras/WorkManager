@@ -1,4 +1,5 @@
 ﻿using System;
+using WorkManager.Core;
 
 namespace WorkManager.DAL.Enums
 {
@@ -6,8 +7,11 @@ namespace WorkManager.DAL.Enums
 	[Flags]
 	public enum EWorkType
 	{
+        [Localize(typeof(EWorkType), typeof(EnumsSR), nameof(Time))]
 		Time = 1,
+        [Localize(typeof(EWorkType), typeof(EnumsSR), nameof(Piece))]
 		Piece = 2,
-		Both = 3
-	}
+        [Localize(typeof(EWorkType), typeof(EnumsSR), nameof(Both))]
+        Both = 3
+    }
 }

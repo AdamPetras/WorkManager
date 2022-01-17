@@ -1,12 +1,13 @@
 ﻿using System;
 using WorkManager.DAL.Enums;
+using WorkManager.Xamarin.Core;
 
 namespace WorkManager.Models.Interfaces
 {
 	public interface IWorkRecordModelFactory
 	{
 		IWorkRecordModelBase CreateWorkRecord(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour,
-			uint pieces, double pricePerPiece, EWorkType type, string description, Guid companyId);
+			uint pieces, double pricePerPiece, LocalizedEnum type, string description, Guid companyId);
 		IWorkRecordModelBase CopyRecord(IWorkRecordModelBase model);
 	}
 }

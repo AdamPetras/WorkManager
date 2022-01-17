@@ -21,6 +21,7 @@ using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
+using WorkManager.Xamarin.Core;
 using Xamarin.Essentials;
 
 namespace WorkManager.ViewModels.Dialogs
@@ -47,6 +48,7 @@ namespace WorkManager.ViewModels.Dialogs
 			ConfirmCommand = new DelegateCommand(async()=> await ConfirmAsync());
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
+			Priority = new LocalizedEnum(new DelegateCommand(Cancel));
 			TaskDoneDate = DateTime.Now;
 			PhotoPaths = new ObservableCollection<string>();
 			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
@@ -107,8 +109,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private EPriority _priority;
-		public EPriority Priority
+		private LocalizedEnum _priority;
+		public LocalizedEnum Priority
 		{
 			get => _priority;
 			set
@@ -160,7 +162,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			BeginProcess();
 			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
-				_currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority, WorkTime);
+				_currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime);
 			await _taskFacade.AddAsync(model);
 			foreach (string path in PhotoPaths)
 			{

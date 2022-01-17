@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WorkManager.Core\WorkManager.Core.csproj" />
     <ProjectReference Include="..\WorkManager.Models.Interfaces\WorkManager.Models.Interfaces.csproj" />
+    <ProjectReference Include="..\WorkManager.Xamarin.Core\WorkManager.Xamarin.Core.csproj" />
   </ItemGroup>
 
 </Project>

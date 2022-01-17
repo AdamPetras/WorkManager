@@ -7,6 +7,7 @@ using WorkManager.DAL.Enums;
 using WorkManager.Models;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
+using WorkManager.Xamarin.Core;
 
 namespace WorkManager.BL.Mappers
 {
@@ -53,7 +54,7 @@ namespace WorkManager.BL.Mappers
 			{
 				Id = model.Id,
 				ActualDateTime = model.ActualDateTime,
-				Type = model.Type,
+				Type = model.Type.GetValue<EWorkType>(),
 				Pieces = pieces,
 				PricePerPiece = pricePerPiece,
 				WorkTime = workTime,
@@ -68,7 +69,7 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
 				return new WorkBothRecordModel();
 			return _workRecordModelFactory.CreateWorkRecord(entity.Id, entity.ActualDateTime, entity.WorkTime,
-				entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description, entity.CompanyId);
+				entity.PricePerHour, entity.Pieces, entity.PricePerPiece, new LocalizedEnum(entity.Type), entity.Description, entity.CompanyId);
 		}
 
         public Task<WorkRecordEntity> MapAsync(IWorkRecordModelBase model, CancellationToken token)
@@ -103,7 +104,7 @@ namespace WorkManager.BL.Mappers
             {
                 Id = model.Id,
                 ActualDateTime = model.ActualDateTime,
-                Type = model.Type,
+                Type = model.Type.GetValue<EWorkType>(),
                 Pieces = pieces,
                 PricePerPiece = pricePerPiece,
                 WorkTime = workTime,
@@ -118,7 +119,7 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
                 return Task.FromResult<IWorkRecordModelBase>(new WorkBothRecordModel());
             return Task.FromResult(_workRecordModelFactory.CreateWorkRecord(entity.Id, entity.ActualDateTime, entity.WorkTime,
-                entity.PricePerHour, entity.Pieces, entity.PricePerPiece, entity.Type, entity.Description, entity.CompanyId));
+                entity.PricePerHour, entity.Pieces, entity.PricePerPiece, new LocalizedEnum(entity.Type), entity.Description, entity.CompanyId));
 		}
     }
 }

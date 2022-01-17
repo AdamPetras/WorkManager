@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using WorkManager.DAL.Enums;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
+using WorkManager.Xamarin.Core;
 
 namespace WorkManager.Models
 {
@@ -13,7 +14,7 @@ namespace WorkManager.Models
         {
         }
 
-        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroupId, task.StateId, task.Priority, task.WorkTime)
+        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroupId, task.StateId, task.Priority.GetValue<EPriority>(), task.WorkTime)
         {
 
         }
@@ -28,7 +29,7 @@ namespace WorkManager.Models
             TaskDoneDateTime = taskDoneDateTime;
             TaskGroupId = taskGroupId;
             StateId = stateId;
-            Priority = priority;
+            Priority = new LocalizedEnum(priority);
             WorkTime = workTime;
         }
 
@@ -39,7 +40,7 @@ namespace WorkManager.Models
         public DateTime TaskDoneDateTime { get; set; }
         public Guid TaskGroupId { get; set; }
         public Guid StateId { get; set; }
-        public EPriority Priority { get; set; }
+        public LocalizedEnum Priority { get; set; }
         public TimeSpan WorkTime { get; set; }
 
         public bool Equals(ITaskModel other)
@@ -63,7 +64,7 @@ namespace WorkManager.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroupId, StateId, (int)Priority, WorkTime);
+            return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroupId, StateId, (int)Priority.GetValue<EPriority>(), WorkTime);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace WorkManager.ViewModels.Pages
 			EndProcess();
 		}
 
-        private async Task GoBackAsync()
+		private async Task GoBackAsync()
         {
             if (!_defaultTask.Equals(SelectedTask))
             {

@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WorkManager.Core\WorkManager.Core.csproj" />
     <ProjectReference Include="..\WorkManager.DAL\WorkManager.DAL.csproj" />
+    <ProjectReference Include="..\WorkManager.Xamarin.Core\WorkManager.Xamarin.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

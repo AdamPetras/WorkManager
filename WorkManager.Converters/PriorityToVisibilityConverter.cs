@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using WorkManager.DAL.Enums;
+using WorkManager.Xamarin.Core;
 using Xamarin.Forms;
 
 namespace WorkManager.Converters
@@ -11,9 +12,9 @@ namespace WorkManager.Converters
 		{
 			if (value == null)
 				throw new ArgumentException();
-			if (value is EPriority priority)
+			if (value is LocalizedEnum priority)
 			{
-				if (priority == EPriority.None)
+				if (priority.GetValue<EPriority>() == EPriority.None)
 					return false;
 				return true;
 			}

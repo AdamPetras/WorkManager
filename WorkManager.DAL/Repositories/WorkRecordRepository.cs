@@ -29,31 +29,21 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public ICollection<WorkRecordEntity> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId, EFilterType filterType)
+        public ICollection<WorkRecordEntity> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return filterType switch
-                {
-                    EFilterType.None => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).OrderByDescending(s => s.ActualDateTime).ToList(),
-                    EFilterType.ThisYear => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == DateTime.Today.Year).OrderByDescending(s => s.ActualDateTime).ToList(),
-                    EFilterType.ThisMonth => dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Month == DateTime.Today.Month && s.ActualDateTime.Year == DateTime.Today.Year).OrderByDescending(s => s.ActualDateTime).ToList(),
-                    _ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
-                };
+                return dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId)
+                    .OrderByDescending(s => s.ActualDateTime).ToList();
             }
         }
 
-        public async Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, EFilterType filterType, CancellationToken token)
+        public async Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return filterType switch
-                {
-                    EFilterType.None => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).OrderByDescending(s => s.ActualDateTime).ToListAsync(token),
-                    EFilterType.ThisYear => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == DateTime.Today.Year).OrderByDescending(s => s.ActualDateTime).ToListAsync(token),
-                    EFilterType.ThisMonth => await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Month == DateTime.Today.Month && s.ActualDateTime.Year == DateTime.Today.Year).OrderByDescending(s => s.ActualDateTime).ToListAsync(token),
-                    _ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
-                };
+                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId)
+                    .OrderByDescending(s => s.ActualDateTime).ToListAsync(token);
             }
         }
 
@@ -70,6 +60,18 @@ namespace WorkManager.DAL.Repositories
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
                 return (uint)await dbContext.WorkSet.AsQueryable().CountAsync(s => s.CompanyId == companyId, token);
+            }
+        }
+
+        public async Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to,
+            CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.WorkSet.AsQueryable()
+                    .Where(s => s.CompanyId == companyId && s.ActualDateTime.Date >= from.Date &&
+                                s.ActualDateTime.Date <= to.Date).OrderByDescending(s => s.ActualDateTime)
+                    .ToListAsync(token);
             }
         }
     }

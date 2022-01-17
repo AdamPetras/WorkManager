@@ -12,6 +12,7 @@ using WorkManager.Models;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
+using WorkManager.Xamarin.Core;
 
 namespace WorkManager.ViewModels.Dialogs
 {
@@ -56,8 +57,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 		
-		private EWorkType _selectedWorkType;
-		public EWorkType SelectedWorkType
+		private LocalizedEnum _selectedWorkType;
+		public LocalizedEnum SelectedWorkType
 		{
 			get => _selectedWorkType;
 			set
@@ -120,7 +121,7 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			SelectedDate = DateTime.Today;
 			WorkTime = TimeSpan.Zero;
-			SelectedWorkType = EWorkType.Time;
+			SelectedWorkType = new LocalizedEnum(EWorkType.Time);
 			Pieces = 0;
 			PricePerHour = 0;
 			PricePerPiece = 0;

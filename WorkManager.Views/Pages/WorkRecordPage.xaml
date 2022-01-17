@@ -16,7 +16,7 @@
         <ResourceDictionary>
             <DataTemplate x:Key="PiecesRecordTemplate" x:DataType="interfaces:IWorkPiecesRecordModel">
                 <StackLayout BackgroundColor="White">
-                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                    <pancakeView:PancakeView CornerRadius="15" Margin="5">
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItemView>
@@ -66,7 +66,7 @@
             </DataTemplate>
             <DataTemplate x:Key="TimeRecordTemplate" x:DataType="interfaces:IWorkTimeRecordModel">
                 <StackLayout BackgroundColor="White">
-                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                    <pancakeView:PancakeView CornerRadius="15" Margin="5">
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItemView>
@@ -117,7 +117,7 @@
             </DataTemplate>
             <DataTemplate x:Key="BothRecordTemplate" x:DataType="interfaces:IWorkBothRecordModel">
                 <StackLayout BackgroundColor="White">
-                    <pancakeView:PancakeView Border="{StaticResource PancakeBorder}" CornerRadius="15" Margin="5">
+                    <pancakeView:PancakeView CornerRadius="15" Margin="5">
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItemView>
@@ -218,8 +218,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
-                <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding FilteredRecords.FilteredCollection}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}"
-                                SelectionChangedCommand="{Binding SelectedRecordCommand}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
+                <CollectionView x:Name="Collection" SelectionMode="None" ItemsSource="{Binding Records}" Margin="5" ItemTemplate="{StaticResource RecordTemplateSelector}" SelectionChangedCommandParameter="{Binding SelectedItem,Source={x:Reference Collection}}">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout  Orientation="Vertical" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center"></LinearItemsLayout>
                     </CollectionView.ItemsLayout>

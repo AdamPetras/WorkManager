@@ -22,17 +22,26 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId, EFilterType filterType)
+		public IEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDate(Guid companyId)
 		{
-			return Repository.GetAllRecordsByCompanyOrderedByDescendingDate(companyId, filterType).Select(Mapper.Map);
+			return Repository.GetAllRecordsByCompanyOrderedByDescendingDate(companyId).Select(Mapper.Map);
 		}
 
-        public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, EFilterType filterType, CancellationToken token = default)
+        public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token = default)
         {
-            foreach (WorkRecordEntity workRecordEntity in await Repository.GetAllRecordsByCompanyOrderedByDescendingDateAsync(companyId,filterType,token))
+            foreach (WorkRecordEntity workRecordEntity in await Repository.GetAllRecordsByCompanyOrderedByDescendingDateAsync(companyId,token))
             {
                 yield return await Mapper.MapAsync(workRecordEntity, token);
             }
 		}
-	}
+
+        public async IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to,
+            CancellationToken token = default)
+        {
+            foreach (WorkRecordEntity workRecordEntity in await Repository.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(companyId,from,to, token))
+            {
+                yield return await Mapper.MapAsync(workRecordEntity, token);
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WorkManager.DAL.Enums;
+using WorkManager.Xamarin.Core;
 
 namespace WorkManager.Models.Interfaces
 {
@@ -13,7 +14,7 @@ namespace WorkManager.Models.Interfaces
 		DateTime TaskDoneDateTime { get; set; }
 		Guid TaskGroupId { get; set; }
         Guid StateId { get; set; }
-		EPriority Priority { get; set; }
+		LocalizedEnum Priority { get; set; }
 		TimeSpan WorkTime { get; set; }
 	}
 }

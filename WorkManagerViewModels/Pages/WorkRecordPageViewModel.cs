@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Events;
@@ -39,7 +41,7 @@ namespace WorkManager.ViewModels.Pages
 			IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
 		{
 			_companyModelProvider = companyModelProvider;
-			_recordTotalCalculatorService = recordTotalCalculatorService;
+            _recordTotalCalculatorService = recordTotalCalculatorService;
 			_workFacade = workFacade;
 			_dialogService = dialogService;
 			_dialogEventService = dialogEventService;
@@ -56,7 +58,6 @@ namespace WorkManager.ViewModels.Pages
 			InitDialogCommands();
 		}
 
-        public DelegateCommand<IWorkRecordModelBase> SelectedRecordCommand { get; }
         public DelegateCommand RefreshCommand { get; }
 		public DelegateCommand ClearRecordsCommand { get; private set; }
 		public DelegateCommand<IWorkRecordModelBase> DeleteRecordCommand { get; private set; }
@@ -65,15 +66,15 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand<IWorkRecordModelBase> EditCommand { get; }
 		public DelegateCommand ShowAddDialogCommand { get; private set; }
 
-		private FilteredObservableCollection<IWorkRecordModelBase> _filteredRecords;
+		private ObservableCollection<IWorkRecordModelBase> _records;
 
-		public FilteredObservableCollection<IWorkRecordModelBase> FilteredRecords
+		public ObservableCollection<IWorkRecordModelBase> Records
 		{
-			get => _filteredRecords;
+			get => _records;
 			set
 			{
-				if (_filteredRecords == value) return;
-				_filteredRecords = value;
+				if (_records == value) return;
+				_records = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -122,14 +123,14 @@ namespace WorkManager.ViewModels.Pages
 		{
 			await base.OnNavigatedToAsyncInt(parameters);
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
+			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records);
 			UpdateTotalPrices();
 		}
 
 		private void UpdateTotalPrices()
         {
-            TotalPriceThisMonth = _recordTotalCalculatorService.CalculateThisMonth(FilteredRecords.WholeCollection);
-            TotalPriceThisYear = _recordTotalCalculatorService.CalculateThisYear(FilteredRecords.WholeCollection);
+            TotalPriceThisMonth = _recordTotalCalculatorService.CalculateThisMonth(Records);
+            TotalPriceThisYear = _recordTotalCalculatorService.CalculateThisYear(Records);
 		}
 
 		private void InitDialogCommands()
@@ -149,9 +150,9 @@ namespace WorkManager.ViewModels.Pages
 			IsDialogThrown = true;
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialogView")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, FilteredRecords.WholeCollection);
+			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records);
 			UpdateTotalPrices();
-			FilteredRecords.WholeCollection = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(FilteredRecords.WholeCollection.OrderByDescending(s => s.ActualDateTime));
+			Records = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
 			IsDialogThrown = false;
 		}
 
@@ -168,28 +169,14 @@ namespace WorkManager.ViewModels.Pages
             if (parameters.Any()) //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
             {
 				FilterNavigationParameters filterParams = (FilterNavigationParameters) parameters;
-                _filterDateFrom = filterParams.DateFrom;
-                _filterDateTo = filterParams.DateTo;
+                if (_filterDateFrom.Date != filterParams.DateFrom || _filterDateTo != filterParams.DateTo)
+                {
+                    _filterDateFrom = filterParams.DateFrom;
+                    _filterDateTo = filterParams.DateTo;
+                    await RefreshAsync();
+                }
             }
-			FilteredRecords.Filter = CreateFilterByDate(_filterDateFrom,_filterDateTo);
 			IsDialogThrown = false;
-		}
-
-        private Func<IWorkRecordModelBase, bool> CreateFilterByDate(DateTime dateFrom, DateTime dateTo)
-        {
-            return s => s.ActualDateTime.IsBetween(dateFrom, dateTo);
-        }
-
-        private Func<IWorkRecordModelBase, bool> CreateFilterByEnum(EFilterType filterType)
-		{
-			return filterType switch
-			{
-				EFilterType.None => (s) => true,
-				EFilterType.ThisYear => (s) => s.ActualDateTime.Year == DateTime.Today.Year,
-				EFilterType.ThisMonth => (s) =>
-					s.ActualDateTime.Year == DateTime.Today.Year && s.ActualDateTime.Month == DateTime.Today.Month,
-				_ => throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null)
-			};
 		}
 
 		private async Task ClearRecordsAsync()
@@ -201,7 +188,7 @@ namespace WorkManager.ViewModels.Pages
 				TranslateViewModelsSR.DialogNo))
 			{
 				await _workFacade.ClearAsync();
-				FilteredRecords.WholeCollection?.Clear();
+				Records?.Clear();
                 _companyModelProvider.GetModel().WorkRecordsCount = 0;
 			}
             IsDialogThrown = false;
@@ -212,7 +199,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-            FilteredRecords = new FilteredObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateAsync(_companyModelProvider.GetModel().Id, EFilterType.None).ToListAsync(), CreateFilterByDate(_filterDateFrom,_filterDateTo));
+            Records = new ObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(_companyModelProvider.GetModel().Id,_filterDateFrom,_filterDateTo).ToListAsync());
 			EndProcess();
         }
 
@@ -222,7 +209,7 @@ namespace WorkManager.ViewModels.Pages
             if (workRecordModelBase != null)
             {
                 await _workFacade.RemoveAsync(workRecordModelBase.Id);
-                FilteredRecords.WholeCollection.Remove(workRecordModelBase);
+                Records.Remove(workRecordModelBase);
                 _companyModelProvider.GetModel().WorkRecordsCount--;
                 UpdateTotalPrices();
             }
