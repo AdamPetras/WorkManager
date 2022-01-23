@@ -8,12 +8,12 @@ namespace WorkManager.Models
 {
 	public class WorkTimeRecordModel : WorkRecordModelBase, IWorkTimeRecordModel
 	{
-		public WorkTimeRecordModel():base(Guid.Empty, DateTime.Today, new LocalizedEnum(EWorkType.Both), Guid.Empty, string.Empty)
+		public WorkTimeRecordModel():base(Guid.Empty, DateTime.Today, EWorkType.Both, Guid.Empty, string.Empty)
 		{
 			
 		}
 
-		public WorkTimeRecordModel(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour, LocalizedEnum type, string description, Guid companyId) : base(id, actualDateTime, type, companyId, description)
+		public WorkTimeRecordModel(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour, EWorkType type, string description, Guid companyId) : base(id, actualDateTime, type, companyId, description)
 		{
 			WorkTime = workTime;
 			PricePerHour = pricePerHour;

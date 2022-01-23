@@ -9,7 +9,7 @@ namespace WorkManager.ViewModels.Dialogs
 	{
 		public ImageDetailDialogViewModel(INavigationService navigationService) : base(navigationService)
 		{
-			CloseCommand = new DelegateCommand(Close);
+			CloseCommand = new DelegateCommand(() => OnRequestClose(null));
 		}
 
 		public DelegateCommand CloseCommand { get; }
@@ -30,11 +30,6 @@ namespace WorkManager.ViewModels.Dialogs
 		{
 			base.OnDialogOpenedInt(parameters);
 			Path = parameters.GetValue<string>("Path");
-		}
-
-		private void Close()
-		{
-			OnRequestClose(null);
 		}
 	}
 }

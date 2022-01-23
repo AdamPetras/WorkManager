@@ -26,7 +26,7 @@ using Xamarin.Essentials;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class AddTaskDialogViewModel : DialogViewModelBase
+	public class AddTaskDialogViewModel : ConfirmDialogViewModelBase
 	{
 		private readonly ITaskFacade _taskFacade;
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
@@ -44,11 +44,9 @@ namespace WorkManager.ViewModels.Dialogs
 			_imageFacade = imageFacade;
 			_kanbanStateFacade = kanbanStateFacade;
 			_taskFacade = taskFacade;
-			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(async()=> await ConfirmAsync());
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
-			Priority = new LocalizedEnum(new DelegateCommand(Cancel));
+			Priority = new LocalizedEnum(EPriority.None);
 			TaskDoneDate = DateTime.Now;
 			PhotoPaths = new ObservableCollection<string>();
 			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
@@ -56,9 +54,7 @@ namespace WorkManager.ViewModels.Dialogs
 		}
 
 		public DelegateCommand<string> DeletePhotoCommand { get; }
-		public DelegateCommand CancelCommand { get; }
-		public DelegateCommand ConfirmCommand { get; }
-		public DelegateCommand TakePhotoCommand { get; }
+        public DelegateCommand TakePhotoCommand { get; }
 		public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
 
 		private string _name;
@@ -145,9 +141,19 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private void Cancel()
-		{
-			OnRequestClose(null);
+		protected override async Task ConfirmAsyncInt()
+        {
+			BeginProcess();
+            ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
+                _currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime);
+            await _taskFacade.AddAsync(model);
+            foreach (string path in PhotoPaths)
+            {
+                await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id));
+            }
+            _currentTaskGroupProvider.GetModel().TasksCount++;
+            OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model) } });
+            EndProcess();
 		}
 
         protected override void OnDialogOpenedInt(IDialogParameters parameters)
@@ -157,21 +163,6 @@ namespace WorkManager.ViewModels.Dialogs
             if (navParameters.KanbanState != null)
                 _selectedKanbanState = navParameters.KanbanState;
         }
-
-        private async Task ConfirmAsync()
-		{
-			BeginProcess();
-			ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
-				_currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime);
-			await _taskFacade.AddAsync(model);
-			foreach (string path in PhotoPaths)
-			{
-				await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id));
-			}
-            _currentTaskGroupProvider.GetModel().TasksCount++;
-			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model)} });
-			EndProcess();
-		}
 
 		private async Task TakePhotoAsync()
 		{	

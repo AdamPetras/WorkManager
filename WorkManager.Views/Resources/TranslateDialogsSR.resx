@@ -147,6 +147,12 @@
   <data name="NameItem" xml:space="preserve">
     <value>Název</value>
   </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Nové heslo</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>Heslo</value>
+  </data>
   <data name="Pieces" xml:space="preserve">
     <value>Kusy</value>
   </data>
@@ -158,6 +164,9 @@
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorita</value>
+  </data>
+  <data name="RepeatNewPassword" xml:space="preserve">
+    <value>Nové heslo znovu</value>
   </data>
   <data name="SelectIcon" xml:space="preserve">
     <value>Vyberte ikonu</value>

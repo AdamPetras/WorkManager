@@ -19,7 +19,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class AddCompanyDialogViewModel : DialogViewModelBase
+	public class AddCompanyDialogViewModel : ConfirmDialogViewModelBase
 	{
 		private readonly ICompanyFacade _companyFacade;
 		private readonly ICurrentModelProvider<IUserModel> _currentUserProvider;
@@ -31,12 +31,22 @@ namespace WorkManager.ViewModels.Dialogs
 			_companyFacade = companyFacade;
 			_currentUserProvider = currentUserProvider;
 			_toastMessageService = toastMessageService;
-			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(async() => await Confirm());
 		}
 
-		public DelegateCommand CancelCommand { get; }
-		public DelegateCommand ConfirmCommand { get; }
+		protected override async Task ConfirmAsyncInt()
+        {
+            BeginProcess();
+            if (await _companyFacade.ExistsAsync(Name))
+            {
+                _toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExists.Format(Name));
+                CancelInt();
+                return;
+            }
+            ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, 0, _currentUserProvider.GetModel().Id);
+            await _companyFacade.AddAsync(model);
+            OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) } });
+            EndProcess();
+		}
 
 		private string _name;
 		public string Name
@@ -48,26 +58,6 @@ namespace WorkManager.ViewModels.Dialogs
 				_name = value;
 				RaisePropertyChanged();
 			}
-		}
-
-		private void Cancel()
-		{
-			OnRequestClose(null);
-		}
-
-		private async Task Confirm()
-		{
-			BeginProcess();
-			if (await _companyFacade.ExistsAsync(Name))
-			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.CompanyNameAlreadyExists.Format(Name));
-				Cancel();
-				return;
-			}
-			ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name,0, _currentUserProvider.GetModel().Id);
-			await _companyFacade.AddAsync(model);
-			OnRequestClose(new DialogParameters(){{"DialogEvent",new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) }});
-			EndProcess();
 		}
 	}
 }

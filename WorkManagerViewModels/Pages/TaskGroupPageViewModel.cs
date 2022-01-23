@@ -100,7 +100,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowAddTaskGroupDialog()
 		{
 			IsDialogThrown = true;
-			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskGroupDialogView")).Parameters;
+			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskGroupDialog")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent,TaskGroups);
 			IsDialogThrown = false;

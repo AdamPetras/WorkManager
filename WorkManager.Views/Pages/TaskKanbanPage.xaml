@@ -37,7 +37,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        <controls:Loading  IsLoadingVisible="{Binding IsBusy}" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
+        <controls:Loading  IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>
         <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>

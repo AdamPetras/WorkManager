@@ -11,7 +11,7 @@ namespace WorkManager.Models.BaseClasses
 	{
 		private readonly IRecordCalculatorService _recordCalculatorService;
 
-		protected WorkRecordModelBase(Guid id, DateTime actualDateTime, LocalizedEnum type, Guid companyId, string description) : base(id)
+		protected WorkRecordModelBase(Guid id, DateTime actualDateTime, EWorkType type, Guid companyId, string description) : base(id)
 		{
 			ActualDateTime = actualDateTime;
 			Type = type;
@@ -21,7 +21,7 @@ namespace WorkManager.Models.BaseClasses
 		}
 
 		public DateTime ActualDateTime { get; set; }
-		public LocalizedEnum Type { get; set; }
+		public EWorkType Type { get; set; }
 		public Guid CompanyId { get; set; }
 		public string Description { get; set; }
 		public double CalculatedPrice => _recordCalculatorService.Calculate(this);
@@ -45,7 +45,7 @@ namespace WorkManager.Models.BaseClasses
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(ActualDateTime, (int) Type.GetValue<EWorkType>(), CompanyId, Description);
+			return HashCode.Combine(ActualDateTime, (int) Type, CompanyId, Description);
 		}
 	}
 }

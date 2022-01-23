@@ -4,32 +4,31 @@ using Prism.Services.Dialogs;
 
 namespace WorkManager.ViewModels.BaseClasses
 {
-	public abstract class DialogViewModelBase : ViewModelBase, IDialogAware
-	{
-		protected DialogViewModelBase(INavigationService navigationService) : base(navigationService)
-		{
-		}
+    public class DialogViewModelBase : ViewModelBase, IDialogAware
+    {
+        public DialogViewModelBase(INavigationService navigationService) : base(navigationService)
+        {
+        }
 
-		public bool CanCloseDialog() => true;
+        public bool CanCloseDialog() => true;
+        public void OnDialogClosed()
+        {
+        }
 
-		public void OnDialogClosed()
-		{
-		}
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+            OnDialogOpenedInt(parameters);
+        }
 
-		public void OnDialogOpened(IDialogParameters parameters)
-		{
-			OnDialogOpenedInt(parameters);
-		}
+        protected virtual void OnDialogOpenedInt(IDialogParameters parameters)
+        {
+        }
 
-		protected virtual void OnDialogOpenedInt(IDialogParameters parameters)
-		{
-		}
+        public event Action<IDialogParameters> RequestClose;
 
-		public event Action<IDialogParameters> RequestClose;
-
-		protected void OnRequestClose(IDialogParameters obj)
-		{
-			RequestClose?.Invoke(obj);
-		}
-	}
+        protected void OnRequestClose(IDialogParameters obj)
+        {
+            RequestClose?.Invoke(obj);
+        }
+    }
 }

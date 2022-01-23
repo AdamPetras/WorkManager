@@ -15,12 +15,14 @@ namespace WorkManager.ViewModels.Pages
 	public class RegisterPageViewModel : ViewModelBase
 	{
 		private readonly IRegistrationService _registrationService;
-		private readonly IToastMessageService _toastMessageService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IToastMessageService _toastMessageService;
 
-		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService, IToastMessageService toastMessageService) : base(navigationService)
+		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService, IAuthenticationService authenticationService, IToastMessageService toastMessageService) : base(navigationService)
 		{
 			_registrationService = registrationService;
-			_toastMessageService = toastMessageService;
+            _authenticationService = authenticationService;
+            _toastMessageService = toastMessageService;
 			RegisterCommand = new DelegateCommand(Register);
 		}
 
@@ -89,26 +91,37 @@ namespace WorkManager.ViewModels.Pages
 		private async void Register()
 		{
 			BeginProcess();
-			if (RepeatPassword != Password)
-				return;//vyhození hlášky
-			try
-			{
-				if (await _registrationService.RegisterAndAuthenticateUserAsync(new UserModel(Guid.NewGuid(), FirstName,
-					Surname, Username, Password)))
-					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+            if (RepeatPassword != Password)
+            {
+                _toastMessageService.LongAlert(TranslateViewModelsSR.PasswordsAreNotSame);
+            }
+            
+            try
+            {
+                if (_authenticationService.HasPasswordCorrectStructure(Password))
+                {
+                    if (await _registrationService.RegisterAndAuthenticateUserAsync(new UserModel(Guid.NewGuid(),
+                            FirstName,
+                            Surname, Username, Password)))
+                        await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+                }
+            }
+            catch (PasswordStructureException e)
+            {
+                _toastMessageService.LongAlert(e.Message);
 			}
 			catch (UserAlreadyExistsException)
-			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.UserAlreadyExists.Format(Username));
-			}
-			catch (UserNotExistsException e)
-			{
-				Crashes.TrackError(e);
-			}
-			finally
-			{
-				EndProcess();
-			}
-		}
+            {
+                _toastMessageService.LongAlert(TranslateViewModelsSR.UserAlreadyExists.Format(Username));
+            }
+            catch (UserNotExistsException e)
+            {
+                Crashes.TrackError(e);
+            }
+            finally
+            {
+                EndProcess();
+            }
+        }
 	}
 }

@@ -6,7 +6,7 @@
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              xmlns:prism="http://prismlibrary.com"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
-             x:Class="WorkManager.Views.Dialogs.FilterDialogView"
+             x:Class="WorkManager.Views.Dialogs.FilterDialog"
              prism:DialogLayout.CloseOnBackgroundTapped="True"
              prism:DialogLayout.RelativeWidthRequest="0.9"
              x:DataType="dialogs:FilterDialogViewModel"

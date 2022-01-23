@@ -5,9 +5,12 @@ namespace WorkManager.BL.Interfaces.Services
 {
 	public interface IAuthenticationService : IService
 	{
-		public IUserModel Authenticate(string username, string password);
-		public Task<IUserModel> AuthenticateAsync(string username, string password);
-		public string GetHashedPassword(string password);
-		public Task<string> GetHashedPasswordAsync(string password);
-	}
+		IUserModel Authenticate(string username, string password);
+		Task<IUserModel> AuthenticateAsync(string username, string password);
+		string GetHashedPassword(string password);
+		Task<string> GetHashedPasswordAsync(string password);
+        bool PasswordMatchesHashedPassword(string password, string hashedPassword);
+        Task<bool> PasswordMatchesHashedPasswordAsync(string password, string hashedPassword);
+        bool HasPasswordCorrectStructure(string password);
+    }
 }

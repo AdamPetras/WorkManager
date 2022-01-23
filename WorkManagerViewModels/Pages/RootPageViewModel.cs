@@ -28,6 +28,42 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand ShowSettingsCommand { get; }
 		public DelegateCommand LogoutCommand { get; }
 
+        private bool _isTaskBusy;
+        public bool IsTaskBusy
+        {
+            get => _isTaskBusy;
+            set
+            {
+                if (_isTaskBusy == value) return;
+                _isTaskBusy = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isWorkBusy;
+        public bool IsWorkBusy
+        {
+            get => _isWorkBusy;
+            set
+            {
+                if (_isWorkBusy == value) return;
+                _isWorkBusy = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isUserProfileBusy;
+        public bool IsUserProfileBusy
+        {
+            get => _isUserProfileBusy;
+            set
+            {
+                if (_isUserProfileBusy == value) return;
+                _isUserProfileBusy = value;
+                RaisePropertyChanged();
+            }
+        }
+
 		private async Task LogoutAsync()
 		{
 			_currentUserProvider.SetItem(null);
@@ -35,23 +71,29 @@ namespace WorkManager.ViewModels.Pages
 		}
 
 		private async Task ShowTasksAsync()
-		{
+        {
+            IsTaskBusy = true;
 			await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
-		}
+            IsTaskBusy = false;
+        }
 
 		private async Task ShowWorkTimeStoreAsync()
-		{
+        {
+            IsWorkBusy = true;
 			await NavigationService.NavigateAsync("/RootPage/NavigationPage/CompanyPage");
-		}
+            IsWorkBusy = false;
+        }
 
-		private async Task ShowSettingsAsync()
+        private async Task ShowSettingsAsync()
 		{
 			await NavigationService.NavigateAsync("/RootPage/NavigationPage/SettingsPage");
 		}
 
 		private async Task ShowUserProfileAsync()
-		{
+        {
+            IsUserProfileBusy = true;
 			await NavigationService.NavigateAsync("/RootPage/NavigationPage/UserDetailPage");
-		}
-	}
+            IsUserProfileBusy = false;
+        }
+    }
 }

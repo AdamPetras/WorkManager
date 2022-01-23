@@ -163,14 +163,15 @@ namespace WorkManager
 			containerRegistry.RegisterForNavigation<WorkRecordStatisticsPage, WorkRecordStatisticsPageViewModel>();
 
 
-            containerRegistry.RegisterDialog<AddWorkRecordDialogView, AddWorkRecordDialogViewModel>();
-			containerRegistry.RegisterDialog<AddCompanyDialogView, AddCompanyDialogViewModel>();
-			containerRegistry.RegisterDialog<AddTaskGroupDialogView, AddTaskGroupDialogViewModel>();
-			containerRegistry.RegisterDialog<AddTaskDialogView, AddTaskDialogViewModel>();
-			containerRegistry.RegisterDialog<FilterDialogView, FilterDialogViewModel>();
+            containerRegistry.RegisterDialog<AddWorkRecordDialog, AddWorkRecordDialogViewModel>();
+			containerRegistry.RegisterDialog<AddCompanyDialog, AddCompanyDialogViewModel>();
+			containerRegistry.RegisterDialog<AddTaskGroupDialog, AddTaskGroupDialogViewModel>();
+			containerRegistry.RegisterDialog<AddTaskDialog, AddTaskDialogViewModel>();
+			containerRegistry.RegisterDialog<FilterDialog, FilterDialogViewModel>();
 			containerRegistry.RegisterDialog<SelectPictureOrCaptureCameraDialog, SelectPictureOrCaptureCameraDialogViewModel>();
 			containerRegistry.RegisterDialog<ImageDetailDialog, ImageDetailDialogViewModel>();
-			containerRegistry.RegisterDialog<AddKanbanStateDialogView, AddKanbanStateDialogViewModel>();
+			containerRegistry.RegisterDialog<AddKanbanStateDialog, AddKanbanStateDialogViewModel>();
+			containerRegistry.RegisterDialog<ChangePasswordDialog, ChangePasswordDialogViewModel>();
 
 			//ViewModelLocationProvider.Register<CompanyEmptyView, CompanyEmptyViewModel>();
 			//ViewModelLocationProvider.Register<TaskGroupEmptyView, TaskGroupEmptyViewModel>();

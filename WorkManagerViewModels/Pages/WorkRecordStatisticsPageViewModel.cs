@@ -143,7 +143,7 @@ namespace WorkManager.ViewModels.Pages
             DateTime today = DateTime.Today;
             foreach (IWorkRecordModelBase workRecordModel in values)
             {
-                switch (workRecordModel.Type.GetValue<EWorkType>())
+                switch (workRecordModel.Type)
                 {
                     case EWorkType.Time:
                         if (workRecordModel is IWorkTimeRecordModel timeModel)
@@ -209,7 +209,7 @@ namespace WorkManager.ViewModels.Pages
             //        TotalPriceThisMonth++;
             //    }
             //}
-            TotalHours.Add(workTimeRecordModel.WorkTime);
+            TotalHours = TotalHours.Add(workTimeRecordModel.WorkTime);
         }
 
         private void CalculatePieces(IWorkPiecesRecordModel workPiecesRecordModel, DateTime today)

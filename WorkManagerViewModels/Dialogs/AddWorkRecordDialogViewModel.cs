@@ -16,7 +16,7 @@ using WorkManager.Xamarin.Core;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class AddWorkRecordDialogViewModel : DialogViewModelBase
+	public class AddWorkRecordDialogViewModel : ConfirmDialogViewModelBase
 	{
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
 		private readonly IFacade<IWorkRecordModelBase> _workRecordDetailFacade;
@@ -27,15 +27,10 @@ namespace WorkManager.ViewModels.Dialogs
 			_companyModelProvider = companyModelProvider;
 			_workRecordDetailFacade = workRecordDetailFacade;
 			_workRecordModelFactory = workRecordModelFactory;
-			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(async ()=> await ConfirmAsync());
 			SetupDefaultValues();
 		}
 
-		public DelegateCommand CancelCommand { get; }
-		public DelegateCommand ConfirmCommand { get; }
-
-		private DateTime _selectedDate;
+        private DateTime _selectedDate;
 		public DateTime SelectedDate
 		{
 			get => _selectedDate;
@@ -117,6 +112,15 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
+        protected override async Task ConfirmAsyncInt()
+        {
+            IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
+                PricePerHour, Pieces, PricePerPiece, SelectedWorkType.GetValue<EWorkType>(), Description, _companyModelProvider.GetModel().Id);
+            await _workRecordDetailFacade.AddAsync(model);
+            _companyModelProvider.GetModel().WorkRecordsCount++;
+            OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
+		}
+
 		private void SetupDefaultValues()
 		{
 			SelectedDate = DateTime.Today;
@@ -125,20 +129,6 @@ namespace WorkManager.ViewModels.Dialogs
 			Pieces = 0;
 			PricePerHour = 0;
 			PricePerPiece = 0;
-		}
-
-		private async Task ConfirmAsync()
-		{
-			IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
-				PricePerHour, Pieces, PricePerPiece, SelectedWorkType, Description, _companyModelProvider.GetModel().Id);
-			await _workRecordDetailFacade.AddAsync(model);
-            _companyModelProvider.GetModel().WorkRecordsCount++;
-			OnRequestClose(new DialogParameters(){ { "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
-		}
-
-		private void Cancel()
-		{
-			OnRequestClose(null);
 		}
 	}
 }

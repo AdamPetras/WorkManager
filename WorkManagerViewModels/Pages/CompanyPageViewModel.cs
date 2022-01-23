@@ -136,7 +136,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowAddCompanyDialogAsync()
 		{
 			IsDialogThrown = true;
-			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddCompanyDialogView")).Parameters;
+			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddCompanyDialog")).Parameters;
 			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Companies);
 			IsDialogThrown = false;

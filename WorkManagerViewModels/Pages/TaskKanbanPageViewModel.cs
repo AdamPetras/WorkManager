@@ -48,7 +48,7 @@ namespace WorkManager.ViewModels.Pages
             CompleteCommand = new DelegateCommand<ITaskModel>(async (t) => await CompleteTaskAsync(t));
             DeleteTaskCommand = new DelegateCommand<ITaskModel>(async (t) => await DeleteTaskAsync(t));
             KanbanStateChangedCommand = new DelegateCommand<IKanbanStateModel>(async (t) => await KanbanStateChangedAsync(t));
-            ClickChangeKanbanCommand = new DelegateCommand<IKanbanStateModel>(async (t) => await ClickChangeKanbanAsync(t));
+            ClickChangeKanbanCommand = new DelegateCommand<IKanbanStateModel>(ClickChangeKanban);
             SelectTaskCommand = new DelegateCommand<ITaskModel>(OnSelectTask);
             RefreshCommand = new DelegateCommand(async () =>
             {
@@ -225,7 +225,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task ShowAddTaskDialogAsync()
         {
             IsDialogThrown = true;
-            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskDialogView", new KanbanStateNavigationParameters(SelectedKanbanState))).Parameters;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskDialog", new KanbanStateNavigationParameters(SelectedKanbanState))).Parameters;
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
             IsDialogThrown = false;
@@ -264,7 +264,7 @@ namespace WorkManager.ViewModels.Pages
             EndProcess();
         }
 
-        private async Task ClickChangeKanbanAsync(IKanbanStateModel kanbanStateModel)
+        private void ClickChangeKanban(IKanbanStateModel kanbanStateModel)
         {
             SelectedKanbanState = kanbanStateModel;
         }

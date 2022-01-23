@@ -13,7 +13,7 @@ namespace WorkManager.Xamarin.Core
 
         public LocalizedEnum(object enumValue)
         {
-            if (enumValue.GetType().BaseType != typeof(Enum))
+            if (!enumValue.GetType().IsEnum)
                 throw new ArgumentException(nameof(enumValue));
             _enumValue = enumValue;
         }
@@ -39,6 +39,19 @@ namespace WorkManager.Xamarin.Core
         public T GetValue<T>() where T : Enum
         {
             return (T) _enumValue;
+        }
+
+        public Enum GetValue(Type t)
+        {
+            if (t.IsEnum)
+            {
+                if (_enumValue.GetType() == t)
+                {
+                    return (Enum)_enumValue;
+                }
+                throw new ArgumentException($"Hodnota {_enumValue} není typu {t.Name}.");
+            }
+            throw new ArgumentException($"Typ {t.Name} není enum.");
         }
 
         public override string ToString()

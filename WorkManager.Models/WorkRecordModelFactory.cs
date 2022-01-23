@@ -8,9 +8,9 @@ namespace WorkManager.Models.BaseClasses
 	public class WorkRecordModelFactory : IWorkRecordModelFactory
 	{
 		public IWorkRecordModelBase CreateWorkRecord(Guid id, DateTime actualDateTime, TimeSpan workTime, double pricePerHour,
-			uint pieces, double pricePerPiece, LocalizedEnum type, string description, Guid companyId)
+			uint pieces, double pricePerPiece, EWorkType type, string description, Guid companyId)
 		{
-			return type.GetValue<EWorkType>() switch
+			return type switch
 			{
 				EWorkType.Time => new WorkTimeRecordModel(id, actualDateTime, workTime, pricePerHour, type, description, companyId),
 				EWorkType.Piece => new WorkPiecesRecordModel(id, actualDateTime, pieces, pricePerPiece, type, description, companyId),
@@ -21,7 +21,7 @@ namespace WorkManager.Models.BaseClasses
 
 		public IWorkRecordModelBase CopyRecord(IWorkRecordModelBase model)
 		{
-			return model.Type.GetValue<EWorkType>() switch
+			return model.Type switch
 			{
 				EWorkType.Time => new WorkTimeRecordModel(((IWorkTimeRecordModel)model).Id, ((IWorkTimeRecordModel)model).ActualDateTime, ((IWorkTimeRecordModel)model).WorkTime, ((IWorkTimeRecordModel)model).PricePerHour,
 					((IWorkTimeRecordModel)model).Type, ((IWorkTimeRecordModel)model).Description, ((IWorkTimeRecordModel)model).CompanyId),

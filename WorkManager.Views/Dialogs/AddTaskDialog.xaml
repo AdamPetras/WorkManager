@@ -10,7 +10,7 @@
              xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
              xmlns:enums="clr-namespace:WorkManager.DAL.Enums;assembly=WorkManager.DAL"
              x:DataType="dialogs:AddTaskDialogViewModel"
-             x:Class="WorkManager.Views.Dialogs.AddTaskDialogView">
+             x:Class="WorkManager.Views.Dialogs.AddTaskDialog">
     <Frame.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </Frame.Resources>

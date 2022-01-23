@@ -16,29 +16,28 @@ namespace WorkManager.ViewModels.Pages
 	public class LoginPageViewModel : ViewModelBase
 	{
 		private readonly IAuthenticationService _authenticationService;
-		private readonly IRegistrationService _registrationService;
 		private readonly IToastMessageService _toastMessageService;
 		private readonly WorkManagerSettingsService _workManagerSettingsService;
-		private readonly IUserModel _testModel = new UserModel(new Guid("4E6A3273-35DB-4E73-8014-0A3566724B1B"), "", "", "###", "###");
 
 
-		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IRegistrationService registrationService, IToastMessageService toastMessageService,
+		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IToastMessageService toastMessageService,
 			WorkManagerSettingsService workManagerSettingsService) :
 			base(navigationService)
 		{
 			_authenticationService = authenticationService;
-			_registrationService = registrationService;
 			_toastMessageService = toastMessageService;
 			_workManagerSettingsService = workManagerSettingsService;
-			LoginCommand = new DelegateCommand(async()=> await LoginAsync(), () => !IsBusy);
-			ShowRegisterCommand = new DelegateCommand(Register, () => !IsBusy);
 			Username = _workManagerSettingsService.Username;
 			Password = _workManagerSettingsService.Password;
 			IsRememberCredentialsToggled = _workManagerSettingsService.SaveCredentials;
+            InitDialogCommands();
+#if DEBUG
+			LoginCommand.Execute();
+#endif
 		}
 
-		public DelegateCommand ShowRegisterCommand { get; }
-		public DelegateCommand LoginCommand { get; }
+		public DelegateCommand ShowRegisterCommand { get; private set; }
+        public DelegateCommand LoginCommand { get; private set; }
 
 		private string _username;
 		public string Username
@@ -76,7 +75,22 @@ namespace WorkManager.ViewModels.Pages
 			}
 		}
 
-		private async void Register()
+        protected override void DestroyInt()
+        {
+            base.DestroyInt();
+            DialogThrownEvent -= ShowRegisterCommand.RaiseCanExecuteChanged;
+            DialogThrownEvent -= LoginCommand.RaiseCanExecuteChanged;
+		}
+
+        private void InitDialogCommands()
+        {
+			ShowRegisterCommand = new DelegateCommand(Register, () => !IsBusy);
+            DialogThrownEvent += ShowRegisterCommand.RaiseCanExecuteChanged;
+			LoginCommand = new DelegateCommand(async()=> await LoginAsync(), () => !IsBusy);
+            DialogThrownEvent += LoginCommand.RaiseCanExecuteChanged;
+		}
+
+        private async void Register()
 		{
 			await NavigationService.NavigateAsync("RegisterPage");
 		}

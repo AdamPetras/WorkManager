@@ -43,7 +43,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:d}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
                                 <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
@@ -93,12 +93,12 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:dd. MM. yyyy}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActualDateTime, StringFormat='{0:d}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" VerticalTextAlignment="Center"></Label>
                                 <Label Grid.Row="0" Grid.Column="1" Text="{Binding CalculatedPrice, StringFormat='{0:N}'}" TextColor="{StaticResource SecondaryTextColor}" FontAttributes="Bold" HorizontalTextAlignment="End"></Label>
 
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
+                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime, Mode = OneWay}" IconHeight="20" >
                                     <controls:IconLabel.ImageSource>
                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
                                     </controls:IconLabel.ImageSource>
@@ -151,7 +151,7 @@
 
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HeightRequest="2" BackgroundColor="Black" ></BoxView>
 
-                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime}" IconHeight="20" >
+                                <controls:IconLabel Grid.Row="2" Grid.Column="0" Text="{Binding WorkTime, Mode = OneWay}" IconHeight="20" >
                                     <controls:IconLabel.ImageSource>
                                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Clock}" Color="{StaticResource SecondaryTextColor}"/>
                                     </controls:IconLabel.ImageSource>

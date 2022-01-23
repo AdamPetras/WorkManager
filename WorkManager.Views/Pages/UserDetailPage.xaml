@@ -9,7 +9,7 @@
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>
-    <Grid VerticalOptions="CenterAndExpand">
+    <Grid VerticalOptions="Start" Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -21,15 +21,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Id}}"></Label>
-        <Label Grid.Row="0" Grid.Column="1" Text="{Binding User.Id}"></Label>
-        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Firstname}}"></Label>
-        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding User.FirstName}"></Entry>
-        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Surname}}"></Label>
-        <Entry Grid.Row="2" Grid.Column="1" Text="{Binding User.Surname}"></Entry>
-        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Username}}"></Label>
-        <Entry Grid.Row="3" Grid.Column="1" Text="{Binding User.Username}"></Entry>
-        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Password}}"></Label>
-        <Entry Grid.Row="4" Grid.Column="1" Text="{Binding User.Password}" IsPassword="True"></Entry>
+        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Firstname}}" VerticalTextAlignment="Center"></Label>
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding FirstName}"></Entry>
+        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Surname}}" VerticalTextAlignment="Center"></Label>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Surname}"></Entry>
+        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Username}}" VerticalTextAlignment="Center"></Label>
+        <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Username}"></Entry>
+        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Password}}" VerticalTextAlignment="Center"></Label>
+        <Button Grid.Row="3" Grid.Column="1" Text="{Binding Source={x:Static resources:TranslatePagesSR.ChangePassword}}" Command="{Binding ChangePasswordCommand}"></Button>
     </Grid>
 </ContentPage>

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Resources;
+using WorkManager.Core;
 using Xamarin.Essentials;
 
 namespace WorkManager.BL.Services
@@ -26,7 +27,7 @@ namespace WorkManager.BL.Services
 			}
 			catch (PermissionException)
 			{
-				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUseFormat(TranslateBussinessSR.Camera));
+				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUse.Format(TranslateBussinessSR.Camera));
 			}
 			catch (Exception ex)
 			{
@@ -44,11 +45,11 @@ namespace WorkManager.BL.Services
 			}
 			catch (FeatureNotSupportedException)
 			{
-				_toastMessageService.LongAlert(TranslateBussinessSR.FeatureIsNotSupportedFormat(TranslateBussinessSR.Camera));
+				_toastMessageService.LongAlert(TranslateBussinessSR.FeatureIsNotSupported.Format(TranslateBussinessSR.Camera));
 			}
 			catch (PermissionException)
 			{
-				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUseFormat(TranslateBussinessSR.Camera));
+				_toastMessageService.LongAlert(TranslateBussinessSR.AplicationHaveNoPermissionsToUse.Format(TranslateBussinessSR.Camera));
 			}
 			catch (Exception ex)
 			{

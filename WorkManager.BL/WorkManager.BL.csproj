@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EventActions\**" />
+    <EmbeddedResource Remove="EventActions\**" />
+    <None Remove="EventActions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs" Link="Properties\SharedAssemblyInfo.cs" />
   </ItemGroup>
 
@@ -29,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EventActions\" />
     <Folder Include="NavigationParams\" />
   </ItemGroup>
 
@@ -43,7 +48,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\TranslateBussinessSR.resx">
-      <Generator>ResXFileCodeGeneratorEx</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TranslateBussinessSR.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

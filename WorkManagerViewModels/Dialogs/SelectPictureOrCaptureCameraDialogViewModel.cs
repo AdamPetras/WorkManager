@@ -15,16 +15,14 @@ namespace WorkManager.ViewModels.Dialogs
 {
 	public class SelectPictureOrCaptureCameraDialogViewModel : DialogViewModelBase
 	{
-		private readonly IToastMessageService _toastMessageService;
 		private readonly IPhotoService _photoService;
 
-		public SelectPictureOrCaptureCameraDialogViewModel(INavigationService navigationService, IToastMessageService toastMessageService, IPhotoService photoService) : base(navigationService)
+		public SelectPictureOrCaptureCameraDialogViewModel(INavigationService navigationService, IPhotoService photoService) : base(navigationService)
 		{
-			_toastMessageService = toastMessageService;
 			_photoService = photoService;
 			SelectCameraCommand = new DelegateCommand(async () => await SelectCameraAsync());
 			SelectGalleryCommand = new DelegateCommand(async () => await SelectGalleryAsync());
-			CloseCommand = new DelegateCommand(Close);
+			CloseCommand = new DelegateCommand(()=> OnRequestClose(null));
 		}
 
 		public DelegateCommand SelectCameraCommand { get; }
@@ -39,11 +37,6 @@ namespace WorkManager.ViewModels.Dialogs
 		private async Task SelectCameraAsync()
 		{
 			OnRequestClose(new DialogParameters(){{"Path", await _photoService.CameraAsync()}});
-		}
-
-		private void Close()
-		{
-			OnRequestClose(null);
 		}
 	}
 }

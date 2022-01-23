@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace WorkManager.Views.Dialogs
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AddCompanyDialogView : Frame
+	public partial class AddWorkRecordDialog : Frame
 	{
-		public AddCompanyDialogView()
+		public AddWorkRecordDialog()
 		{
 			InitializeComponent();
 		}

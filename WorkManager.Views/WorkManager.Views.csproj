@@ -37,8 +37,59 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Dialogs\AddCompanyDialog.xaml.cs">
+	    <DependentUpon>AddCompanyDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Dialogs\AddKanbanStateDialog.xaml.cs">
+	    <DependentUpon>AddKanbanStateDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Dialogs\AddTaskDialog.xaml.cs">
+	    <DependentUpon>AddTaskDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Dialogs\AddTaskGroupDialog.xaml.cs">
+	    <DependentUpon>AddTaskGroupDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Dialogs\AddWorkRecordDialog.xaml.cs">
+	    <DependentUpon>AddWorkRecordDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Dialogs\FilterDialog.xaml.cs">
+	    <DependentUpon>FilterDialog.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\TranslateControlsSR.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>TranslateControlsSR.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\TranslateDialogsSR.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>TranslateDialogsSR.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\TranslatePagesSR.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>TranslatePagesSR.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Dialogs\ChangePasswordDialog.xaml">
+	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Pages\WorkRecordStatisticsPage.xaml">
 	    <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\TranslateControlsSR.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TranslateControlsSR.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\TranslateDialogsSR.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TranslateDialogsSR.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\TranslatePagesSR.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>TranslatePagesSR.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 </Project>

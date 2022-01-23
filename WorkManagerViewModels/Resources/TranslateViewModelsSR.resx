@@ -165,11 +165,20 @@
   <data name="KanbanMustHaveThreeStates" xml:space="preserve">
     <value>Kanbán musí mít minimálně tři stavy.</value>
   </data>
+  <data name="NewPasswordIsNullOrEmpty" xml:space="preserve">
+    <value>Prosím vyplňte nové heslo.</value>
+  </data>
+  <data name="NewPasswordsAreNotSame" xml:space="preserve">
+    <value>Nová hesla nejsou totožná.</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>
   </data>
   <data name="PasswordIsNullOrEmpty" xml:space="preserve">
     <value>Prosím vyplňte heslo.</value>
+  </data>
+  <data name="PasswordsAreNotSame" xml:space="preserve">
+    <value>Hesla nejsou totožná.</value>
   </data>
   <data name="SelectedCompanyDeleteDialogMessage" xml:space="preserve">
     <value>Opravdu chcete smazat firmu {0}?</value>

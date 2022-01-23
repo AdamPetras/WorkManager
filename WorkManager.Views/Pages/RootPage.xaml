@@ -4,6 +4,7 @@
               xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
               xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
               xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
+              xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
               x:DataType="pages:RootPageViewModel"
               x:Class="WorkManager.Views.Pages.RootPage">
     <FlyoutPage.Resources>
@@ -20,9 +21,12 @@
                 </Grid.RowDefinitions>
                 <Image Grid.Row="0" Source="icon.png" Margin="5" HeightRequest="200"></Image>
                 <StackLayout Grid.Row="1" Margin="5">
-                    <Button Text="{x:Static resources:TranslatePagesSR.TaskGroupPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" CommandParameter="Page2"></Button>
-                    <Button Text="{x:Static resources:TranslatePagesSR.CompanyPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" CommandParameter="Page2"></Button>
-                    <Button Text="{x:Static resources:TranslatePagesSR.UserProfileTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowUserProfileCommand}" CommandParameter="Page2"></Button>
+                    <Button Text="{x:Static resources:TranslatePagesSR.TaskGroupPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowTasksCommand}" IsVisible="{Binding IsTaskBusy, Converter={StaticResource NegateBooleanConverter}}" CommandParameter="Page2"></Button>
+                    <controls:Loading IsLoadingVisible="{Binding IsTaskBusy}" VerticalOptions="Center" HorizontalOptions="Center"></controls:Loading>
+                    <Button Text="{x:Static resources:TranslatePagesSR.CompanyPageTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowWorkTimeStoreCommand}" IsVisible="{Binding IsWorkBusy, Converter={StaticResource NegateBooleanConverter}}" CommandParameter="Page2"></Button>
+                    <controls:Loading IsLoadingVisible="{Binding IsWorkBusy}" VerticalOptions="Center" HorizontalOptions="Center"></controls:Loading>
+                    <Button Text="{x:Static resources:TranslatePagesSR.UserProfileTitle}" HeightRequest="50" WidthRequest="100" Command="{Binding ShowUserProfileCommand}" IsVisible="{Binding IsUserProfileBusy, Converter={StaticResource NegateBooleanConverter}}" CommandParameter="Page2"></Button>
+                    <controls:Loading IsLoadingVisible="{Binding IsUserProfileBusy}" VerticalOptions="Center" HorizontalOptions="Center"></controls:Loading>
                 </StackLayout>
                 <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="End" Margin="5" Spacing="10">
                     <ImageButton BackgroundColor="Transparent" Command="{Binding ShowSettingsCommand}">

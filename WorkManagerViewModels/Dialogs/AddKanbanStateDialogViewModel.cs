@@ -11,7 +11,7 @@ using WorkManager.ViewModels.BaseClasses;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class AddKanbanStateDialogViewModel : DialogViewModelBase
+	public class AddKanbanStateDialogViewModel : ConfirmDialogViewModelBase
 	{
 		private ITaskGroupModel _selectedTaskGroup;
 		private int _selectedStateOrder;
@@ -21,16 +21,12 @@ namespace WorkManager.ViewModels.Dialogs
 			IsIconSelectionVisible = false;
 			ShowHideSelectionCommand = new DelegateCommand(() => { IsIconSelectionVisible = !IsIconSelectionVisible; });
 			SelectionChangedCommand = new DelegateCommand(() => IsIconSelectionVisible = false);
-			CancelCommand = new DelegateCommand(()=> OnRequestClose(null));
-			ConfirmCommand = new DelegateCommand(Confirm);
 		}
 
 		public DelegateCommand ShowHideSelectionCommand { get; }
 		public DelegateCommand SelectionChangedCommand { get; }
-		public DelegateCommand CancelCommand { get; }
-		public DelegateCommand ConfirmCommand { get; }
 
-		private string _selectedIcon;
+        private string _selectedIcon;
 		public string SelectedIcon
 		{
 			get => _selectedIcon;
@@ -75,10 +71,12 @@ namespace WorkManager.ViewModels.Dialogs
             _selectedTaskGroup = navParameters.TaskGroup;
         }
 
-		private void Confirm()
-		{
-            IKanbanStateModel stateModel = new KanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon,_selectedTaskGroup.Id);
-			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<IKanbanStateModel>(stateModel) } });
+#pragma warning disable CS1998
+        protected override async Task ConfirmAsyncInt()
+#pragma warning restore CS1998
+        {
+			IKanbanStateModel stateModel = new KanbanStateModel(Guid.NewGuid(), Name, _selectedStateOrder, SelectedIcon, _selectedTaskGroup.Id);
+            OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<IKanbanStateModel>(stateModel) } });
 		}
 	}
 }

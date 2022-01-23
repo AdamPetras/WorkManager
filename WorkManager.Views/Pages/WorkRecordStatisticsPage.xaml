@@ -4,11 +4,12 @@
              xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Pages.WorkRecordStatisticsPage"
-             x:DataType="pages:WorkRecordStatisticsPageViewModel">
+             x:DataType="pages:WorkRecordStatisticsPageViewModel"
+             Title="{x:Static resources:TranslatePagesSR.StatisticsTitle}">
     <ContentPage.Resources>
         <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
     </ContentPage.Resources>
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -23,28 +24,31 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source= {x:Static resources:TranslatePagesSR.TotalPrice}, StringFormat='{0}:'}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" Margin="5"></Label>
-        <Label Grid.Row="0" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source= {x:Static resources:TranslatePagesSR.TotalPrice}, StringFormat='{0}:'}" TextColor="{StaticResource SecondaryTextColor}" FontSize="Medium" FontAttributes="Bold" ></Label>
+        <Label Grid.Row="0" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="2" Grid.Column="1" Text="{Binding TotalPrice, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="2" Grid.Column="1" Text="{Binding TotalPrice, StringFormat='{0:N}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="3" Grid.Column="1" Text="{Binding TotalHours, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.TotalHours}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="End" Spacing="0">
+            <Label Text="{Binding TotalHours.TotalHours, StringFormat='{0:0}:'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+            <Label Text="{Binding TotalHours.Minutes, StringFormat='{0:0}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        </StackLayout>
 
-        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="4" Grid.Column="1" Text="{Binding TotalPieces, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.TotalPieces}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="4" Grid.Column="1" Text="{Binding TotalPieces, StringFormat='{0:0}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        
+        <Label Grid.Row="5" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.TotalRecordsThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="5" Grid.Column="1" Text="{Binding TotalRecordsThisMonth, StringFormat='{0:0}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-        <Label Grid.Row="5" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="5" Grid.Column="1" Text="{Binding TotalRecordsThisMonth, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.TotalRecordsThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="6" Grid.Column="1" Text="{Binding TotalRecordsThisYear, StringFormat='{0:0}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-        <Label Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="6" Grid.Column="1" Text="{Binding TotalRecordsThisYear, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
-
-        <Label Grid.Row="7" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-        <Label Grid.Row="7" Grid.Column="1" Text="{Binding TotalRecords, StringFormat='{0:N}'}" Margin="5" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="7" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.TotalRecords}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource SecondaryTextColor}"></Label>
+        <Label Grid.Row="7" Grid.Column="1" Text="{Binding TotalRecords, StringFormat='{0:0}'}" HorizontalOptions="End" VerticalOptions="Center" TextColor="{StaticResource SecondaryTextColor}"></Label>
     </Grid>
 </ContentPage>

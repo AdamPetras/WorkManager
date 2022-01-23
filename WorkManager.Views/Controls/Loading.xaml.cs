@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace WorkManager.Views.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Loading : ContentView
+    public partial class Loading : StackLayout
     {
         public static readonly BindableProperty IsLoadingVisibleProperty = BindableProperty.Create(nameof(IsLoadingVisible), typeof(bool), typeof(Loading),default(bool), BindingMode.TwoWay, propertyChanged: IsLoadingVisibleChanged);
 

@@ -120,6 +120,9 @@
   <data name="ActualDate" xml:space="preserve">
     <value>Aktuální datum</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Změnit heslo</value>
+  </data>
   <data name="CompanyPageTitle" xml:space="preserve">
     <value>Správa prací</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="States" xml:space="preserve">
     <value>Stavy</value>
   </data>
+  <data name="StatisticsTitle" xml:space="preserve">
+    <value>Statistika</value>
+  </data>
   <data name="Surname" xml:space="preserve">
     <value>Přijmení</value>
   </data>
@@ -213,11 +219,26 @@
   <data name="ThisYear" xml:space="preserve">
     <value>Tento rok</value>
   </data>
+  <data name="TotalHours" xml:space="preserve">
+    <value>Odpracovaný čas</value>
+  </data>
   <data name="Totally" xml:space="preserve">
     <value>Celkem</value>
   </data>
+  <data name="TotalPieces" xml:space="preserve">
+    <value>Kusů celkem</value>
+  </data>
   <data name="TotalPrice" xml:space="preserve">
     <value>Částka celkem</value>
+  </data>
+  <data name="TotalRecords" xml:space="preserve">
+    <value>Záznamů celkem</value>
+  </data>
+  <data name="TotalRecordsThisMonth" xml:space="preserve">
+    <value>Záznamů celkem tento měsíc</value>
+  </data>
+  <data name="TotalRecordsThisYear" xml:space="preserve">
+    <value>Záznamů celkem tento rok</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Přihlašovací jméno</value>

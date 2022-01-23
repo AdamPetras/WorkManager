@@ -5,7 +5,7 @@
              xmlns:prism="http://prismlibrary.com"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              xmlns:controls="clr-namespace:WorkManager.Views.Controls;assembly=WorkManager.Views"
-             x:Class="WorkManager.Views.Dialogs.AddTaskGroupDialogView"
+             x:Class="WorkManager.Views.Dialogs.AddTaskGroupDialog"
              prism:DialogLayout.RelativeWidthRequest="0.8"
              prism:DialogLayout.CloseOnBackgroundTapped="True"
              x:DataType="dialogs:AddTaskGroupDialogViewModel">

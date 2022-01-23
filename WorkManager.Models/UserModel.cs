@@ -1,4 +1,5 @@
 ﻿using System;
+using WorkManager.Core.Annotations;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 
@@ -11,7 +12,12 @@ namespace WorkManager.Models
 
 		}
 
-		public UserModel(Guid id, string firstName, string surname, string username, string password) : base(id)
+        public UserModel([NotNull]IUserModel user) :this(user.Id,user.FirstName,user.Surname,user.Username,user.Password)
+        {
+            
+        }
+		
+        public UserModel(Guid id, string firstName, string surname, string username, string password) : base(id)
 		{
 			FirstName = firstName;
 			Username = username;

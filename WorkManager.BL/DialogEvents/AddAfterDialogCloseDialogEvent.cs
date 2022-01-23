@@ -1,4 +1,5 @@
-﻿using WorkManager.Models.Interfaces;
+﻿using Prism.Services.Dialogs;
+using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.DialogEvents
 {
@@ -10,5 +11,5 @@ namespace WorkManager.BL.DialogEvents
 		}
 
 		public T Value { get; }
-	}
+    }
 }

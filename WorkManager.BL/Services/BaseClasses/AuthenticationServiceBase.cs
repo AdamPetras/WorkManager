@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Prism.Events;
 using WorkManager.BL.Exceptions;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
+using WorkManager.BL.Resources;
 using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Services.BaseClasses
@@ -97,8 +99,7 @@ namespace WorkManager.BL.Services.BaseClasses
 			return await Task.Run(()=> GetHashedPassword(password));
 		}
 
-
-		protected bool PasswordMatchesHashedPassword(string password, string hashedPassword)
+        public bool PasswordMatchesHashedPassword(string password, string hashedPassword)
 		{
 			var hash = Convert.FromBase64String(hashedPassword);
 			var salt = new byte[DefaultSaltLength];
@@ -119,5 +120,23 @@ namespace WorkManager.BL.Services.BaseClasses
 		{
 			return await Task.Run(()=> PasswordMatchesHashedPassword(password, hashedPassword));
 		}
-	}
+
+        public bool HasPasswordCorrectStructure(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new PasswordStructureException(TranslateBussinessSR.PasswordIsNullOrEmpty);
+            }
+            Regex hasNumber = new Regex(@"[0-9]+");
+            Regex hasMiniMaxChars = new Regex(@".{8,20}");
+            Regex hasChar = new Regex(@"[a-zA-Z]+");
+			if (!hasMiniMaxChars.IsMatch(password))
+                throw new PasswordStructureException(TranslateBussinessSR.PasswordLength);
+            if (!hasChar.IsMatch(password))
+                throw new PasswordStructureException(TranslateBussinessSR.PasswordChars);
+            if (!hasNumber.IsMatch(password))
+                throw new PasswordStructureException(TranslateBussinessSR.PasswordNumbers);
+            return true;
+        }
+    }
 }

@@ -28,6 +28,7 @@ namespace WorkManager.ViewModels.BaseClasses
 			{
 				_runningOperation = value;
 				RaisePropertyChanged(nameof(IsBusy));
+                OnDialogThrownEvent();
 			}
 		}
 

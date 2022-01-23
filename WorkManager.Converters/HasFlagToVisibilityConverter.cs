@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using WorkManager.Xamarin.Core;
 using Xamarin.Forms;
 
 namespace WorkManager.Converters
@@ -8,14 +9,12 @@ namespace WorkManager.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is Enum enumValue && parameter is Enum enumParameter)
+			if (value is LocalizedEnum enumValue && parameter is Enum enumParameter)	// TODO LOCALIZED ENUM!!!!!!
 			{
-				if (enumValue.GetType() == enumParameter.GetType())
-				{
-					return enumValue.HasFlag(enumParameter);
-				}
-			}
-			throw new ArgumentException();
+				bool val = enumValue.GetValue(parameter.GetType()).HasFlag(enumParameter);
+                return val;
+            }
+			throw new ArgumentException(@"Hodnota value není localized Enum");
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

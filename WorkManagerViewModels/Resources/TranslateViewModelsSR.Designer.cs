@@ -205,6 +205,24 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prosím vyplňte nové heslo..
+        /// </summary>
+        internal static string NewPasswordIsNullOrEmpty {
+            get {
+                return ResourceManager.GetString("NewPasswordIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nová hesla nejsou totožná..
+        /// </summary>
+        internal static string NewPasswordsAreNotSame {
+            get {
+                return ResourceManager.GetString("NewPasswordsAreNotSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Heslo.
         /// </summary>
         internal static string Password {
@@ -219,6 +237,15 @@ namespace WorkManager.ViewModels.Resources {
         internal static string PasswordIsNullOrEmpty {
             get {
                 return ResourceManager.GetString("PasswordIsNullOrEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hesla nejsou totožná..
+        /// </summary>
+        internal static string PasswordsAreNotSame {
+            get {
+                return ResourceManager.GetString("PasswordsAreNotSame", resourceCulture);
             }
         }
         

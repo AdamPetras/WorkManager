@@ -126,4 +126,16 @@
   <data name="FeatureIsNotSupported" xml:space="preserve">
     <value>Funkce {0} není podporována.</value>
   </data>
+  <data name="PasswordChars" xml:space="preserve">
+    <value>Heslo neobsahuje žádné písmeno, heslo musí obsahovat alespoň jednu číslici nebo písmeno a musí mít minimálně 8 znaků maximálně 20 znaků.</value>
+  </data>
+  <data name="PasswordIsNullOrEmpty" xml:space="preserve">
+    <value>Heslo je prázdné, heslo musí obsahovat alespoň jednu číslici nebo písmeno a musí mít minimálně 8 znaků maximálně 20 znaků.</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>Heslo nesplňuje požadovanou délku, heslo musí obsahovat alespoň jednu číslici nebo písmeno a musí mít minimálně 8 znaků maximálně 20 znaků.</value>
+  </data>
+  <data name="PasswordNumbers" xml:space="preserve">
+    <value>Heslo neobsahuje žádnou číslici, heslo musí obsahovat alespoň jednu číslici nebo písmeno a musí mít minimálně 8 znaků maximálně 20 znaků.</value>
+  </data>
 </root>

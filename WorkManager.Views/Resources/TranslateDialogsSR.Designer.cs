@@ -151,6 +151,24 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nové heslo.
+        /// </summary>
+        internal static string NewPassword {
+            get {
+                return ResourceManager.GetString("NewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heslo.
+        /// </summary>
+        internal static string OldPassword {
+            get {
+                return ResourceManager.GetString("OldPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kusy.
         /// </summary>
         internal static string Pieces {
@@ -183,6 +201,15 @@ namespace WorkManager.Views.Resources {
         internal static string Priority {
             get {
                 return ResourceManager.GetString("Priority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nové heslo znovu.
+        /// </summary>
+        internal static string RepeatNewPassword {
+            get {
+                return ResourceManager.GetString("RepeatNewPassword", resourceCulture);
             }
         }
         

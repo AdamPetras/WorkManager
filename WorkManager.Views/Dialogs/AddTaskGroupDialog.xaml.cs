@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace WorkManager.Views.Dialogs
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AddTaskDialogView : Frame
+	public partial class AddTaskGroupDialog : Frame
 	{
-		public AddTaskDialogView()
+		public AddTaskGroupDialog()
 		{
 			InitializeComponent();
 		}

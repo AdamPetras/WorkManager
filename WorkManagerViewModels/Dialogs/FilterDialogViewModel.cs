@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Navigation;
 using Prism.Services.Dialogs;
@@ -9,16 +10,12 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class FilterDialogViewModel:DialogViewModelBase
+	public class FilterDialogViewModel:ConfirmDialogViewModelBase
 	{
 		public FilterDialogViewModel(INavigationService navigationService) : base(navigationService)
 		{
-			ConfirmCommand = new DelegateCommand(Confirm);
-			CancelCommand = new DelegateCommand(Cancel);
 		}
 
-		public DelegateCommand ConfirmCommand { get; }
-		public DelegateCommand CancelCommand { get; }
 		
         private string _dialogTitle;
         public string DialogTitle
@@ -55,7 +52,14 @@ namespace WorkManager.ViewModels.Dialogs
                 RaisePropertyChanged();
             }
         }
-		
+
+#pragma warning disable CS1998
+        protected override async Task ConfirmAsyncInt()
+#pragma warning restore CS1998
+        {
+            OnRequestClose(new FilterNavigationParameters(DialogTitle,DateFrom,DateTo));
+        }
+
         protected override void OnDialogOpenedInt(IDialogParameters parameters)
 		{
 			base.OnDialogOpenedInt(parameters);
@@ -65,15 +69,5 @@ namespace WorkManager.ViewModels.Dialogs
             DateTo = navParams.DateTo;
 
         }
-
-		private void Confirm()
-		{
-			OnRequestClose(new FilterNavigationParameters(DialogTitle,DateFrom,DateTo));
-		}
-
-		private void Cancel()
-		{
-			OnRequestClose(null);
-		}
 	}
 }

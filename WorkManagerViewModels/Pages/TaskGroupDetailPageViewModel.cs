@@ -103,7 +103,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task AddKanbanAsync()
         {
             BeginProcess();
-            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialogView",  new StateOrderTaskGroupNavigationParameters(KanbanItems.Count,SelectedTaskGroup))).Parameters;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialog",  new StateOrderTaskGroupNavigationParameters(KanbanItems.Count,SelectedTaskGroup))).Parameters;
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             if (dialogEvent != null)
             {

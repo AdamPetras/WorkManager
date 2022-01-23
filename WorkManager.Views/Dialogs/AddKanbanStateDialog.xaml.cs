@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace WorkManager.Views.Dialogs
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class FilterDialogView : Frame
+	public partial class AddKanbanStateDialog : Frame
 	{
-		public FilterDialogView()
+		public AddKanbanStateDialog()
 		{
 			InitializeComponent();
 		}

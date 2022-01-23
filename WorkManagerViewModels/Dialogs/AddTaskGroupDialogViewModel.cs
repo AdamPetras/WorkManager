@@ -18,7 +18,7 @@ using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.Dialogs
 {
-	public class AddTaskGroupDialogViewModel : DialogViewModelBase
+	public class AddTaskGroupDialogViewModel : ConfirmDialogViewModelBase
 	{
 		private readonly ITaskGroupFacade _taskGroupFacade;
 		private readonly IKanbanStateFacade _kanbanStateFacade;
@@ -34,12 +34,7 @@ namespace WorkManager.ViewModels.Dialogs
 			_currentUserProvider = currentUserProvider;
 			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
-			CancelCommand = new DelegateCommand(Cancel);
-			ConfirmCommand = new DelegateCommand(async()=> await ConfirmAsync());
 		}
-
-		public DelegateCommand CancelCommand { get; }
-		public DelegateCommand ConfirmCommand { get; }
 
 		private string _name;
 		public string Name
@@ -64,25 +59,21 @@ namespace WorkManager.ViewModels.Dialogs
 				RaisePropertyChanged();
 			}
 		}
-		private void Cancel()
-		{
-			OnRequestClose(null);
-		}
-
-		private async Task ConfirmAsync()
-		{
+		
+		protected override async Task ConfirmAsyncInt()
+        {
 			BeginProcess();
-			if (await _taskGroupFacade.ExistsAsync(Name))
-			{
-				_toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
-				Cancel();
-				return;
-			}
-			ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description,0, _currentUserProvider.GetModel().Id);
-			await _taskGroupFacade.AddAsync(model);
-			_kanbanStateFacade.CreateDefaultKanbanStateModels(model);
-			OnRequestClose(new DialogParameters(){{ "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });
-			EndProcess();
+            if (await _taskGroupFacade.ExistsAsync(Name))
+            {
+                _toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
+                CancelInt();
+                return;
+            }
+            ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description, 0, _currentUserProvider.GetModel().Id);
+            await _taskGroupFacade.AddAsync(model);
+            _kanbanStateFacade.CreateDefaultKanbanStateModels(model);
+            OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });
+            EndProcess();
 		}
-	}
+    }
 }

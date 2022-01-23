@@ -70,6 +70,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Změnit heslo.
+        /// </summary>
+        internal static string ChangePassword {
+            get {
+                return ResourceManager.GetString("ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Správa prací.
         /// </summary>
         internal static string CompanyPageTitle {
@@ -286,6 +295,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistika.
+        /// </summary>
+        internal static string StatisticsTitle {
+            get {
+                return ResourceManager.GetString("StatisticsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Přijmení.
         /// </summary>
         internal static string Surname {
@@ -349,6 +367,15 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Odpracovaný čas.
+        /// </summary>
+        internal static string TotalHours {
+            get {
+                return ResourceManager.GetString("TotalHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Celkem.
         /// </summary>
         internal static string Totally {
@@ -358,11 +385,47 @@ namespace WorkManager.Views.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kusů celkem.
+        /// </summary>
+        internal static string TotalPieces {
+            get {
+                return ResourceManager.GetString("TotalPieces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Částka celkem.
         /// </summary>
         internal static string TotalPrice {
             get {
                 return ResourceManager.GetString("TotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Záznamů celkem.
+        /// </summary>
+        internal static string TotalRecords {
+            get {
+                return ResourceManager.GetString("TotalRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Záznamů celkem tento měsíc.
+        /// </summary>
+        internal static string TotalRecordsThisMonth {
+            get {
+                return ResourceManager.GetString("TotalRecordsThisMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Záznamů celkem tento rok.
+        /// </summary>
+        internal static string TotalRecordsThisYear {
+            get {
+                return ResourceManager.GetString("TotalRecordsThisYear", resourceCulture);
             }
         }
         

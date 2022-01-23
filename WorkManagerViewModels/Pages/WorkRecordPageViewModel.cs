@@ -146,11 +146,11 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowAddDialogAsync()
 		{
 			IsDialogThrown = true;
-			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialogView")).Parameters;
-			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
+			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialog")).Parameters;
+			IDialogEvent dialogEvent = parameters?.GetValue<IDialogEvent>("DialogEvent");
 			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records);
 			UpdateTotalPrices();
-			Records = new System.Collections.ObjectModel.ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
+			Records = new ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
 			IsDialogThrown = false;
 		}
 
@@ -164,7 +164,7 @@ namespace WorkManager.ViewModels.Pages
 		private async Task ShowFilterDialog()
 		{
 			IsDialogThrown = true;
-            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialogView", new FilterNavigationParameters(TranslateViewModelsSR.FilterTitle, _filterDateFrom, _filterDateTo))).Parameters;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialog", new FilterNavigationParameters(TranslateViewModelsSR.FilterTitle, _filterDateFrom, _filterDateTo))).Parameters;
             if (parameters.Any()) //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
             {
 				FilterNavigationParameters filterParams = (FilterNavigationParameters) parameters;
