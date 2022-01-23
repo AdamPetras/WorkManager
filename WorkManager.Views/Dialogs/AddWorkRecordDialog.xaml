@@ -32,7 +32,7 @@
         <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
         <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding SelectedDate}"></DatePicker>
         <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
-        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" Keyboard="Chat"></Entry>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxLength="{Binding DescriptionMaxLength, Mode=OneTime}" Keyboard="Chat"></Entry>
         <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
         <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding SelectedWorkType}"></Picker>
         <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" IsVisible="{Binding SelectedWorkType, Converter={StaticResource HasFlagToVisibilityConverter}, ConverterParameter={x:Static enums:EWorkType.Time}}" VerticalTextAlignment="Center"></Label>

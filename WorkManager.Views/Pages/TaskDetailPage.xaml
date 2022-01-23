@@ -27,9 +27,9 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Name}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-        <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{ Binding SelectedTask.Name}"></Entry>
+        <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{ Binding SelectedTask.Name}" MaxLength="{Binding NameMaxLength, Mode=OneTime}"></Entry>
         <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.Description}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-        <Entry Grid.Row="1" Grid.Column="1" Text="{ Binding SelectedTask.Description}"></Entry>
+        <Entry Grid.Row="1" Grid.Column="1" Text="{ Binding SelectedTask.Description}" MaxLength="{Binding DescriptionMaxLength, Mode=OneTime}"></Entry>
         <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.ActualDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
         <DatePicker Grid.Row="2" Grid.Column="1" Date="{ Binding SelectedTask.ActualDateTime}"></DatePicker>
         <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslatePagesSR.TaskDoneDate}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>

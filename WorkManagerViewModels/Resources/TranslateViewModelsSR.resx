@@ -165,6 +165,9 @@
   <data name="KanbanMustHaveThreeStates" xml:space="preserve">
     <value>Kanbán musí mít minimálně tři stavy.</value>
   </data>
+  <data name="NameLengthConstraint" xml:space="preserve">
+    <value>Jméno je přiliš dlouhé maximální množství znaků je {0}.</value>
+  </data>
   <data name="NewPasswordIsNullOrEmpty" xml:space="preserve">
     <value>Prosím vyplňte nové heslo.</value>
   </data>

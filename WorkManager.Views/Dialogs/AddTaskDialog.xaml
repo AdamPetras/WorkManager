@@ -30,9 +30,9 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Name}"></Label>
-        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Keyboard="Chat"></Entry>
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" MaxLength="{Binding NameMaxLength, Mode=OneTime}" Keyboard="Chat"></Entry>
         <Label Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Description}"></Label>
-        <Editor Grid.Row="1" Grid.Column="1" Text="{Binding Description}" AutoSize="TextChanges" FontSize="Small"></Editor>
+        <Editor Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxLength="{Binding DescriptionMaxLength, Mode=OneTime}" AutoSize="TextChanges" FontSize="Small"></Editor>
         <Label Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.TaskStartDate}"></Label>
         <DatePicker Grid.Row="2" Grid.Column="1" Date="{Binding TaskStartDate}"></DatePicker>
         <Label Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.TaskDoneDate}"></Label>

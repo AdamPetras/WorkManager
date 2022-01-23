@@ -8,6 +8,7 @@ using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.DAL.Enums;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
@@ -28,7 +29,10 @@ namespace WorkManager.ViewModels.Dialogs
 			_workRecordDetailFacade = workRecordDetailFacade;
 			_workRecordModelFactory = workRecordModelFactory;
 			SetupDefaultValues();
+            DescriptionMaxLength = typeof(IWorkRecordModelBase).GetStringMaxLength(nameof(IWorkRecordModelBase.Description));
 		}
+
+		public int DescriptionMaxLength { get; }
 
         private DateTime _selectedDate;
 		public DateTime SelectedDate

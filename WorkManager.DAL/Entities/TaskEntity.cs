@@ -16,8 +16,10 @@ namespace WorkManager.DAL.Entities
         [Key]
         public Guid Id { get; set; }
 		public DateTime ActualDateTime { get; set; }
+        [StringLength(30)]
 		public string Name { get; set; }
-		public string Description { get; set; }
+        [StringLength(300)]
+        public string Description { get; set; }
 		public DateTime TaskDoneDateTime { get; set; }
 
 		[Required]

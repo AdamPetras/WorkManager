@@ -45,6 +45,8 @@ namespace WorkManager.ViewModels.Pages
             });
             MoveDownKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(MoveDownKanbanState);
             MoveUpKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(MoveUpKanbanState);
+            NameMaxLength = typeof(ITaskGroupModel).GetStringMaxLength(nameof(ITaskGroupModel.Name));
+            DescriptionMaxLength = typeof(ITaskGroupModel).GetStringMaxLength(nameof(ITaskGroupModel.Description));
         }
 
         public DelegateCommand RefreshCommand { get; }
@@ -54,6 +56,9 @@ namespace WorkManager.ViewModels.Pages
         public DelegateCommand<IKanbanStateModel> DeleteKanbanStateCommand { get; }
         public DelegateCommand<IKanbanStateModel> MoveUpKanbanStateCommand { get; }
         public DelegateCommand<IKanbanStateModel> MoveDownKanbanStateCommand { get; }
+
+        public int NameMaxLength { get; }
+        public int DescriptionMaxLength { get; }
 
 
         private ITaskGroupModel _selectedTaskGroup;

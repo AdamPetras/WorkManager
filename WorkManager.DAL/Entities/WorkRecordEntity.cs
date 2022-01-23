@@ -26,6 +26,7 @@ namespace WorkManager.DAL.Entities
 		public double PricePerHour { get; set; }
 		public uint Pieces { get; set; }
 		public double PricePerPiece { get; set; }
+        [StringLength(300)]
 		public string Description { get; set; }
 	}
 }

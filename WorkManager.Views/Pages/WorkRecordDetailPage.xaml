@@ -29,7 +29,7 @@
                     <Label x:Name="RecordDatePicker" Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
                     <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
-                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxLength="{Binding DescriptionMaxLength, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Entry>
                     <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
                     <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Pieces}" VerticalTextAlignment="Center"></Label>
@@ -54,7 +54,7 @@
                     <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
                     <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
-                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxLength="{Binding DescriptionMaxLength, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Entry>
                     <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
                     <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" VerticalTextAlignment="Center"></Label>
@@ -81,7 +81,7 @@
                     <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.ActualDateTime}" VerticalTextAlignment="Center"></Label>
                     <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding ActualDateTime}"></DatePicker>
                     <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"  VerticalTextAlignment="Center"></Label>
-                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}"></Entry>
+                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" MaxLength="{Binding DescriptionMaxLength, Source={RelativeSource AncestorType={x:Type pages:WorkRecordDetailPageViewModel}}}"></Entry>
                     <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkType}" VerticalTextAlignment="Center"></Label>
                     <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EWorkType}}}" SelectedItem="{Binding Type}"></Picker>
                     <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.WorkTime}" VerticalTextAlignment="Center"></Label>

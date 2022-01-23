@@ -40,6 +40,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.Firstname}}" VerticalTextAlignment="Center"></Label>
-        <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCompany.Name}"></Entry>
+        <Entry x:Name="NameEntry" Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCompany.Name}" MaxLength="{Binding NameMaxLenght, Mode=OneTime}"></Entry>
     </Grid>
 </ContentPage>

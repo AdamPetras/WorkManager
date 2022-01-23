@@ -9,6 +9,7 @@ using Prism.Services;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.Core;
+using WorkManager.Extensions;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -30,11 +31,13 @@ namespace WorkManager.ViewModels.Pages
 			_workRecordFacade = workRecordFacade;
 			DeleteRecordCommand = new DelegateCommand(async () => await DeleteRecordAsync());
 			SaveCommand = new DelegateCommand(async() => await Save());
+            DescriptionMaxLength = typeof(IWorkRecordModelBase).GetStringMaxLength(nameof(IWorkRecordModelBase.Description));
 		}
 
 		public DelegateCommand DeleteRecordCommand { get; }
 		public DelegateCommand SaveCommand { get; }
 
+        public int DescriptionMaxLength { get; }
 
 		private ObservableCollection<IWorkRecordModelBase> _recordModel;
 		public ObservableCollection<IWorkRecordModelBase> RecordModel

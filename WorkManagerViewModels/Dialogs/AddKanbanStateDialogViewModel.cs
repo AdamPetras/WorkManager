@@ -5,6 +5,7 @@ using Prism.Navigation;
 using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.NavigationParams;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -21,7 +22,8 @@ namespace WorkManager.ViewModels.Dialogs
 			IsIconSelectionVisible = false;
 			ShowHideSelectionCommand = new DelegateCommand(() => { IsIconSelectionVisible = !IsIconSelectionVisible; });
 			SelectionChangedCommand = new DelegateCommand(() => IsIconSelectionVisible = false);
-		}
+            NameMaxLength = typeof(IKanbanStateModel).GetStringMaxLength(nameof(IKanbanStateModel.Name));
+        }
 
 		public DelegateCommand ShowHideSelectionCommand { get; }
 		public DelegateCommand SelectionChangedCommand { get; }
@@ -51,7 +53,6 @@ namespace WorkManager.ViewModels.Dialogs
 		}
 
 		private string _name;
-
 		public string Name
 		{
 			get => _name;
@@ -62,6 +63,8 @@ namespace WorkManager.ViewModels.Dialogs
 				RaisePropertyChanged();
 			}
 		}
+
+		public int NameMaxLength { get; }
 
 		protected override void OnDialogOpenedInt(IDialogParameters parameters)
 		{

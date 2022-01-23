@@ -12,6 +12,7 @@ using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.Core;
 using WorkManager.DAL.Enums;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -31,7 +32,8 @@ namespace WorkManager.ViewModels.Dialogs
 			_companyFacade = companyFacade;
 			_currentUserProvider = currentUserProvider;
 			_toastMessageService = toastMessageService;
-		}
+            NameMaxLength = typeof(ICompanyModel).GetStringMaxLength(nameof(ICompanyModel.Name));
+        }
 
 		protected override async Task ConfirmAsyncInt()
         {
@@ -47,6 +49,8 @@ namespace WorkManager.ViewModels.Dialogs
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) } });
             EndProcess();
 		}
+
+		public int NameMaxLength { get; }
 
 		private string _name;
 		public string Name

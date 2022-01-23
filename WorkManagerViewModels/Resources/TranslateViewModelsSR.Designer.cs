@@ -205,6 +205,15 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jméno je přiliš dlouhé maximální množství znaků je {0}..
+        /// </summary>
+        internal static string NameLengthConstraint {
+            get {
+                return ResourceManager.GetString("NameLengthConstraint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prosím vyplňte nové heslo..
         /// </summary>
         internal static string NewPasswordIsNullOrEmpty {

@@ -17,6 +17,7 @@ using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.NavigationParams;
 using WorkManager.DAL.Enums;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -51,11 +52,16 @@ namespace WorkManager.ViewModels.Dialogs
 			PhotoPaths = new ObservableCollection<string>();
 			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
 			ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
+            NameMaxLength = typeof(IKanbanStateModel).GetStringMaxLength(nameof(ITaskModel.Name));
+            DescriptionMaxLength = typeof(IKanbanStateModel).GetStringMaxLength(nameof(ITaskModel.Description));
 		}
 
-		public DelegateCommand<string> DeletePhotoCommand { get; }
+        public DelegateCommand<string> DeletePhotoCommand { get; }
         public DelegateCommand TakePhotoCommand { get; }
 		public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
+
+		public int NameMaxLength { get; }
+		public int DescriptionMaxLength { get; }
 
 		private string _name;
 		public string Name

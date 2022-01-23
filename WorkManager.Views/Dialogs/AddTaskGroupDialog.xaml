@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Name}"></Label>
-        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Keyboard="Chat"></Entry>
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" MaxLength="{Binding NameMaxLength, Mode=OneTime}" Keyboard="Chat"></Entry>
         <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Description}"></Label>
         <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Description}" Keyboard="Chat"></Entry>
         <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>

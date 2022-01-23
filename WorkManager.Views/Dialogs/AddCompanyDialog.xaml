@@ -23,7 +23,7 @@
               <ColumnDefinition Width="*"></ColumnDefinition>
           </Grid.ColumnDefinitions>
           <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Name}"></Label>
-          <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" Keyboard="Chat"></Entry>
+          <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Name}" MaxLength="{Binding NameMaxLength, Mode=OneTime}" Keyboard="Chat"></Entry>
         <Button Grid.Row="2" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.Cancel}" Command="{Binding CancelCommand}"></Button>
         <Button Grid.Row="2" Grid.Column="1" Text="{x:Static resources:TranslateDialogsSR.Confirm}" Command="{Binding ConfirmCommand}" IsVisible="{Binding IsBusy, Converter={StaticResource NegateBooleanConverter}}"></Button>
         <controls:Loading Grid.Row="2" Grid.Column="1" IsLoadingVisible="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"></controls:Loading>

@@ -16,6 +16,7 @@ namespace WorkManager.DAL.Entities
 		}
         [Key]
         public Guid Id { get; set; }
+        [StringLength(30)]
 		public string Name { get; set; }
 		public EWorkType Type { get; set; }
 

@@ -11,6 +11,7 @@ using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.Core;
 using WorkManager.DAL.Enums;
+using WorkManager.Extensions;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
@@ -34,9 +35,12 @@ namespace WorkManager.ViewModels.Dialogs
 			_currentUserProvider = currentUserProvider;
 			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
+            NameMaxLength = typeof(ITaskGroupModel).GetStringMaxLength(nameof(ITaskGroupModel.Name));
 		}
 
-		private string _name;
+		public int NameMaxLength { get; }
+
+        private string _name;
 		public string Name
 		{
 			get => _name;

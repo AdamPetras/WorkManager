@@ -5,6 +5,7 @@ using Prism.Services;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.NavigationParams;
 using WorkManager.Core;
+using WorkManager.Extensions;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -23,6 +24,7 @@ namespace WorkManager.ViewModels.Pages
             _pageDialogService = pageDialogService;
             SaveCommand = new DelegateCommand(async () => await SaveAsync());
             DeleteCommand = new DelegateCommand(async () => await DeleteAsync());
+            NameMaxLenght = typeof(ICompanyModel).GetStringMaxLength(nameof(ICompanyModel.Name));
         }
 
         public DelegateCommand SaveCommand { get; }
@@ -40,6 +42,8 @@ namespace WorkManager.ViewModels.Pages
                 RaisePropertyChanged();
             }
         }
+
+        public int NameMaxLenght { get; }
 
         protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
         {

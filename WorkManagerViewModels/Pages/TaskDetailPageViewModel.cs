@@ -45,7 +45,9 @@ namespace WorkManager.ViewModels.Pages
             ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
             PhotoPaths = new ObservableCollection<IImageModel>();
 			InitDialogCommands();
-		}
+            NameMaxLength = typeof(ITaskModel).GetStringMaxLength(nameof(ITaskModel.Name));
+            DescriptionMaxLength = typeof(ITaskModel).GetStringMaxLength(nameof(ITaskModel.Description));
+        }
 
 		public DelegateCommand<IImageModel> DeletePhotoCommand { get; }
 		public DelegateCommand SaveCommand { get; }
@@ -54,6 +56,8 @@ namespace WorkManager.ViewModels.Pages
 		public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
         public DelegateCommand GoBackCommand { get; }
 
+        public int NameMaxLength { get; }
+        public int DescriptionMaxLength { get; }
 
         private ITaskModel _selectedTask;
 		public ITaskModel SelectedTask

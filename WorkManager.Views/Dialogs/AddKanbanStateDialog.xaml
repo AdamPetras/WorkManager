@@ -25,7 +25,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resources:TranslateDialogsSR.NameItem}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
-        <Entry Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}"></Entry>
+        <Entry Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Name}" MaxLength="{Binding NameMaxLength, Mode=OneTime}"></Entry>
         <Label Grid.Row="1" Grid.Column ="0" Text="{x:Static resources:TranslateDialogsSR.Icon}" TextColor="{StaticResource SecondaryTextColor}" VerticalOptions="Center"></Label>
         <Image Grid.Row="1" Grid.Column ="1">
             <Image.Source>

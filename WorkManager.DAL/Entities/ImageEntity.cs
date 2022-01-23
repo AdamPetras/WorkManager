@@ -10,9 +10,11 @@ namespace WorkManager.DAL.Entities
 	{
         [Key]
         public Guid Id { get; set; }
+        [StringLength(200)]
 		public string Path { get; set; }
+        [StringLength(300)]
 		public string Description { get; set; }
-		[Required]
+        [Required]
 		public Guid TaskId { get; set; }
 		[ForeignKey(nameof(TaskId))]
 		public virtual TaskEntity Task { get; set; }
