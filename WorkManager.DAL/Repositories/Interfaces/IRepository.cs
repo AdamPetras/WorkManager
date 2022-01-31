@@ -9,7 +9,7 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	public interface IRepository<TEntity> where TEntity : IEntity
 	{
         ICollection<TEntity> GetAll();
-		Task<ICollection<TEntity>> GetAllAsync(CancellationToken token);
+        IAsyncEnumerable<TEntity> GetAllAsync(CancellationToken token);
 		TEntity GetById(Guid id);
 		Task<TEntity> GetByIdAsync(Guid id, CancellationToken token);
 		bool Remove(Guid id);

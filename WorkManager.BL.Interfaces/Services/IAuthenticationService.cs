@@ -7,7 +7,8 @@ namespace WorkManager.BL.Interfaces.Services
 	{
 		IUserModel Authenticate(string username, string password);
 		Task<IUserModel> AuthenticateAsync(string username, string password);
-		string GetHashedPassword(string password);
+        void Logout();
+        string GetHashedPassword(string password);
 		Task<string> GetHashedPasswordAsync(string password);
         bool PasswordMatchesHashedPassword(string password, string hashedPassword);
         Task<bool> PasswordMatchesHashedPasswordAsync(string password, string hashedPassword);

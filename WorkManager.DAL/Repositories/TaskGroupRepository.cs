@@ -26,19 +26,19 @@ namespace WorkManager.DAL.Repositories
 			}
 		}
 
-        public async Task<ICollection<TaskGroupEntity>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token)
+        public IAsyncEnumerable<TaskGroupEntity> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToListAsync(token);
-            }
+                return dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToList().ToAsyncEnumerable();
+			}
 		}
 
         public async Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)
         {
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.TaskGroupSet.AnyAsync(s=>s.Name == taskGroupName, token);
+                return await dbContext.TaskGroupSet.AsQueryable().AnyAsync(s=>s.Name == taskGroupName, token);
             }
 		}
 

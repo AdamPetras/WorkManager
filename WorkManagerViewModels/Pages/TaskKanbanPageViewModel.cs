@@ -168,13 +168,6 @@ namespace WorkManager.ViewModels.Pages
             EndProcess();
         }
 
-        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
-        {
-            await base.OnNavigatedFromAsyncInt(parameters);
-            IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
-        }
-
         protected override void DestroyInt()
         {
             base.DestroyInt();

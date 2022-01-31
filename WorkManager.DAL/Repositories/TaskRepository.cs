@@ -45,12 +45,12 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public async Task<ICollection<TaskEntity>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default)
+        public IAsyncEnumerable<TaskEntity> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId).Where(s => s.State.Name == kanbanStateName)
-                    .ToListAsync(token);
+                return dbContext.TaskSet.AsQueryable().Where(s => s.TaskGroup.Id == taskGroupId)
+                    .Where(s => s.State.Name == kanbanStateName).ToList().ToAsyncEnumerable();
             }
         }
 

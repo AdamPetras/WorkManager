@@ -80,13 +80,6 @@ namespace WorkManager.ViewModels.Pages
             await RefreshAsync();
         }
 
-        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
-        {
-            await base.OnNavigatedFromAsyncInt(parameters);
-            IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Companies);
-        }
-
 		protected override void DestroyInt()
 		{
 			base.DestroyInt();

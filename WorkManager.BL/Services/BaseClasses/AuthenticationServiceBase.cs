@@ -81,7 +81,12 @@ namespace WorkManager.BL.Services.BaseClasses
 			return user;
 		}
 
-		public string GetHashedPassword(string password)
+        public void Logout()
+        {
+            _currentUserProviderManager.SetItem(null);
+		}
+
+        public string GetHashedPassword(string password)
 		{
 			var salt = new byte[DefaultSaltLength];
 			new RNGCryptoServiceProvider().GetBytes(salt);
@@ -123,7 +128,10 @@ namespace WorkManager.BL.Services.BaseClasses
 
         public bool HasPasswordCorrectStructure(string password)
         {
-            if (string.IsNullOrWhiteSpace(password))
+#if DEBUG
+            return true;
+#endif
+			if (string.IsNullOrWhiteSpace(password))
             {
                 throw new PasswordStructureException(TranslateBussinessSR.PasswordIsNullOrEmpty);
             }

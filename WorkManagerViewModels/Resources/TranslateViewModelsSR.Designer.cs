@@ -392,5 +392,14 @@ namespace WorkManager.ViewModels.Resources {
                 return ResourceManager.GetString("WorkRecordClearDialogMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heslo není správné..
+        /// </summary>
+        internal static string WrongPassword {
+            get {
+                return ResourceManager.GetString("WrongPassword", resourceCulture);
+            }
+        }
     }
 }

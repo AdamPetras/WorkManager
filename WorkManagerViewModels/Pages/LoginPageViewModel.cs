@@ -107,8 +107,10 @@ namespace WorkManager.ViewModels.Pages
 			{
 				IUserModel user = await _authenticationService.AuthenticateAsync(Username, Password);
 				if (user != null)
-					await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
-				if (IsRememberCredentialsToggled)
+                {
+                    await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
+                }
+                if (IsRememberCredentialsToggled)
 				{
 					SaveCredentials();
 				}

@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.DbContext.Interfaces;
 using WorkManager.DAL.Entities;
-using WorkManager.DAL.Enums;
 using WorkManager.DAL.Repositories.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
 
@@ -38,12 +37,12 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public async Task<ICollection<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token)
+        public IAsyncEnumerable<WorkRecordEntity> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId)
-                    .OrderByDescending(s => s.ActualDateTime).ToListAsync(token);
+                return dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId)
+                             .OrderByDescending(s => s.ActualDateTime).ToList().ToAsyncEnumerable();
             }
         }
 
@@ -63,24 +62,43 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public async Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to,
+        public IAsyncEnumerable<WorkRecordEntity> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to,
             CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.WorkSet.AsQueryable()
-                    .Where(s => s.CompanyId == companyId && s.ActualDateTime.Date >= from.Date &&
-                                s.ActualDateTime.Date <= to.Date).OrderByDescending(s => s.ActualDateTime)
-                    .ToListAsync(token);
+                return dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId && s.ActualDateTime.Date >= from.Date &&
+                             s.ActualDateTime.Date <= to.Date).OrderByDescending(s => s.ActualDateTime).ToList().ToAsyncEnumerable();
             }
         }
 
-        public async Task<IEnumerable<WorkRecordEntity>> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token)
+        public IAsyncEnumerable<WorkRecordEntity> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).ToListAsync(token);
+                return dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).ToList().ToAsyncEnumerable();
             }
+        }
+
+        public async Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s=>s.ActualDateTime.Year == today.Year && s.ActualDateTime.Month == today.Month).AsAsyncEnumerable().SumAsync(Calculate, token);
+            }
+        }
+
+        public async Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token)
+        {
+            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            {
+                return await dbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == today.Year).AsAsyncEnumerable().SumAsync(Calculate,token);
+            }
+        }
+
+        private double Calculate(WorkRecordEntity record)
+        {
+            return (record.Pieces * record.PricePerPiece) + (record.WorkTime.TotalHours * record.PricePerHour);
         }
     }
 }

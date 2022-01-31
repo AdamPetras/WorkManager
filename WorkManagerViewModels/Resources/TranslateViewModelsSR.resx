@@ -228,4 +228,7 @@
   <data name="WorkRecordClearDialogMessage" xml:space="preserve">
     <value>Opravdu chcete smazat všechny úkoly?</value>
   </data>
+  <data name="WrongPassword" xml:space="preserve">
+    <value>Heslo není správné.</value>
+  </data>
 </root>

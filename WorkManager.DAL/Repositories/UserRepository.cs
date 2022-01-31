@@ -27,7 +27,7 @@ namespace WorkManager.DAL.Repositories
 		public async Task<UserEntity> GetByUserNameAsync(string username, CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, cancellationToken: token);
+				return await dbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token);
 		}
 
 		public string GetPasswordByUserName(string username)
@@ -39,7 +39,7 @@ namespace WorkManager.DAL.Repositories
 		public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return (await dbContext.UserSet.FirstOrDefaultAsync(s => s.Username == username, token))?.Password;
+				return (await dbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token))?.Password;
 		}
 
 		public bool Exists(string username)
@@ -51,7 +51,7 @@ namespace WorkManager.DAL.Repositories
 		public async Task<bool> ExistsAsync(string username, CancellationToken token)
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-				return await dbContext.UserSet.AnyAsync(s => s.Username == username, token);
+				return await dbContext.UserSet.AsQueryable().AnyAsync(s => s.Username == username, token);
 		}
 
 		protected override void AddInt(UserEntity entity, WorkManagerDbContext dbContext)

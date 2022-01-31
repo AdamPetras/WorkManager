@@ -71,13 +71,10 @@ namespace WorkManager.BL.Facades.BaseClasses
 			return Repository.GetAll().Select(Mapper.Map).ToList();
 		}
 
-		public async IAsyncEnumerable<TModel> GetAllAsync(CancellationToken token = default)
-		{
-            foreach (TEntity entity in await Repository.GetAllAsync(token))
-            {
-                yield return await Mapper.MapAsync(entity,token);
-            }
-		}
+		public IAsyncEnumerable<TModel> GetAllAsync(CancellationToken token = default)
+        {
+            return Repository.GetAllAsync(token).SelectAwait(async entity => await Mapper.MapAsync(entity,token));
+        }
 
 		public TModel GetById(Guid id)
 		{

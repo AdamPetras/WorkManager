@@ -12,13 +12,11 @@ namespace WorkManager.ViewModels.Pages
 	public class UserDetailPageViewModel : ViewModelBase
 	{
 		private readonly ICurrentModelProvider<IUserModel> _currentUserModelProvider;
-        private readonly IAuthenticationService _authenticationService;
         private readonly IDialogService _dialogService;
 
-        public UserDetailPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserModelProvider, IAuthenticationService authenticationService, IDialogService dialogService) : base(navigationService)
+        public UserDetailPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserModelProvider, IDialogService dialogService) : base(navigationService)
         {
             _currentUserModelProvider = currentUserModelProvider;
-            _authenticationService = authenticationService;
             _dialogService = dialogService;
             ChangePasswordCommand = new DelegateCommand(async () => await ChangePasswordAsync());
         }

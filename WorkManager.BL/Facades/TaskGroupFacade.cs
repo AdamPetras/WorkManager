@@ -26,12 +26,9 @@ namespace WorkManager.BL.Facades
 			return Repository.GetTaskGroupsByUserId(userId).Select(Mapper.Map);
 		}
 
-        public async IAsyncEnumerable<ITaskGroupModel> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default)
+        public IAsyncEnumerable<ITaskGroupModel> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default)
         {
-            foreach (TaskGroupEntity taskGroupEntity in await Repository.GetTaskGroupsByUserIdAsync(id,token))
-            {
-                yield return await Mapper.MapAsync(taskGroupEntity, token);
-            }
+            return Repository.GetTaskGroupsByUserIdAsync(id,token).SelectAwait(async taskGroupEntity => await Mapper.MapAsync(taskGroupEntity, token));
         }
 
         public Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)

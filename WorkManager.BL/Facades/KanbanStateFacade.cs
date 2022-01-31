@@ -33,12 +33,9 @@ namespace WorkManager.BL.Facades
 			return Repository.GetKanbanStateByTaskOrderedByStateGroup(taskGroupId).Select(Mapper.Map);
 		}
 
-        public async IAsyncEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
+        public IAsyncEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
         {
-            foreach (KanbanStateEntity kanbanStateEntity in await Repository.GetKanbanStateByTaskGroupOrderedByStateAsync(taskGroupId,token))
-            {
-                yield return await Mapper.MapAsync(kanbanStateEntity, token);
-            }
+            return Repository.GetKanbanStateByTaskGroupOrderedByStateAsync(taskGroupId,token).SelectAwait(async kanbanStateEntity => await Mapper.MapAsync(kanbanStateEntity, token));
         }
 
         public IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder)

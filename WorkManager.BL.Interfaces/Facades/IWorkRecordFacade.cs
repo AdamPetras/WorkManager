@@ -13,5 +13,8 @@ namespace WorkManager.BL.Interfaces.Facades
         IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token = default);
         IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token = default);
         IAsyncEnumerable<IWorkRecordModelBase> GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(Guid companyId, DateTime from, DateTime to, CancellationToken token = default);
+
+        Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token = default);
+        Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token = default);
     }
 }

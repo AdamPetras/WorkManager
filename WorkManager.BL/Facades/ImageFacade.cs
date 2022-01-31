@@ -26,12 +26,9 @@ namespace WorkManager.BL.Facades
 			return Repository.GetAllImagesByTask(id).Select(Mapper.Map);
 		}
 
-        public async IAsyncEnumerable<IImageModel> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
+        public IAsyncEnumerable<IImageModel> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
         {
-            foreach (ImageEntity value in await Repository.GetAllImagesByTaskAsync(id, token))
-            {
-                yield return await Mapper.MapAsync(value, token);
-            }
+            return Repository.GetAllImagesByTaskAsync(id, token).SelectAwait(async value => await Mapper.MapAsync(value, token));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace WorkManager.DAL.Repositories.Interfaces
 	public interface ICompanyRepository : IRepository<CompanyEntity>
 	{
 		ICollection<CompanyEntity> GetCompaniesByUserId(Guid userId);
-		Task<ICollection<CompanyEntity>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token);
+        IAsyncEnumerable<CompanyEntity> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token);
         Task<bool> ExistsAsync(string companyName, CancellationToken token);
 
     }

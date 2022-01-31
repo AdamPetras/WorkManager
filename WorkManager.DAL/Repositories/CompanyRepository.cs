@@ -34,11 +34,11 @@ namespace WorkManager.DAL.Repositories
             }
         }
 
-        public async Task<ICollection<CompanyEntity>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token)
+        public IAsyncEnumerable<CompanyEntity> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token)
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToListAsync(token);
+                return dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToList().ToAsyncEnumerable();
             }
         }
 
@@ -46,7 +46,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.CompanySet.AnyAsync(s => s.Name == companyName, token);
+                return await dbContext.CompanySet.AsQueryable().AnyAsync(s => s.Name == companyName, token);
             }
         }
     }

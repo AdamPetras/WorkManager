@@ -31,15 +31,15 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToList();
+				return dbContext.KanbanSet.AsQueryable().Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToList();
 			}
 		}
 
-        public async Task<ICollection<KanbanStateEntity>> GetKanbanStateByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token)
+        public IAsyncEnumerable<KanbanStateEntity> GetKanbanStateByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token)
         {
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.KanbanSet.Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToListAsync(token);
+                return dbContext.KanbanSet.AsQueryable().Where(s => s.TaskGroupId == taskGroupId).OrderBy(s => s.StateOrder).ToList().ToAsyncEnumerable();
             }
 		}
 
@@ -55,7 +55,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.KanbanSet.SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1, token);
+                return await dbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1, token);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace WorkManager.DAL.Repositories
         {
             using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.KanbanSet.SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1, token);
+                return await dbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1, token);
             }
         }
 	}

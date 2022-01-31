@@ -30,13 +30,10 @@ namespace WorkManager.BL.Facades
 			return Repository.GetTasksByTaskGroupIdAndKanbanState(taskGroupId,kanbanStateName).Select(Mapper.Map);
 		}
 
-		public async IAsyncEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
-		{
-            foreach (TaskEntity taskEntity in await Repository.GetTasksByTaskGroupIdAndKanbanStateAsync(taskGroupId,kanbanStateName,cancellationToken))
-            {
-                yield return await Mapper.MapAsync(taskEntity, cancellationToken);
-            }
-		}
+		public IAsyncEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+        {
+            return Repository.GetTasksByTaskGroupIdAndKanbanStateAsync(taskGroupId,kanbanStateName,cancellationToken).SelectAwait(async taskEntity => await Mapper.MapAsync(taskEntity, cancellationToken));
+        }
 
         public Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default)
         {

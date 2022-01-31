@@ -55,8 +55,9 @@ namespace WorkManager.ViewModels.Pages
 				BeginRefresh();
 				await RefreshAsync();
 				EndRefresh();
+                await UpdateTotalPrices();
 			});
-			InitDialogCommands();
+            InitDialogCommands();
 		}
 
         public DelegateCommand RefreshCommand { get; }
@@ -79,6 +80,30 @@ namespace WorkManager.ViewModels.Pages
 				RaisePropertyChanged();
 			}
 		}
+
+        private bool _totalPriceMonthIsBusy;
+        public bool TotalPriceMonthIsBusy
+        {
+            get => _totalPriceMonthIsBusy;
+            set
+            {
+                if (_totalPriceMonthIsBusy == value) return;
+                _totalPriceMonthIsBusy = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _totalPriceYearIsBusy;
+        public bool TotalPriceYearIsBusy
+        {
+            get => _totalPriceYearIsBusy;
+            set
+            {
+                if (_totalPriceYearIsBusy == value) return;
+                _totalPriceYearIsBusy = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private double _totalPriceThisMonth;
         public double TotalPriceThisMonth
@@ -116,24 +141,20 @@ namespace WorkManager.ViewModels.Pages
         {
             await base.InitializeAsyncInt();
             await RefreshAsync();
-			UpdateTotalPrices();
+            await UpdateTotalPrices();
 		}
 
-        protected override async Task OnNavigatedToAsyncInt(INavigationParameters parameters)
-		{
-			await base.OnNavigatedToAsyncInt(parameters);
-			IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records);
-			UpdateTotalPrices();
-		}
-
-		private void UpdateTotalPrices()
+        private async Task UpdateTotalPrices()
         {
-            TotalPriceThisMonth = _recordTotalCalculatorService.CalculatePriceThisMonth(Records);
-            TotalPriceThisYear = _recordTotalCalculatorService.CalculatePriceThisYear(Records);
-		}
+            TotalPriceMonthIsBusy = true;
+			TotalPriceThisMonth = await _workFacade.GetPriceTotalThisMonthAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
+            TotalPriceMonthIsBusy = false;
+            TotalPriceYearIsBusy = true;
+			TotalPriceThisYear = await _workFacade.GetPriceTotalThisYearAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
+            TotalPriceYearIsBusy = false;
+        }
 
-		private void InitDialogCommands()
+        private void InitDialogCommands()
 		{
 			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync(), () => !IsDialogThrown);
 			DialogThrownEvent += ShowAddDialogCommand.RaiseCanExecuteChanged;
@@ -148,13 +169,13 @@ namespace WorkManager.ViewModels.Pages
 			IsDialogThrown = true;
 			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialog")).Parameters;
 			IDialogEvent dialogEvent = parameters?.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records);
-			UpdateTotalPrices();
+			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records, s=>s.ActualDateTime.IsBetween(_filterDateFrom,_filterDateTo));
 			Records = new ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
 			IsDialogThrown = false;
+            await UpdateTotalPrices();
 		}
 
-		private async Task ShowStatisticsAsync()
+        private async Task ShowStatisticsAsync()
 		{
 			BeginProcess();
             await NavigationService.NavigateAsync("WorkRecordStatisticsPage");
@@ -191,18 +212,18 @@ namespace WorkManager.ViewModels.Pages
                 _companyModelProvider.GetModel().WorkRecordsCount = 0;
 			}
             IsDialogThrown = false;
-            UpdateTotalPrices();
             EndProcess();
+            await UpdateTotalPrices();
 		}
 
         private async Task RefreshAsync()
         {
 			BeginProcess();
             Records = new ObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(_companyModelProvider.GetModel().Id,_filterDateFrom,_filterDateTo).ToListAsync());
-			EndProcess();
-        }
+            EndProcess();
+		}
 
-		private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
+        private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
         {
 			BeginProcess();
             if (workRecordModelBase != null)
@@ -210,12 +231,12 @@ namespace WorkManager.ViewModels.Pages
                 await _workFacade.RemoveAsync(workRecordModelBase.Id);
                 Records.Remove(workRecordModelBase);
                 _companyModelProvider.GetModel().WorkRecordsCount--;
-                UpdateTotalPrices();
             }
 			EndProcess();
+            await UpdateTotalPrices();
 		}
 
-		private async Task EditAsync(IWorkRecordModelBase workRecordModelBase)
+        private async Task EditAsync(IWorkRecordModelBase workRecordModelBase)
 		{
 			BeginProcess();
 			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", workRecordModelBase} });

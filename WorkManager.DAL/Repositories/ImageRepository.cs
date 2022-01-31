@@ -42,16 +42,16 @@ namespace WorkManager.DAL.Repositories
 		{
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
 			{
-				return dbContext.ImageSet.Where(s => s.TaskId == id).ToList();
+				return dbContext.ImageSet.AsQueryable().Where(s => s.TaskId == id).ToList();
 			}
 		}
 
-        public async Task<ICollection<ImageEntity>> GetAllImagesByTaskAsync(Guid id, CancellationToken token)
+        public IAsyncEnumerable<ImageEntity> GetAllImagesByTaskAsync(Guid id, CancellationToken token)
         {
 			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
             {
-                return await dbContext.ImageSet.Where(s => s.TaskId == id).ToListAsync(token);
-            }
+                return dbContext.ImageSet.AsQueryable().Where(s => s.TaskId == id).ToList().ToAsyncEnumerable();
+			}
 		}
 
         public uint GetImagesCountByTask(Guid taskId)
