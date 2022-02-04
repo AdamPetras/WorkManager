@@ -38,7 +38,7 @@ namespace WorkManager.BL.Mappers
         {
             if (entity == null)
                 return new TaskGroupModel();
-            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, _taskRepository.GetTasksCountByTaskGroupId(entity.Id), entity.UserId);
+            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, _taskRepository.Count(s => s.TaskGroupId == entity.Id), entity.UserId);
         }
 
         public Task<TaskGroupEntity> MapAsync(ITaskGroupModel model, CancellationToken token)
@@ -58,7 +58,7 @@ namespace WorkManager.BL.Mappers
         {
             if (entity == null)
                 return new TaskGroupModel();
-            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, await _taskRepository.GetTasksCountByTaskGroupIdAsync(entity.Id,token), entity.UserId);
+            return new TaskGroupModel(entity.Id, entity.Name, entity.Description, await _taskRepository.CountAsync(s=>s.TaskGroupId == entity.Id,token), entity.UserId);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace WorkManager.DAL.Repositories
 {
 	public class ImageRepository : RepositoryBase<ImageEntity>, IImageRepository
 	{
-		public ImageRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
+		public ImageRepository(WorkManagerDbContext dbContext) : base(dbContext)
 		{
 		}
 
@@ -36,30 +36,6 @@ namespace WorkManager.DAL.Repositories
 			{
 				dbContext.Entry(entity.Task.TaskGroup.User).State = EntityState.Unchanged;
 			}
-		}
-
-		public ICollection<ImageEntity> GetAllImagesByTask(Guid id)
-		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-			{
-				return dbContext.ImageSet.AsQueryable().Where(s => s.TaskId == id).ToList();
-			}
-		}
-
-        public IAsyncEnumerable<ImageEntity> GetAllImagesByTaskAsync(Guid id, CancellationToken token)
-        {
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return dbContext.ImageSet.AsQueryable().Where(s => s.TaskId == id).ToList().ToAsyncEnumerable();
-			}
-		}
-
-        public uint GetImagesCountByTask(Guid taskId)
-        {
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return (uint) dbContext.ImageSet.Count(s=>s.TaskId == taskId);
-            }
 		}
     }
 }

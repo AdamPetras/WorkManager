@@ -138,7 +138,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-			Companies = await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id).ToObservableCollectionAsync();
+			Companies = new ObservableCollection<ICompanyModel>(await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id));
 			EndProcess();
 		}
 

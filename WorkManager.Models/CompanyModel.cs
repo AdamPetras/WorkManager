@@ -8,14 +8,13 @@ namespace WorkManager.Models
 {
 	public class CompanyModel:ModelBase, ICompanyModel
 	{
-        private uint _workRecordsCount;
 
         public CompanyModel():base(Guid.Empty)
 		{
 
 		}
 
-		public CompanyModel(Guid id, string name, uint workRecordsCount, Guid userId) : base(id)
+		public CompanyModel(Guid id, string name, int workRecordsCount, Guid userId) : base(id)
 		{
 			Name = name;
             WorkRecordsCount = workRecordsCount;
@@ -28,8 +27,9 @@ namespace WorkManager.Models
         }
 
 		public string Name { get; set; }
-        public uint WorkRecordsCount
-        {
+        private int _workRecordsCount;
+        public int WorkRecordsCount
+		{
             get => _workRecordsCount;
             set
             {

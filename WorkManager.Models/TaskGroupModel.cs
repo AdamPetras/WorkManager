@@ -7,14 +7,13 @@ namespace WorkManager.Models
 {
     public class TaskGroupModel : ModelBase, ITaskGroupModel
     {
-        private uint _tasksCount;
 
         public TaskGroupModel() : base(Guid.Empty)
         {
 
         }
 
-        public TaskGroupModel(Guid id, string name, string description, uint tasksCount, Guid userId) : base(id)
+        public TaskGroupModel(Guid id, string name, string description, int tasksCount, Guid userId) : base(id)
         {
             Name = name;
             Description = description;
@@ -24,7 +23,9 @@ namespace WorkManager.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
-        public uint TasksCount
+
+        private int _tasksCount;
+        public int TasksCount
         {
             get => _tasksCount;
             set

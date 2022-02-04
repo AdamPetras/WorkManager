@@ -14,40 +14,16 @@ namespace WorkManager.DAL.Repositories
 {
 	public class TaskGroupRepository : RepositoryBase<TaskGroupEntity>, ITaskGroupRepository
 	{
-		public TaskGroupRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
+		public TaskGroupRepository(WorkManagerDbContext dbContext) : base(dbContext)
 		{
 		}
 
-		public ICollection<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId)
-		{
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-			{
-				return dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToList();
-			}
-		}
-
-        public IAsyncEnumerable<TaskGroupEntity> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token)
+        protected override void AddInt(TaskGroupEntity entity, WorkManagerDbContext dbContext)
         {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
+            if (entity.User != null)
             {
-                return dbContext.TaskGroupSet.AsQueryable().Where(s => s.UserId == userId).ToList().ToAsyncEnumerable();
-			}
-		}
-
-        public async Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)
-        {
-			using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return await dbContext.TaskGroupSet.AsQueryable().AnyAsync(s=>s.Name == taskGroupName, token);
+                dbContext.UserSet.Attach(entity.User);
             }
-		}
-
-		protected override void AddInt(TaskGroupEntity entity, WorkManagerDbContext dbContext)
-		{
-			if(entity.User != null)
-			{
-				dbContext.UserSet.Attach(entity.User);
-			}
-		}
+        }
 	}
 }

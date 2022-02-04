@@ -11,7 +11,7 @@ namespace WorkManager.Models.Interfaces
 		string Name { get; set; }
         [StringLength(300)]
         string Description { get; set; }
-        uint TasksCount { get; set; }
+        int TasksCount { get; set; }
 		Guid UserId { get; set; }
 	}
 }

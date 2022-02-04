@@ -8,8 +8,5 @@ namespace WorkManager.DAL.Repositories.Interfaces
 {
 	public interface ITaskGroupRepository : IRepository<TaskGroupEntity>
 	{
-        ICollection<TaskGroupEntity> GetTaskGroupsByUserId(Guid userId);
-        IAsyncEnumerable<TaskGroupEntity> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token);
-        Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default);
     }
 }

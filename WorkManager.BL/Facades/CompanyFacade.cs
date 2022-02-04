@@ -21,19 +21,19 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<ICompanyModel> GetCompaniesByUserId(Guid userId)
-		{
-			return Repository.GetCompaniesByUserId(userId).Select(Mapper.Map);
+		public ICollection<ICompanyModel> GetCompaniesByUserId(Guid userId)
+        {
+            return Repository.GetWhere(s => s.UserId == userId).Select(Mapper.Map).ToList();
 		}
 
-        public IAsyncEnumerable<ICompanyModel> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default)
+        public async Task<ICollection<ICompanyModel>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default)
         {
-            return Repository.GetCompaniesByUserIdAsync(userId, token).SelectAwait(async entity => await Mapper.MapAsync(entity, token));
+            return (await Repository.GetWhereAsync(s => s.UserId == userId, token)).Select(Mapper.Map).ToList();
         }
 
         public Task<bool> ExistsAsync(string companyName, CancellationToken token = default)
         {
-            return Repository.ExistsAsync(companyName, token);
+            return Repository.ExistsAsync(s=>s.Name == companyName, token);
         }
     }
 }

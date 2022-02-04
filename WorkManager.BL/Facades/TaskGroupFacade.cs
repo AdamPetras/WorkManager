@@ -21,19 +21,19 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId)
+		public ICollection<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId)
 		{
-			return Repository.GetTaskGroupsByUserId(userId).Select(Mapper.Map);
+			return Repository.GetWhere(s=>s.UserId == userId).Select(Mapper.Map).ToList();
 		}
 
-        public IAsyncEnumerable<ITaskGroupModel> GetTaskGroupsByUserIdAsync(Guid id, CancellationToken token = default)
+        public async Task<ICollection<ITaskGroupModel>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token = default)
         {
-            return Repository.GetTaskGroupsByUserIdAsync(id,token).SelectAwait(async taskGroupEntity => await Mapper.MapAsync(taskGroupEntity, token));
+			return (await Repository.GetWhereAsync(s=> s.UserId == userId, token)).Select(Mapper.Map).ToList();
         }
 
         public Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)
         {
-            return Repository.ExistsAsync(taskGroupName, token);
+            return Repository.ExistsAsync(s=>s.Name == taskGroupName, token);
         }
     }
 }

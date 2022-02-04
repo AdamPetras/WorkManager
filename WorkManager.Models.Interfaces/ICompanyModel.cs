@@ -8,7 +8,7 @@ namespace WorkManager.Models.Interfaces
 	{
         [StringLength(30)]
 		string Name { get; set; }
-        uint WorkRecordsCount { get; set; }
+        int WorkRecordsCount { get; set; }
         Guid UserId { get; set; }
     }
 }

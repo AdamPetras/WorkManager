@@ -164,7 +164,7 @@ namespace WorkManager.ViewModels.Pages
             BeginProcess();
             await base.InitializeAsyncInt();
             if(KanbanStates.IsNullOrEmpty())
-                KanbanStates = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id).ToObservableCollectionAsync();
+                KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id));
             EndProcess();
         }
 
@@ -279,7 +279,7 @@ namespace WorkManager.ViewModels.Pages
             if (model == null)
                 return;
             BeginProcess();
-            Tasks = await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name).ToObservableCollectionAsync();
+            Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
             EndProcess();
         }
     }

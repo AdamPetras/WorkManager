@@ -21,59 +21,18 @@ namespace WorkManager.DAL.DbContext
 		{
 		}
 
-        public DbSet<T> GetDatabaseByType<T>() where T : class, IEntity
-        {
-			if (typeof(T) == typeof(UserEntity))
-			{
-				if (UserSet != null)
-					return UserSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(WorkRecordEntity))
-			{
-				if (WorkSet != null)
-					return WorkSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(TaskEntity))
-			{
-				if (TaskSet != null)
-					return TaskSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(TaskGroupEntity))
-			{
-				if (TaskGroupSet != null)
-					return TaskGroupSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(CompanyEntity))
-			{
-				if (CompanySet != null)
-					return CompanySet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(KanbanStateEntity))
-			{
-				if (KanbanSet != null)
-					return KanbanSet as DbSet<T>;
-			}
-			if (typeof(T) == typeof(ImageEntity))
-			{
-				if (ImageSet != null)
-					return ImageSet as DbSet<T>;
-			}
-			throw new ArgumentException();
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
 		}
-		 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             if (!optionsBuilder.IsConfigured)
             {
                 string connStr = ConfigurationManager.AppSettings["connectionstring"];	//při migraci je potřeba vykopírovat
                 optionsBuilder.UseMySql(connStr, ServerVersion.AutoDetect(connStr));
-            }
+			}
 		}
     }
 }

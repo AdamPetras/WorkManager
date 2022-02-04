@@ -256,15 +256,15 @@
                 <BoxView Grid.Row="0" Grid.ColumnSpan="4" HeightRequest="4" BackgroundColor="Black" Margin="0"></BoxView>
                 <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-                <controls:Loading Grid.Row="1" Grid.Column="1" IsLoadingVisible="{Binding TotalPriceMonthIsBusy}"></controls:Loading>
+                <ActivityIndicator Grid.Row="1" Grid.Column="1" IsRunning="{Binding TotalPriceYearIsBusy}" IsVisible="{Binding TotalPriceYearIsBusy}"></ActivityIndicator>
                 <controls:IconLabel Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" IsVisible="{Binding TotalPriceMonthIsBusy, Converter={StaticResource NegateBooleanConverter}}" IconHeight="20" HorizontalOptions="End" Margin="5" VerticalOptions="Center">
                     <controls:IconLabel.ImageSource>
                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
                     </controls:IconLabel.ImageSource>
                 </controls:IconLabel>
                 <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
-                
-                <controls:Loading Grid.Row="1" Grid.Column="3" IsLoadingVisible="{Binding TotalPriceYearIsBusy}"></controls:Loading>
+
+                <ActivityIndicator Grid.Row="1" Grid.Column="3" IsRunning="{Binding TotalPriceYearIsBusy}" IsVisible="{Binding TotalPriceYearIsBusy}"></ActivityIndicator>
                 <controls:IconLabel Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}"  IsVisible="{Binding TotalPriceYearIsBusy, Converter={StaticResource NegateBooleanConverter}}" IconHeight="20" HorizontalOptions="End" Margin="5" VerticalOptions="Center">
                     <controls:IconLabel.ImageSource>
                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>

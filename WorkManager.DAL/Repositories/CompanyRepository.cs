@@ -14,7 +14,7 @@ namespace WorkManager.DAL.Repositories
 {
     public class CompanyRepository : RepositoryBase<CompanyEntity>, ICompanyRepository
     {
-        public CompanyRepository(IDBContextFactory<WorkManagerDbContext> idbContextFactory) : base(idbContextFactory)
+        public CompanyRepository(WorkManagerDbContext dbContext) : base(dbContext)
         {
         }
 
@@ -23,30 +23,6 @@ namespace WorkManager.DAL.Repositories
             if (entity.User != null)
             {
                 dbContext.Entry(entity.User).State = EntityState.Unchanged;
-            }
-        }
-
-        public ICollection<CompanyEntity> GetCompaniesByUserId(Guid userId)
-        {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToList();
-            }
-        }
-
-        public IAsyncEnumerable<CompanyEntity> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token)
-        {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return dbContext.CompanySet.AsQueryable().Where(s => s.UserId == userId).ToList().ToAsyncEnumerable();
-            }
-        }
-
-        public async Task<bool> ExistsAsync(string companyName, CancellationToken token)
-        {
-            using (WorkManagerDbContext dbContext = IdbContextFactory.CreateDbContext())
-            {
-                return await dbContext.CompanySet.AsQueryable().AnyAsync(s => s.Name == companyName, token);
             }
         }
     }

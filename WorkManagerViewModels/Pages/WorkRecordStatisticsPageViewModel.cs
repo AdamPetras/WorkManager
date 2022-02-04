@@ -139,10 +139,9 @@ namespace WorkManager.ViewModels.Pages
         {
             BeginProcess();
             await base.InitializeAsyncInt();
-            List<IWorkRecordModelBase> values = await _workRecordFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id).ToListAsync();
             SetDefault();
             DateTime today = DateTime.Today;
-            foreach (IWorkRecordModelBase workRecordModel in values)
+            foreach (IWorkRecordModelBase workRecordModel in await _workRecordFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id))
             {
                 switch (workRecordModel.Type)
                 {

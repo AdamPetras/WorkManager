@@ -28,14 +28,14 @@ namespace WorkManager.BL.Facades
 			Repository.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Done", 2, "\uf46c", taskGroup.Id)));
 		}
 
-		public IEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId)
+		public ICollection<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId)
 		{
-			return Repository.GetKanbanStateByTaskOrderedByStateGroup(taskGroupId).Select(Mapper.Map);
+			return Repository.GetWhere(s=>s.TaskGroupId == taskGroupId).Select(Mapper.Map).ToList();
 		}
 
-        public IAsyncEnumerable<IKanbanStateModel> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
+        public async Task<ICollection<IKanbanStateModel>> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
         {
-            return Repository.GetKanbanStateByTaskGroupOrderedByStateAsync(taskGroupId,token).SelectAwait(async kanbanStateEntity => await Mapper.MapAsync(kanbanStateEntity, token));
+			return (await Repository.GetWhereOrderByAsync(s=>s.TaskGroupId == taskGroupId, s => s.StateOrder, token)).Select(Mapper.Map).ToList();
         }
 
         public IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder)

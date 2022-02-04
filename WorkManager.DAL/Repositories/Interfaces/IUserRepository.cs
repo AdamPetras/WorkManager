@@ -10,7 +10,5 @@ namespace WorkManager.DAL.Repositories.Interfaces
 		Task<UserEntity> GetByUserNameAsync(string username, CancellationToken token);
 		string GetPasswordByUserName(string username);
 		Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token);
-		bool Exists(string username);
-		Task<bool> ExistsAsync(string username, CancellationToken token);
     }
 }

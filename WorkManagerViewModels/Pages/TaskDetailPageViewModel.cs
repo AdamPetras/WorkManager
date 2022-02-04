@@ -98,7 +98,7 @@ namespace WorkManager.ViewModels.Pages
 			TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
 			SelectedTask = navigationParameters.TaskModel;
 			_defaultTask = new TaskModel(navigationParameters.TaskModel);
-			PhotoPaths = await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id).ToObservableCollectionAsync();
+			PhotoPaths = new ObservableCollection<IImageModel>(await _imageFacade.GetAllImagesByTaskAsync(SelectedTask.Id));
 			InitImages = PhotoPaths.ToList();
 			EndProcess();
 		}

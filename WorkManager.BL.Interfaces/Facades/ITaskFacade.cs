@@ -9,9 +9,9 @@ namespace WorkManager.BL.Interfaces.Facades
 {
 	public interface ITaskFacade: IFacade<ITaskModel>
 	{
-        IEnumerable<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId);
-        IEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
-        IAsyncEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default);
+        ICollection<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId);
+        ICollection<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName);
+        Task<ICollection<ITaskModel>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default);
         Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default);
     }
 }

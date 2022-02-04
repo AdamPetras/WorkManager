@@ -39,7 +39,7 @@ namespace WorkManager.BL.Mappers
 		{
 			if (entity == null)
 				return new CompanyModel();
-			return new CompanyModel(entity.Id,entity.Name, _workRecordRepository.GetRecordCountInCompany(entity.Id), entity.UserId);
+			return new CompanyModel(entity.Id,entity.Name, _workRecordRepository.Count(s=>s.CompanyId == entity.Id), entity.UserId);
 		}
 
         public Task<CompanyEntity> MapAsync(ICompanyModel model, CancellationToken token)
@@ -58,7 +58,7 @@ namespace WorkManager.BL.Mappers
         {
             if (entity == null)
                 return new CompanyModel();
-            return new CompanyModel(entity.Id, entity.Name, await _workRecordRepository.GetRecordCountInCompanyAsync(entity.Id, token), entity.UserId);
+            return new CompanyModel(entity.Id, entity.Name, await _workRecordRepository.CountAsync(s=>s.CompanyId == entity.Id, token), entity.UserId);
         }
 	}
 }

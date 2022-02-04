@@ -19,7 +19,7 @@ namespace WorkManager.Models
 
         }
 
-        public TaskModel(Guid id, DateTime actualDateTime, string name, uint imagesCount, string description, DateTime taskDoneDateTime,
+        public TaskModel(Guid id, DateTime actualDateTime, string name, int imagesCount, string description, DateTime taskDoneDateTime,
             Guid taskGroupId, Guid stateId, EPriority priority, TimeSpan workTime) : base(id)
         {
             ActualDateTime = actualDateTime;
@@ -35,7 +35,7 @@ namespace WorkManager.Models
 
         public DateTime ActualDateTime { get; set; }
         public string Name { get; set; }
-        public uint ImagesCount { get; set; }
+        public int ImagesCount { get; set; }
         public string Description { get; set; }
         public DateTime TaskDoneDateTime { get; set; }
         public Guid TaskGroupId { get; set; }

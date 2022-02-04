@@ -77,9 +77,8 @@ namespace WorkManager
 
 		private void RegisterDbContext(IUnityContainer container)
 		{
-			container.RegisterSingleton<IDBContextFactory<WorkManagerDbContext>, WorkManagerDbContextFactory>();
-			container.Resolve<WorkManagerDbContextFactory>().CreateDbContext();
-		}
+			container.RegisterSingleton<WorkManagerDbContext>();
+        }
 
 		private void RegisterRepositories(IUnityContainer container)
 		{

@@ -45,7 +45,7 @@ namespace WorkManager.BL.Mappers
 		{
 			if (entity == null)
 				return new TaskModel();
-			return new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, _imageRepository.GetImagesCountByTask(entity.Id), entity.Description,
+			return new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, _imageRepository.Count(s=>s.TaskId == entity.Id), entity.Description,
 				entity.TaskDoneDateTime, entity.TaskGroupId, entity.StateId, entity.Priority,entity.WorkTime);
 		}
 
@@ -53,7 +53,7 @@ namespace WorkManager.BL.Mappers
         {
 			if (model == null)
                 return Task.FromResult(new TaskEntity());
-            return Task.FromResult(new TaskEntity()
+            return Task.FromResult(new TaskEntity
             {
                 Id = model.Id,
                 ActualDateTime = model.ActualDateTime,
@@ -67,11 +67,11 @@ namespace WorkManager.BL.Mappers
             });
 		}
 
-        public Task<ITaskModel> MapAsync(TaskEntity entity, CancellationToken token)
+        public async Task<ITaskModel> MapAsync(TaskEntity entity, CancellationToken token)
         {
 			if (entity == null)
-                return Task.FromResult<ITaskModel>(new TaskModel());
-            return Task.FromResult<ITaskModel>(new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, _imageRepository.GetImagesCountByTask(entity.Id), entity.Description,
+                return await Task.FromResult<ITaskModel>(new TaskModel());
+            return await Task.FromResult<ITaskModel>(new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, await _imageRepository.CountAsync(s=>s.TaskId == entity.Id, token), entity.Description,
                 entity.TaskDoneDateTime, entity.TaskGroupId, entity.StateId, entity.Priority, entity.WorkTime));
 		}
     }

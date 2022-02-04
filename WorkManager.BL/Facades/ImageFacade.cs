@@ -21,14 +21,14 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<IImageModel> GetAllImagesByTask(Guid id)
+		public ICollection<IImageModel> GetAllImagesByTask(Guid id)
 		{
-			return Repository.GetAllImagesByTask(id).Select(Mapper.Map);
+			return Repository.GetWhere(s=> s.TaskId == id).Select(Mapper.Map).ToList();
 		}
 
-        public IAsyncEnumerable<IImageModel> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
+        public async Task<ICollection<IImageModel>> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
         {
-            return Repository.GetAllImagesByTaskAsync(id, token).SelectAwait(async value => await Mapper.MapAsync(value, token));
+			return (await Repository.GetWhereAsync(s=> s.TaskId == id, token)).Select(Mapper.Map).ToList();
         }
     }
 }

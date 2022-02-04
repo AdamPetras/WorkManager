@@ -12,42 +12,42 @@ using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Facades
 {
-	public class UserFacade : FacadeBase<IUserModel, UserEntity>, IUserFacade
-	{
-		public new IUserRepository Repository { get; protected set; }
-		public UserFacade(IUserRepository repository, IMapper<UserEntity, IUserModel> mapper) : base(repository, mapper)
-		{
-			Repository = repository;
-		}
+    public class UserFacade : FacadeBase<IUserModel, UserEntity>, IUserFacade
+    {
+        public new IUserRepository Repository { get; protected set; }
+        public UserFacade(IUserRepository repository, IMapper<UserEntity, IUserModel> mapper) : base(repository, mapper)
+        {
+            Repository = repository;
+        }
 
-		public bool Exists(string username)
-		{
-			return Repository.Exists(username);
-		}
+        public bool Exists(string username)
+        {
+            return Repository.Exists(s => s.Username == username);
+        }
 
-		public async Task<bool> ExistsAsync(string username, CancellationToken token = default)
-		{
-			return await Repository.ExistsAsync(username, token);
-		}
+        public async Task<bool> ExistsAsync(string username, CancellationToken token = default)
+        {
+            return await Repository.ExistsAsync(s => s.Username == username, token);
+        }
 
-		public string GetPasswordByUserName(string username)
-		{
-			return Repository.GetPasswordByUserName(username);
-		}
+        public string GetPasswordByUserName(string username)
+        {
+            return Repository.GetPasswordByUserName(username);
+        }
 
-		public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token = default)
-		{
-			return await Repository.GetPasswordByUserNameAsync(username, token);
-		}
+        public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token = default)
+        {
+            return await Repository.GetPasswordByUserNameAsync(username, token);
+        }
 
-		public IUserModel GetByUserName(string username)
-		{
-			return Mapper.Map(Repository.GetByUserName(username));
-		}
+        public IUserModel GetByUserName(string username)
+        {
+            return Mapper.Map(Repository.GetByUserName(username));
+        }
 
-		public async Task<IUserModel> GetByUserNameAsync(string username, CancellationToken token = default)
-		{
-			return Mapper.Map(await Repository.GetByUserNameAsync(username, token));
-		}
-	}
+        public async Task<IUserModel> GetByUserNameAsync(string username, CancellationToken token = default)
+        {
+            return await Mapper.MapAsync(await Repository.GetByUserNameAsync(username, token), token);
+        }
+    }
 }

@@ -20,19 +20,19 @@ namespace WorkManager.BL.Facades
 			Repository = repository;
 		}
 
-		public IEnumerable<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId)
+		public ICollection<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId)
 		{
-			return Repository.GetTasksByTaskGroupId(taskGroupId).Select(Mapper.Map);
+			return Repository.GetWhere(s=>s.TaskGroupId == taskGroupId).Select(Mapper.Map).ToList();
 		}
 
-		public IEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
+		public ICollection<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)
 		{
-			return Repository.GetTasksByTaskGroupIdAndKanbanState(taskGroupId,kanbanStateName).Select(Mapper.Map);
+			return Repository.GetWhere(s=>s.TaskGroupId == taskGroupId && s.State.Name == kanbanStateName).Select(Mapper.Map).ToList();
 		}
 
-		public IAsyncEnumerable<ITaskModel> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken cancellationToken = default)
+		public async Task<ICollection<ITaskModel>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default)
         {
-            return Repository.GetTasksByTaskGroupIdAndKanbanStateAsync(taskGroupId,kanbanStateName,cancellationToken).SelectAwait(async taskEntity => await Mapper.MapAsync(taskEntity, cancellationToken));
+			return (await Repository.GetWhereAsync(s=>s.TaskGroupId == taskGroupId && s.State.Name == kanbanStateName, token)).Select(Mapper.Map).ToList();
         }
 
         public Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default)

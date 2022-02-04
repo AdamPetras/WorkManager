@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using WorkManager.BL.Interfaces;
@@ -35,14 +36,54 @@ namespace WorkManager.BL.Facades.BaseClasses
 		{
 			if (model == null)
 				throw new ArgumentNullException();
-			if (await Repository.AddAsync(Mapper.Map(model), token) == null)
+			if (await Repository.AddAsync(await Mapper.MapAsync(model, token), token) == null)
 			{
 				return default;
 			}
 			return model;
 		}
 
-		public virtual bool Remove(Guid id)
+        //public ICollection<TModel> GetWhere(Expression<Func<TModel, bool>> predicate)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<IEnumerable<TModel>> GetWhereAsync(Expression<Func<TModel, bool>> predicate, CancellationToken token)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public ICollection<TModel> GetWhereOrderBy<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<ICollection<TModel>> GetWhereOrderByAsync<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy, CancellationToken token)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public ICollection<TModel> GetWhereOrderByDescending<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<ICollection<TModel>> GetWhereOrderByDescendingAsync<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy, CancellationToken token)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public int Count(Expression<Func<TModel, bool>> predicate)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task<int> CountAsync(Expression<Func<TModel, bool>> predicate, CancellationToken token)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public virtual bool Remove(Guid id)
 		{
 			return Repository.Remove(id);
 		}
@@ -63,17 +104,17 @@ namespace WorkManager.BL.Facades.BaseClasses
 		{
 			if (model == null)
 				throw new ArgumentNullException();
-			await Repository.UpdateAsync(Mapper.Map(model), token);
+			await Repository.UpdateAsync(await Mapper.MapAsync(model, token), token);
 		}
 
-		public IEnumerable<TModel> GetAll()
+		public ICollection<TModel> GetAll()
 		{
 			return Repository.GetAll().Select(Mapper.Map).ToList();
 		}
 
-		public IAsyncEnumerable<TModel> GetAllAsync(CancellationToken token = default)
+		public async Task<ICollection<TModel>> GetAllAsync(CancellationToken token = default)
         {
-            return Repository.GetAllAsync(token).SelectAwait(async entity => await Mapper.MapAsync(entity,token));
+            return (await Repository.GetAllAsync(token)).Select(Mapper.Map).ToList();
         }
 
 		public TModel GetById(Guid id)
@@ -85,7 +126,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 		public async Task<TModel> GetByIdAsync(Guid id, CancellationToken token = default)
 		{
 			TEntity tmp = await Repository.GetByIdAsync(id, token);
-			return tmp != null ? Mapper.Map(tmp) : default;
+			return tmp != null ? await Mapper.MapAsync(tmp, token) : default;
 		}
 
 		public bool Exists(Guid id)

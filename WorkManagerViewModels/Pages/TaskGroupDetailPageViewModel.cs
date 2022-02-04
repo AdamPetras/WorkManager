@@ -129,7 +129,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task TaskSaveKanbanStatesAsync()
         {
             EnumerableDiffChecker<IKanbanStateModel> kanbanDiffChecker = new EnumerableDiffChecker<IKanbanStateModel>();
-            DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_selectedTaskGroup.Id).ToListAsync(), KanbanItems, (s, t) => s.Id == t.Id && s.StateOrder == t.StateOrder);
+            DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_selectedTaskGroup.Id), KanbanItems, (s, t) => s.Id == t.Id && s.StateOrder == t.StateOrder);
             foreach (IKanbanStateModel kanbanStateModel in value.DeleteEnumerable)
             {
                 await _kanbanStateFacade.RemoveAsync(kanbanStateModel.Id);
@@ -187,7 +187,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
             BeginProcess();
-            KanbanItems = await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(SelectedTaskGroup.Id).ToObservableCollectionAsync();
+            KanbanItems = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(SelectedTaskGroup.Id));
             EndProcess();
         }
 

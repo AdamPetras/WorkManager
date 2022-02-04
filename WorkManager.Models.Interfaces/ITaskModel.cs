@@ -11,7 +11,7 @@ namespace WorkManager.Models.Interfaces
 		DateTime ActualDateTime { get; set; }
         [StringLength(30)]
 		string Name { get; set; }
-        uint ImagesCount { get; set; }
+        int ImagesCount { get; set; }
         [StringLength(300)]
 		string Description { get; set; }
         DateTime TaskDoneDateTime { get; set; }
