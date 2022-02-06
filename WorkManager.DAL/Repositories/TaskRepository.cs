@@ -35,7 +35,7 @@ namespace WorkManager.DAL.Repositories
                 DbContext.TaskSet.Attach(entity);
                 DbContext.TaskSet.Remove(entity);
             }
-            await DbContext.SaveChangesAsync(token);
+            await DbContext.SaveChangesAsync(token).ConfigureAwait(false);
         }
     }
 }

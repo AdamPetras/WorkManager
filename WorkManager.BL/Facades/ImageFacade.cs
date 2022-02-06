@@ -28,7 +28,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<ICollection<IImageModel>> GetAllImagesByTaskAsync(Guid id, CancellationToken token = default)
         {
-			return (await Repository.GetWhereAsync(s=> s.TaskId == id, token)).Select(Mapper.Map).ToList();
+			return (await Repository.GetWhereAsync(s=> s.TaskId == id, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
     }
 }

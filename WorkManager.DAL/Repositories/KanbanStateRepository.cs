@@ -34,7 +34,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<KanbanStateEntity> GetNextKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token)
         {
-            return await DbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1, token);
+            return await DbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder + 1, token).ConfigureAwait(false);
         }
 
         public KanbanStateEntity GetPreviousKanbanState(Guid taskGroupId, int currentStateOrder)
@@ -44,7 +44,7 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<KanbanStateEntity> GetPreviousKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token)
         {
-            return await DbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1, token);
+            return await DbContext.KanbanSet.AsQueryable().SingleOrDefaultAsync(s => s.TaskGroupId == taskGroupId && s.StateOrder == currentStateOrder - 1, token).ConfigureAwait(false);
         }
 	}
 }

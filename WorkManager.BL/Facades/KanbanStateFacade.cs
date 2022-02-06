@@ -35,7 +35,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<ICollection<IKanbanStateModel>> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default)
         {
-			return (await Repository.GetWhereOrderByAsync(s=>s.TaskGroupId == taskGroupId, s => s.StateOrder, token)).Select(Mapper.Map).ToList();
+			return (await Repository.GetWhereOrderByAsync(s=>s.TaskGroupId == taskGroupId, s => s.StateOrder, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
         public IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder)
@@ -46,7 +46,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<IKanbanStateModel> GetNextKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default)
         {
-            return await Mapper.MapAsync(await Repository.GetNextKanbanStateAsync(taskGroupId, currentStateOrder, token), token);
+            return await Mapper.MapAsync(await Repository.GetNextKanbanStateAsync(taskGroupId, currentStateOrder, token).ConfigureAwait(false), token).ConfigureAwait(false);
         }
 
         public IKanbanStateModel GetPreviousKanbanState(Guid taskGroupId, int currentStateOrder)
@@ -56,7 +56,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<IKanbanStateModel> GetPreviousKanbanStateAsync(Guid taskGroupId, int currentStateOrder, CancellationToken token = default)
         {
-            return await Mapper.MapAsync(await Repository.GetPreviousKanbanStateAsync(taskGroupId, currentStateOrder, token), token);
+            return await Mapper.MapAsync(await Repository.GetPreviousKanbanStateAsync(taskGroupId, currentStateOrder, token).ConfigureAwait(false), token).ConfigureAwait(false);
         }
     }
 }

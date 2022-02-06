@@ -30,12 +30,12 @@ namespace WorkManager.DAL.Repositories
 
         public async Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token)
         {
-            return await DbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s=>s.ActualDateTime.Year == today.Year && s.ActualDateTime.Month == today.Month).AsAsyncEnumerable().SumAsync(Calculate, token);
+            return await DbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s=>s.ActualDateTime.Year == today.Year && s.ActualDateTime.Month == today.Month).AsAsyncEnumerable().SumAsync(Calculate, token).ConfigureAwait(false);
         }
 
         public async Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token)
         {
-            return await DbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == today.Year).AsAsyncEnumerable().SumAsync(Calculate,token);
+            return await DbContext.WorkSet.AsQueryable().Where(s => s.CompanyId == companyId).Where(s => s.ActualDateTime.Year == today.Year).AsAsyncEnumerable().SumAsync(Calculate,token).ConfigureAwait(false);
         }
 
         private double Calculate(WorkRecordEntity record)

@@ -32,13 +32,12 @@ namespace WorkManager.BL.Facades
 
 		public async Task<ICollection<ITaskModel>> GetTasksByTaskGroupIdAndKanbanStateAsync(Guid taskGroupId, string kanbanStateName, CancellationToken token = default)
         {
-			return (await Repository.GetWhereAsync(s=>s.TaskGroupId == taskGroupId && s.State.Name == kanbanStateName, token)).Select(Mapper.Map).ToList();
+			return (await Repository.GetWhereAsync(s=>s.TaskGroupId == taskGroupId && s.State.Name == kanbanStateName, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
-        public Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default)
+        public async Task ClearTasksByKanbanStateAsync(Guid kanbanStateId, CancellationToken token = default)
         {
-			return Repository.ClearTasksByKanbanStateAsync(kanbanStateId, token);
-
-		}
+			await Repository.ClearTasksByKanbanStateAsync(kanbanStateId, token).ConfigureAwait(false);
+        }
 	}
 }

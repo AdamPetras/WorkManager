@@ -25,7 +25,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<UserEntity> GetByUserNameAsync(string username, CancellationToken token)
 		{
-            return await DbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token);
+            return await DbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token).ConfigureAwait(false);
 		}
 
 		public string GetPasswordByUserName(string username)
@@ -35,7 +35,7 @@ namespace WorkManager.DAL.Repositories
 
 		public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token)
 		{
-            return (await DbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token))?.Password;
+            return (await DbContext.UserSet.AsQueryable().FirstOrDefaultAsync(s => s.Username == username, token).ConfigureAwait(false))?.Password;
 		}
 
 		protected override void AddInt(UserEntity entity, WorkManagerDbContext dbContext)

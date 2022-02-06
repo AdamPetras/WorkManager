@@ -27,7 +27,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<bool> ExistsAsync(string username, CancellationToken token = default)
         {
-            return await Repository.ExistsAsync(s => s.Username == username, token);
+            return await Repository.ExistsAsync(s => s.Username == username, token).ConfigureAwait(false);
         }
 
         public string GetPasswordByUserName(string username)
@@ -37,7 +37,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<string> GetPasswordByUserNameAsync(string username, CancellationToken token = default)
         {
-            return await Repository.GetPasswordByUserNameAsync(username, token);
+            return await Repository.GetPasswordByUserNameAsync(username, token).ConfigureAwait(false);
         }
 
         public IUserModel GetByUserName(string username)
@@ -47,7 +47,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<IUserModel> GetByUserNameAsync(string username, CancellationToken token = default)
         {
-            return await Mapper.MapAsync(await Repository.GetByUserNameAsync(username, token), token);
+            return await Mapper.MapAsync(await Repository.GetByUserNameAsync(username, token).ConfigureAwait(false), token).ConfigureAwait(false);
         }
     }
 }

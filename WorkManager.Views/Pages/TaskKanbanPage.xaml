@@ -110,7 +110,7 @@
                                                     <Image.IsVisible>
                                                         <Binding Path="ImagesCount" Converter="{StaticResource NotVisibleIfEqualConverter}">
                                                             <Binding.ConverterParameter>
-                                                                <x:UInt32>0</x:UInt32>
+                                                                <x:Int32>0</x:Int32>
                                                             </Binding.ConverterParameter>
                                                         </Binding>
                                                     </Image.IsVisible>

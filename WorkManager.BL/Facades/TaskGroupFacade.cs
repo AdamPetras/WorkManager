@@ -28,12 +28,12 @@ namespace WorkManager.BL.Facades
 
         public async Task<ICollection<ITaskGroupModel>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token = default)
         {
-			return (await Repository.GetWhereAsync(s=> s.UserId == userId, token)).Select(Mapper.Map).ToList();
+			return (await Repository.GetWhereAsync(s=> s.UserId == userId, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
-        public Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)
+        public async Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default)
         {
-            return Repository.ExistsAsync(s=>s.Name == taskGroupName, token);
+            return await Repository.ExistsAsync(s=>s.Name == taskGroupName, token).ConfigureAwait(false);
         }
     }
 }

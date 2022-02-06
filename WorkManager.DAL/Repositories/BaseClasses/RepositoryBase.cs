@@ -30,7 +30,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().AsQueryable().ToListAsync(token);
+            return await DbContext.Set<TEntity>().AsQueryable().ToListAsync(token).ConfigureAwait(false);
         }
 
         public IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate)
@@ -40,7 +40,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<IEnumerable<TEntity>> GetWhereAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().Where(predicate).ToListAsync(token);
+            return await DbContext.Set<TEntity>().Where(predicate).ToListAsync(token).ConfigureAwait(false);
         }
 
         public IEnumerable<TEntity> GetWhereOrderBy<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> orderBy)
@@ -50,7 +50,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<IEnumerable<TEntity>> GetWhereOrderByAsync<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> orderBy, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().Where(predicate).OrderBy(orderBy).ToListAsync(token);
+            return await DbContext.Set<TEntity>().Where(predicate).OrderBy(orderBy).ToListAsync(token).ConfigureAwait(false);
         }
 
         public IEnumerable<TEntity> GetWhereOrderByDescending<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> orderBy)
@@ -60,7 +60,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<IEnumerable<TEntity>> GetWhereOrderByDescendingAsync<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> orderBy, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().Where(predicate).OrderByDescending(orderBy).ToListAsync(token);
+            return await DbContext.Set<TEntity>().Where(predicate).OrderByDescending(orderBy).ToListAsync(token).ConfigureAwait(false);
         }
 
         public int Count(Expression<Func<TEntity, bool>> predicate)
@@ -70,7 +70,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().CountAsync(predicate, token);
+            return await DbContext.Set<TEntity>().CountAsync(predicate, token).ConfigureAwait(false);
         }
 
         public TEntity GetById(Guid id)
@@ -80,7 +80,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<TEntity> GetByIdAsync(Guid id, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().AsQueryable().FirstOrDefaultAsync(s => s.Id == id, token);
+            return await DbContext.Set<TEntity>().AsQueryable().FirstOrDefaultAsync(s => s.Id == id, token).ConfigureAwait(false);
         }
 
         public bool Remove(Guid id)
@@ -103,7 +103,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
                 return false;
             if (DbContext.Set<TEntity>().Remove(entity) != null)
             {
-                await DbContext.SaveChangesAsync(token);
+                await DbContext.SaveChangesAsync(token).ConfigureAwait(false);
                 return true;
             }
             return false;
@@ -131,10 +131,10 @@ namespace WorkManager.DAL.Repositories.BaseClasses
                 throw new ArgumentNullException();
             if (await ExistsAsync(entity, token))
                 return default;
-            if (await DbContext.Set<TEntity>().AddAsync(entity, token) != null)
+            if (await DbContext.Set<TEntity>().AddAsync(entity, token).ConfigureAwait(false) != null)
             {
                 AddInt(entity, DbContext);
-                await DbContext.SaveChangesAsync(token);
+                await DbContext.SaveChangesAsync(token).ConfigureAwait(false);
                 return entity;
             }
             return default;
@@ -158,13 +158,13 @@ namespace WorkManager.DAL.Repositories.BaseClasses
         {
             if (entity == null)
                 throw new ArgumentNullException();
-            if (await DbContext.Set<TEntity>().AsQueryable().AllAsync(s => s.Id != entity.Id, token))
+            if (await DbContext.Set<TEntity>().AsQueryable().AllAsync(s => s.Id != entity.Id, token).ConfigureAwait(false))
                 DbContext.Set<TEntity>().Add(entity);
-            TEntity entry = await DbContext.Set<TEntity>().AsQueryable().FirstOrDefaultAsync(s => s.Id == entity.Id, token);
+            TEntity entry = await DbContext.Set<TEntity>().AsQueryable().FirstOrDefaultAsync(s => s.Id == entity.Id, token).ConfigureAwait(false);
             if (entry != null)
             {
                 DbContext.Entry(entry).CurrentValues.SetValues(entity);
-                await DbContext.SaveChangesAsync(token);
+                await DbContext.SaveChangesAsync(token).ConfigureAwait(false);
             }
         }
 
@@ -175,7 +175,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<bool> ExistsAsync(TEntity entity, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().AsQueryable().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token);
+            return await DbContext.Set<TEntity>().AsQueryable().AnyAsync(s => s.Equals(entity) || (entity != null && s.Id == entity.Id), token).ConfigureAwait(false);
         }
 
         public bool Exists(Expression<Func<TEntity, bool>> predicate)
@@ -185,7 +185,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
 
         public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token)
         {
-            return await DbContext.Set<TEntity>().AsQueryable().AnyAsync(predicate, token);
+            return await DbContext.Set<TEntity>().AsQueryable().AnyAsync(predicate, token).ConfigureAwait(false);
         }
 
         public void Clear()
@@ -209,7 +209,7 @@ namespace WorkManager.DAL.Repositories.BaseClasses
                 dbSet.Attach(entity);
                 dbSet.Remove(entity);
             }
-            await DbContext.SaveChangesAsync(token);
+            await DbContext.SaveChangesAsync(token).ConfigureAwait(false);
         }
     }
 }

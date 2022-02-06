@@ -21,65 +21,67 @@ using WorkManager.Extensions;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
+using Xamarin.Forms;
 
 namespace WorkManager.ViewModels.Pages
 {
-	public class WorkRecordPageViewModel : CollectionViewModelBase
-	{
-		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
-		private readonly IRecordTotalCalculatorService _recordTotalCalculatorService;
-		private readonly IWorkRecordFacade _workFacade;
-		private readonly IDialogService _dialogService;
-		private readonly DialogEventService _dialogEventService;
-		private readonly IPageDialogService _pageDialogService;
+    public class WorkRecordPageViewModel : CollectionViewModelBase
+    {
+        private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
+        private readonly IRecordTotalCalculatorService _recordTotalCalculatorService;
+        private readonly IWorkRecordFacade _workFacade;
+        private readonly IDialogService _dialogService;
+        private readonly DialogEventService _dialogEventService;
+        private readonly IPageDialogService _pageDialogService;
 
         private DateTime _filterDateFrom;
-		private DateTime _filterDateTo;
+        private DateTime _filterDateTo;
 
 
-		public WorkRecordPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
-			IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
-		{
-			_companyModelProvider = companyModelProvider;
+        public WorkRecordPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
+            IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
+        {
+            _companyModelProvider = companyModelProvider;
             _recordTotalCalculatorService = recordTotalCalculatorService;
-			_workFacade = workFacade;
-			_dialogService = dialogService;
-			_dialogEventService = dialogEventService;
-			_pageDialogService = pageDialogService;
+            _workFacade = workFacade;
+            _dialogService = dialogService;
+            _dialogEventService = dialogEventService;
+            _pageDialogService = pageDialogService;
             _filterDateFrom = DateTime.Today.Subtract(TimeSpan.FromDays(31));
             _filterDateTo = DateTime.Today;
-			EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
+            EditCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await EditAsync(s));
             DeleteRecordCommand = new DelegateCommand<IWorkRecordModelBase>(async (s) => await DeleteRecordAsync(s));
             ShowStatisticsCommand = new DelegateCommand(async () => await ShowStatisticsAsync());
-			RefreshCommand = new DelegateCommand(async () => {
-				BeginRefresh();
-				await RefreshAsync();
-				EndRefresh();
+            RefreshCommand = new DelegateCommand(async () =>
+            {
+                BeginRefresh();
+                await RefreshAsync();
+                EndRefresh();
                 await UpdateTotalPrices();
-			});
+            });
             InitDialogCommands();
-		}
+        }
 
         public DelegateCommand RefreshCommand { get; }
-		public DelegateCommand ClearRecordsCommand { get; private set; }
-		public DelegateCommand<IWorkRecordModelBase> DeleteRecordCommand { get; private set; }
-		public DelegateCommand ShowFilterDialogCommand { get; private set; }
-		public DelegateCommand ShowStatisticsCommand { get; private set; }
-		public DelegateCommand<IWorkRecordModelBase> EditCommand { get; }
-		public DelegateCommand ShowAddDialogCommand { get; private set; }
+        public DelegateCommand ClearRecordsCommand { get; private set; }
+        public DelegateCommand<IWorkRecordModelBase> DeleteRecordCommand { get; private set; }
+        public DelegateCommand ShowFilterDialogCommand { get; private set; }
+        public DelegateCommand ShowStatisticsCommand { get; private set; }
+        public DelegateCommand<IWorkRecordModelBase> EditCommand { get; }
+        public DelegateCommand ShowAddDialogCommand { get; private set; }
 
-		private ObservableCollection<IWorkRecordModelBase> _records;
+        private ObservableCollection<IWorkRecordModelBase> _records;
 
-		public ObservableCollection<IWorkRecordModelBase> Records
-		{
-			get => _records;
-			set
-			{
-				if (_records == value) return;
-				_records = value;
-				RaisePropertyChanged();
-			}
-		}
+        public ObservableCollection<IWorkRecordModelBase> Records
+        {
+            get => _records;
+            set
+            {
+                if (_records == value) return;
+                _records = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private bool _totalPriceMonthIsBusy;
         public bool TotalPriceMonthIsBusy
@@ -129,66 +131,66 @@ namespace WorkManager.ViewModels.Pages
             }
         }
 
-		protected override void DestroyInt()
-		{
-			base.DestroyInt();
-			DialogThrownEvent -= ShowAddDialogCommand.RaiseCanExecuteChanged;
+        protected override void DestroyInt()
+        {
+            base.DestroyInt();
+            DialogThrownEvent -= ShowAddDialogCommand.RaiseCanExecuteChanged;
             DialogThrownEvent -= ShowFilterDialogCommand.RaiseCanExecuteChanged;
-			DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
-		}
+            DialogThrownEvent -= ClearRecordsCommand.RaiseCanExecuteChanged;
+        }
 
         protected override async Task InitializeAsyncInt()
         {
             await base.InitializeAsyncInt();
             await RefreshAsync();
             await UpdateTotalPrices();
-		}
+        }
 
         private async Task UpdateTotalPrices()
         {
             TotalPriceMonthIsBusy = true;
-			TotalPriceThisMonth = await _workFacade.GetPriceTotalThisMonthAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
+            TotalPriceThisMonth = await _workFacade.GetPriceTotalThisMonthAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
             TotalPriceMonthIsBusy = false;
             TotalPriceYearIsBusy = true;
-			TotalPriceThisYear = await _workFacade.GetPriceTotalThisYearAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
+            TotalPriceThisYear = await _workFacade.GetPriceTotalThisYearAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
             TotalPriceYearIsBusy = false;
         }
 
         private void InitDialogCommands()
-		{
-			ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ShowAddDialogCommand.RaiseCanExecuteChanged;
-			ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog(), () => !IsDialogThrown);
-			DialogThrownEvent += ShowFilterDialogCommand.RaiseCanExecuteChanged;
-			ClearRecordsCommand = new DelegateCommand(async () => await ClearRecordsAsync(), () => !IsDialogThrown);
-			DialogThrownEvent += ClearRecordsCommand.RaiseCanExecuteChanged;
-		}
+        {
+            ShowAddDialogCommand = new DelegateCommand(async () => await ShowAddDialogAsync(), () => !IsDialogThrown);
+            DialogThrownEvent += ShowAddDialogCommand.RaiseCanExecuteChanged;
+            ShowFilterDialogCommand = new DelegateCommand(async () => await ShowFilterDialog(), () => !IsDialogThrown);
+            DialogThrownEvent += ShowFilterDialogCommand.RaiseCanExecuteChanged;
+            ClearRecordsCommand = new DelegateCommand(async () => await ClearRecordsAsync(), () => !IsDialogThrown);
+            DialogThrownEvent += ClearRecordsCommand.RaiseCanExecuteChanged;
+        }
 
-		private async Task ShowAddDialogAsync()
-		{
-			IsDialogThrown = true;
-			IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialog")).Parameters;
-			IDialogEvent dialogEvent = parameters?.GetValue<IDialogEvent>("DialogEvent");
-			_dialogEventService.OnRaiseDialogEvent(dialogEvent, Records, s=>s.ActualDateTime.IsBetween(_filterDateFrom,_filterDateTo));
-			Records = new ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
-			IsDialogThrown = false;
+        private async Task ShowAddDialogAsync()
+        {
+            IsDialogThrown = true;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddWorkRecordDialog")).Parameters;
+            IDialogEvent dialogEvent = parameters?.GetValue<IDialogEvent>("DialogEvent");
+            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Records, s => s.ActualDateTime.IsBetween(_filterDateFrom, _filterDateTo));
+            Records = new ObservableCollection<IWorkRecordModelBase>(Records.OrderByDescending(s => s.ActualDateTime));
+            IsDialogThrown = false;
             await UpdateTotalPrices();
-		}
+        }
 
         private async Task ShowStatisticsAsync()
-		{
-			BeginProcess();
+        {
+            BeginProcess();
             await NavigationService.NavigateAsync("WorkRecordStatisticsPage");
-			EndProcess();
-		}
+            EndProcess();
+        }
 
-		private async Task ShowFilterDialog()
-		{
-			IsDialogThrown = true;
+        private async Task ShowFilterDialog()
+        {
+            IsDialogThrown = true;
             IDialogParameters parameters = (await _dialogService.ShowDialogAsync("FilterDialog", new FilterNavigationParameters(TranslateViewModelsSR.FilterTitle, _filterDateFrom, _filterDateTo))).Parameters;
             if (parameters.Any()) //parameters je typ enumerable tudíž rychlejší přístup je využít Any() namísto Count() == 0
             {
-				FilterNavigationParameters filterParams = (FilterNavigationParameters) parameters;
+                FilterNavigationParameters filterParams = (FilterNavigationParameters)parameters;
                 if (_filterDateFrom.Date != filterParams.DateFrom || _filterDateTo != filterParams.DateTo)
                 {
                     _filterDateFrom = filterParams.DateFrom;
@@ -196,51 +198,51 @@ namespace WorkManager.ViewModels.Pages
                     await RefreshAsync();
                 }
             }
-			IsDialogThrown = false;
-		}
+            IsDialogThrown = false;
+        }
 
-		private async Task ClearRecordsAsync()
-		{
-			BeginProcess();
-			IsDialogThrown = true;
-			if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
-				TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
-				TranslateViewModelsSR.DialogNo))
-			{
-				await _workFacade.ClearAsync();
-				Records?.Clear();
+        private async Task ClearRecordsAsync()
+        {
+            BeginProcess();
+            IsDialogThrown = true;
+            if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning,
+                TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
+                TranslateViewModelsSR.DialogNo))
+            {
+                await _workFacade.ClearAsync();
+                Records?.Clear();
                 _companyModelProvider.GetModel().WorkRecordsCount = 0;
-			}
+            }
             IsDialogThrown = false;
             EndProcess();
             await UpdateTotalPrices();
-		}
+        }
 
         private async Task RefreshAsync()
         {
-			BeginProcess();
-            Records = new ObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(_companyModelProvider.GetModel().Id,_filterDateFrom,_filterDateTo));
+            BeginProcess();
+            Records = new ObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(_companyModelProvider.GetModel().Id, _filterDateFrom, _filterDateTo));
             EndProcess();
-		}
+        }
 
         private async Task DeleteRecordAsync(IWorkRecordModelBase workRecordModelBase)
         {
-			BeginProcess();
+            BeginProcess();
             if (workRecordModelBase != null)
             {
                 await _workFacade.RemoveAsync(workRecordModelBase.Id);
                 Records.Remove(workRecordModelBase);
                 _companyModelProvider.GetModel().WorkRecordsCount--;
             }
-			EndProcess();
+            EndProcess();
             await UpdateTotalPrices();
-		}
+        }
 
         private async Task EditAsync(IWorkRecordModelBase workRecordModelBase)
-		{
-			BeginProcess();
-			await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters(){{"Record", workRecordModelBase} });
-			EndProcess();
-		}
-	}
+        {
+            BeginProcess();
+            await NavigationService.NavigateAsync("WorkRecordDetailPage", new NavigationParameters() { { "Record", workRecordModelBase } });
+            EndProcess();
+        }
+    }
 }

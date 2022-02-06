@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<StackLayout xmlns="http://xamarin.com/schemas/2014/forms"
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:resources="clr-namespace:WorkManager.Views.Resources;assembly=WorkManager.Views"
              x:Class="WorkManager.Views.Controls.Loading"
              x:Name="this"
              IsVisible="{Binding Path = IsLoadingVisible, Source={x:Reference this}}"
              VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-        <ActivityIndicator IsRunning="{Binding Path = IsLoadingVisible, Source={x:Reference this}}"/>
-        <Label Text="{x:Static resources:TranslateControlsSR.Loading}" HorizontalTextAlignment="Center"/>
-</StackLayout>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"></RowDefinition>
+        <RowDefinition Height="Auto"></RowDefinition>
+    </Grid.RowDefinitions>
+    <ActivityIndicator Grid.Row="0" IsRunning="{Binding Path = IsLoadingVisible, Source={x:Reference this}}"/>
+    <Label Grid.Row="1" Text="{x:Static resources:TranslateControlsSR.Loading}" FontSize="{Binding LoadingFontSize, Source={x:Reference this}}" HorizontalTextAlignment="Center"/>
+</Grid>

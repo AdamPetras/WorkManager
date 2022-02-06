@@ -245,7 +245,7 @@
                   effects:TouchEffect.Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -254,22 +254,22 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <BoxView Grid.Row="0" Grid.ColumnSpan="4" HeightRequest="4" BackgroundColor="Black" Margin="0"></BoxView>
-                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
 
-                <ActivityIndicator Grid.Row="1" Grid.Column="1" IsRunning="{Binding TotalPriceYearIsBusy}" IsVisible="{Binding TotalPriceYearIsBusy}"></ActivityIndicator>
+                <Label x:Name="TotalPriceMonthLabel" Grid.Row="1" Grid.Column="0" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisMonth}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}" VerticalTextAlignment="Center"></Label>
                 <controls:IconLabel Grid.Row="1" Grid.Column="1" Text="{Binding TotalPriceThisMonth, StringFormat='{0:N}'}" IsVisible="{Binding TotalPriceMonthIsBusy, Converter={StaticResource NegateBooleanConverter}}" IconHeight="20" HorizontalOptions="End" Margin="5" VerticalOptions="Center">
                     <controls:IconLabel.ImageSource>
                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
                     </controls:IconLabel.ImageSource>
                 </controls:IconLabel>
-                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}"></Label>
+                <controls:Loading Grid.Row="1" Grid.Column="1" IsLoadingVisible="{Binding TotalPriceMonthIsBusy}" LoadingFontSize="12" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="40"></controls:Loading>
 
-                <ActivityIndicator Grid.Row="1" Grid.Column="3" IsRunning="{Binding TotalPriceYearIsBusy}" IsVisible="{Binding TotalPriceYearIsBusy}"></ActivityIndicator>
+                <Label x:Name="TotalPriceYearLabel" Grid.Row="1" Grid.Column="2" Text="{Binding Source={x:Static resources:TranslatePagesSR.ThisYear}, StringFormat='{0}:'}" FontSize="Medium" FontAttributes="Bold" Margin="5" TextColor="{StaticResource SecondaryTextColor}" VerticalTextAlignment="Center"></Label>
                 <controls:IconLabel Grid.Row="1" Grid.Column="3" Text="{Binding TotalPriceThisYear, StringFormat='{0:N}'}"  IsVisible="{Binding TotalPriceYearIsBusy, Converter={StaticResource NegateBooleanConverter}}" IconHeight="20" HorizontalOptions="End" Margin="5" VerticalOptions="Center">
                     <controls:IconLabel.ImageSource>
                         <FontImageSource FontFamily="fa-solid-900" Glyph="{x:Static resources:IconFont.Coins}" Color="{StaticResource SecondaryTextColor}"/>
                     </controls:IconLabel.ImageSource>
                 </controls:IconLabel>
+                <controls:Loading Grid.Row="1" Grid.Column="3" IsLoadingVisible="{Binding TotalPriceYearIsBusy}" LoadingFontSize="12" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="40"></controls:Loading>
             </Grid>
         </Grid>
     </StackLayout>

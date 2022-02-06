@@ -28,7 +28,7 @@ namespace WorkManager.BL.Facades
 
         public async Task<ICollection<IWorkRecordModelBase>> GetAllRecordsByCompanyOrderedByDescendingDateAsync(Guid companyId, CancellationToken token = default)
         {
-			return (await Repository.GetWhereOrderByDescendingAsync(s=>s.CompanyId == companyId,s=>s.ActualDateTime, token)).Select(Mapper.Map).ToList();
+			return (await Repository.GetWhereOrderByDescendingAsync(s=>s.CompanyId == companyId,s=>s.ActualDateTime, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
         public async Task<ICollection<IWorkRecordModelBase>> GetAllRecordsByCompanyAsync(Guid companyId, CancellationToken token = default)
@@ -40,17 +40,17 @@ namespace WorkManager.BL.Facades
             CancellationToken token = default)
         {
 			return (await Repository.GetWhereOrderByDescendingAsync(s => s.CompanyId == companyId && s.ActualDateTime.Date >= from.Date &&
-                                                                         s.ActualDateTime.Date <= to.Date, s=>s.ActualDateTime, token)).Select(Mapper.Map).ToList();
+                                                                         s.ActualDateTime.Date <= to.Date, s=>s.ActualDateTime, token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
-        public Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token = default)
+        public async Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token = default)
         {
-            return Repository.GetPriceTotalThisMonthAsync(companyId, today, token);
+            return await Repository.GetPriceTotalThisMonthAsync(companyId, today, token).ConfigureAwait(false);
         }
 
-        public Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token = default)
+        public async Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token = default)
         {
-            return Repository.GetPriceTotalThisYearAsync(companyId, today, token);
+            return await Repository.GetPriceTotalThisYearAsync(companyId, today, token).ConfigureAwait(false);
         }
     }
 }

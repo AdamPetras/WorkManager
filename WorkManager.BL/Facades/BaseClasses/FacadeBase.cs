@@ -36,52 +36,12 @@ namespace WorkManager.BL.Facades.BaseClasses
 		{
 			if (model == null)
 				throw new ArgumentNullException();
-			if (await Repository.AddAsync(await Mapper.MapAsync(model, token), token) == null)
+			if (await Repository.AddAsync(await Mapper.MapAsync(model, token), token).ConfigureAwait(false) == null)
 			{
 				return default;
 			}
 			return model;
 		}
-
-        //public ICollection<TModel> GetWhere(Expression<Func<TModel, bool>> predicate)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<IEnumerable<TModel>> GetWhereAsync(Expression<Func<TModel, bool>> predicate, CancellationToken token)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public ICollection<TModel> GetWhereOrderBy<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<ICollection<TModel>> GetWhereOrderByAsync<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy, CancellationToken token)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public ICollection<TModel> GetWhereOrderByDescending<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<ICollection<TModel>> GetWhereOrderByDescendingAsync<TKey>(Expression<Func<TModel, bool>> predicate, Expression<Func<TModel, TKey>> orderBy, CancellationToken token)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public int Count(Expression<Func<TModel, bool>> predicate)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task<int> CountAsync(Expression<Func<TModel, bool>> predicate, CancellationToken token)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public virtual bool Remove(Guid id)
 		{
@@ -90,7 +50,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 
 		public virtual async Task RemoveAsync(Guid id, CancellationToken token = default)
 		{
-			await Repository.RemoveAsync(id, token);
+			await Repository.RemoveAsync(id, token).ConfigureAwait(false);
 		}
 
 		public virtual void Update(TModel model)
@@ -104,7 +64,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 		{
 			if (model == null)
 				throw new ArgumentNullException();
-			await Repository.UpdateAsync(await Mapper.MapAsync(model, token), token);
+			await Repository.UpdateAsync(await Mapper.MapAsync(model, token), token).ConfigureAwait(false);
 		}
 
 		public ICollection<TModel> GetAll()
@@ -114,7 +74,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 
 		public async Task<ICollection<TModel>> GetAllAsync(CancellationToken token = default)
         {
-            return (await Repository.GetAllAsync(token)).Select(Mapper.Map).ToList();
+            return (await Repository.GetAllAsync(token).ConfigureAwait(false)).Select(Mapper.Map).ToList();
         }
 
 		public TModel GetById(Guid id)
@@ -125,7 +85,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 
 		public async Task<TModel> GetByIdAsync(Guid id, CancellationToken token = default)
 		{
-			TEntity tmp = await Repository.GetByIdAsync(id, token);
+			TEntity tmp = await Repository.GetByIdAsync(id, token).ConfigureAwait(false);
 			return tmp != null ? await Mapper.MapAsync(tmp, token) : default;
 		}
 
@@ -141,7 +101,7 @@ namespace WorkManager.BL.Facades.BaseClasses
 
 		public async Task ClearAsync(CancellationToken token = default)
 		{
-			await Repository.ClearAsync(token);
+			await Repository.ClearAsync(token).ConfigureAwait(false);
 		}
 	}
 }
