@@ -6,7 +6,7 @@ namespace WorkManager.ViewModels.BaseClasses
 {
     public class DialogViewModelBase : ViewModelBase, IDialogAware
     {
-        public DialogViewModelBase(INavigationService navigationService) : base(navigationService)
+        public DialogViewModelBase(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
         }
 

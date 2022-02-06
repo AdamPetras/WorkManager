@@ -24,16 +24,15 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly ITaskGroupFacade _taskGroupFacade;
 		private readonly IKanbanStateFacade _kanbanStateFacade;
 		private readonly ICurrentModelProvider<IUserModel> _currentUserProvider;
-		private readonly IEventAggregator _eventAggregator;
 		private readonly IToastMessageService _toastMessageService;
 
-		public AddTaskGroupDialogViewModel(INavigationService navigationService, ITaskGroupFacade taskGroupFacade, IKanbanStateFacade kanbanStateFacade, ICurrentModelProvider<IUserModel> currentUserProvider,
-			IEventAggregator eventAggregator, IToastMessageService toastMessageService) : base(navigationService)
+		public AddTaskGroupDialogViewModel(INavigationService navigationService, ITaskGroupFacade taskGroupFacade,
+            IKanbanStateFacade kanbanStateFacade, ICurrentModelProvider<IUserModel> currentUserProvider, IToastMessageService toastMessageService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_taskGroupFacade = taskGroupFacade;
 			_kanbanStateFacade = kanbanStateFacade;
 			_currentUserProvider = currentUserProvider;
-			_eventAggregator = eventAggregator;
 			_toastMessageService = toastMessageService;
             NameMaxLength = typeof(ITaskGroupModel).GetStringMaxLength(nameof(ITaskGroupModel.Name));
 		}
@@ -67,14 +66,14 @@ namespace WorkManager.ViewModels.Dialogs
 		protected override async Task ConfirmAsyncInt()
         {
 			BeginProcess();
-            if (await _taskGroupFacade.ExistsAsync(Name))
+            if (await ViewModelTaskExecute.ExecuteTaskWithQueue(Name, _taskGroupFacade.ExistsAsync))
             {
                 _toastMessageService.LongAlert(TranslateViewModelsSR.TaskGroupNameAlreadyExists.Format(Name));
                 CancelInt();
                 return;
             }
             ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description, 0, _currentUserProvider.GetModel().Id);
-            await _taskGroupFacade.AddAsync(model);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _taskGroupFacade.AddAsync);
             _kanbanStateFacade.CreateDefaultKanbanStateModels(model);
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });
             EndProcess();

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography.X509Certificates;
-using WorkManager.DAL.Entities.BaseClasses;
 using WorkManager.DAL.Entities.Interfaces;
 using WorkManager.DAL.Enums;
 

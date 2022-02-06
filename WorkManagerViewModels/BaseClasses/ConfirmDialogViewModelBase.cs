@@ -8,7 +8,8 @@ namespace WorkManager.ViewModels.BaseClasses
 {
 	public abstract class ConfirmDialogViewModelBase : DialogViewModelBase
 	{
-		protected ConfirmDialogViewModelBase(INavigationService navigationService) : base(navigationService)
+		protected ConfirmDialogViewModelBase(INavigationService navigationService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             CancelCommand = new DelegateCommand(CancelInt);
             ConfirmCommand = new DelegateCommand(async() => await ConfirmAsyncInt());

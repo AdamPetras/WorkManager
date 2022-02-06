@@ -6,6 +6,7 @@ using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.NavigationParams;
 using WorkManager.Core;
 using WorkManager.Extensions;
+using WorkManager.Logger;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
@@ -18,7 +19,7 @@ namespace WorkManager.ViewModels.Pages
         private readonly IPageDialogService _pageDialogService;
 
         public CompanyDetailPageViewModel(INavigationService navigationService, ICompanyFacade companyFacade,
-            IPageDialogService pageDialogService) : base(navigationService)
+            IPageDialogService pageDialogService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _companyFacade = companyFacade;
             _pageDialogService = pageDialogService;
@@ -54,7 +55,7 @@ namespace WorkManager.ViewModels.Pages
 
         private async Task SaveAsync()
         {
-            await _companyFacade.UpdateAsync(SelectedCompany);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedCompany, _companyFacade.UpdateAsync);
             await NavigationService.GoBackAsync();
         }
 
@@ -65,7 +66,7 @@ namespace WorkManager.ViewModels.Pages
                     TranslateViewModelsSR.SelectedCompanyDeleteDialogMessage.Format(SelectedCompany.Name), TranslateViewModelsSR.DialogYes,
                     TranslateViewModelsSR.DialogNo))
             {
-                await _companyFacade.RemoveAsync(SelectedCompany.Id);
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedCompany.Id, _companyFacade.RemoveAsync);
                 await NavigationService.GoBackAsync();
             }
 

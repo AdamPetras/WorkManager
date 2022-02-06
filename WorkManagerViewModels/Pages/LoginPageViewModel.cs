@@ -20,9 +20,10 @@ namespace WorkManager.ViewModels.Pages
 		private readonly WorkManagerSettingsService _workManagerSettingsService;
 
 
-		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService, IToastMessageService toastMessageService,
-			WorkManagerSettingsService workManagerSettingsService) :
-			base(navigationService)
+		public LoginPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService,
+            IToastMessageService toastMessageService,
+            WorkManagerSettingsService workManagerSettingsService, ViewModelTaskExecute viewModelTaskExecute) :
+			base(navigationService, viewModelTaskExecute)
 		{
 			_authenticationService = authenticationService;
 			_toastMessageService = toastMessageService;
@@ -105,7 +106,7 @@ namespace WorkManager.ViewModels.Pages
 			}
 			try
 			{
-				IUserModel user = await _authenticationService.AuthenticateAsync(Username, Password);
+				IUserModel user = await ViewModelTaskExecute.ExecuteTaskWithQueue(Username, Password, _authenticationService.AuthenticateAsync);
 				if (user != null)
                 {
                     await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");

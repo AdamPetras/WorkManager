@@ -38,8 +38,11 @@ namespace WorkManager.ViewModels.Pages
         private DateTime _filterDateTo;
 
 
-        public WorkRecordPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
-            IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService, IPageDialogService pageDialogService) : base(navigationService)
+        public WorkRecordPageViewModel(INavigationService navigationService,
+            ICurrentModelProvider<ICompanyModel> companyModelProvider,
+            IRecordTotalCalculatorService recordTotalCalculatorService,
+            IWorkRecordFacade workFacade, IDialogService dialogService, DialogEventService dialogEventService,
+            IPageDialogService pageDialogService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _companyModelProvider = companyModelProvider;
             _recordTotalCalculatorService = recordTotalCalculatorService;
@@ -148,12 +151,15 @@ namespace WorkManager.ViewModels.Pages
 
         private async Task UpdateTotalPrices()
         {
-            TotalPriceMonthIsBusy = true;
-            TotalPriceThisMonth = await _workFacade.GetPriceTotalThisMonthAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
-            TotalPriceMonthIsBusy = false;
-            TotalPriceYearIsBusy = true;
-            TotalPriceThisYear = await _workFacade.GetPriceTotalThisYearAsync(_companyModelProvider.GetModel().Id, DateTime.Today);
-            TotalPriceYearIsBusy = false;
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
+            {
+                TotalPriceMonthIsBusy = true;
+                TotalPriceThisMonth = await _workFacade.GetPriceTotalThisMonthAsync(_companyModelProvider.GetModel().Id, DateTime.Today, token);
+                TotalPriceMonthIsBusy = false;
+                TotalPriceYearIsBusy = true;
+                TotalPriceThisYear = await _workFacade.GetPriceTotalThisYearAsync(_companyModelProvider.GetModel().Id, DateTime.Today, token);
+                TotalPriceYearIsBusy = false;
+            });
         }
 
         private void InitDialogCommands()
@@ -209,7 +215,7 @@ namespace WorkManager.ViewModels.Pages
                 TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
                 TranslateViewModelsSR.DialogNo))
             {
-                await _workFacade.ClearAsync();
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(_workFacade.ClearAsync);
                 Records?.Clear();
                 _companyModelProvider.GetModel().WorkRecordsCount = 0;
             }
@@ -221,7 +227,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
             BeginProcess();
-            Records = new ObservableCollection<IWorkRecordModelBase>(await _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync(_companyModelProvider.GetModel().Id, _filterDateFrom, _filterDateTo));
+            Records = new ObservableCollection<IWorkRecordModelBase>(await ViewModelTaskExecute.ExecuteTaskWithQueue(_companyModelProvider.GetModel().Id, _filterDateFrom, _filterDateTo, _workFacade.GetAllRecordsByCompanyOrderedByDescendingDateFromToAsync));
             EndProcess();
         }
 
@@ -230,7 +236,7 @@ namespace WorkManager.ViewModels.Pages
             BeginProcess();
             if (workRecordModelBase != null)
             {
-                await _workFacade.RemoveAsync(workRecordModelBase.Id);
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(workRecordModelBase.Id, _workFacade.RemoveAsync);
                 Records.Remove(workRecordModelBase);
                 _companyModelProvider.GetModel().WorkRecordsCount--;
             }

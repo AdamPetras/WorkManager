@@ -33,9 +33,11 @@ namespace WorkManager.ViewModels.Pages
         private readonly IToastMessageService _toastMessageService;
         private readonly DialogEventService _dialogEventService;
 
-        public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService, IPageDialogService pageDialogService,
-            ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanStateFacade kanbanStateFacade, ITaskFacade taskFacade, IToastMessageService toastMessageService,
-            DialogEventService dialogEventService) : base(navigationService)
+        public TaskKanbanPageViewModel(INavigationService navigationService, IDialogService dialogService,
+            IPageDialogService pageDialogService,
+            ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, IKanbanStateFacade kanbanStateFacade,
+            ITaskFacade taskFacade, IToastMessageService toastMessageService,
+            DialogEventService dialogEventService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _dialogService = dialogService;
             _pageDialogService = pageDialogService;
@@ -163,8 +165,8 @@ namespace WorkManager.ViewModels.Pages
         {
             BeginProcess();
             await base.InitializeAsyncInt();
-            if(KanbanStates.IsNullOrEmpty())
-                KanbanStates = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_currentTaskGroupProvider.GetModel().Id));
+            if (KanbanStates.IsNullOrEmpty())
+                KanbanStates = new ObservableCollection<IKanbanStateModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(_currentTaskGroupProvider.GetModel().Id, _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync));
             EndProcess();
         }
 
@@ -202,17 +204,20 @@ namespace WorkManager.ViewModels.Pages
 
         private async Task MoveWithTask(ITaskModel obj, bool isMoveToNext)
         {
-            IKanbanStateModel model = isMoveToNext ? await _kanbanStateFacade.GetNextKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder) : await _kanbanStateFacade.GetPreviousKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder);
-            if (model != null)
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
             {
-                Tasks.Remove(obj);
-                obj.StateId = model.Id;
-                await _taskFacade.UpdateAsync(obj);
-            }
-            else
-            {
-                _toastMessageService.LongAlert(TranslateViewModelsSR.SwipeTaskOutside);
-            }
+                IKanbanStateModel model = isMoveToNext ? await _kanbanStateFacade.GetNextKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder, token) : await _kanbanStateFacade.GetPreviousKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, SelectedKanbanState.StateOrder, token);
+                if (model != null)
+                {
+                    Tasks.Remove(obj);
+                    obj.StateId = model.Id;
+                    await _taskFacade.UpdateAsync(obj, token);
+                }
+                else
+                {
+                    _toastMessageService.LongAlert(TranslateViewModelsSR.SwipeTaskOutside);
+                }
+            });
         }
 
         private async Task ShowAddTaskDialogAsync()
@@ -231,7 +236,7 @@ namespace WorkManager.ViewModels.Pages
             if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.TaskClearTasksMessage,
                 TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
             {
-                await _taskFacade.ClearTasksByKanbanStateAsync(SelectedKanbanState.Id);
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedKanbanState.Id, _taskFacade.ClearTasksByKanbanStateAsync);
                 await RefreshAsync(SelectedKanbanState);
                 _currentTaskGroupProvider.GetModel().TasksCount = 0;
             }
@@ -242,7 +247,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task DeleteTaskAsync(ITaskModel obj)
         {
             Tasks.Remove(obj);
-            await _taskFacade.RemoveAsync(obj.Id);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(obj.Id, _taskFacade.RemoveAsync);
             _currentTaskGroupProvider.GetModel().TasksCount--;
         }
 
@@ -279,7 +284,7 @@ namespace WorkManager.ViewModels.Pages
             if (model == null)
                 return;
             BeginProcess();
-            Tasks = new ObservableCollection<ITaskModel>(await _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync(_currentTaskGroupProvider.GetModel().Id, model.Name));
+            Tasks = new ObservableCollection<ITaskModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(_currentTaskGroupProvider.GetModel().Id, model.Name, _taskFacade.GetTasksByTaskGroupIdAndKanbanStateAsync));
             EndProcess();
         }
     }

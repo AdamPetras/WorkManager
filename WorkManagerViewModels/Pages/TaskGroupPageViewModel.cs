@@ -26,8 +26,11 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ITaskGroupFacade _taskGroupFacade;
 		private readonly DialogEventService _dialogEventService;
 
-		public TaskGroupPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, IPageDialogService pageDialogService
-			, ICurrentModelProviderManager<ITaskGroupModel> currentTaskGroupProvider, IDialogService dialogService, ITaskGroupFacade taskGroupFacade, DialogEventService dialogEventService) : base(navigationService)
+		public TaskGroupPageViewModel(INavigationService navigationService,
+            ICurrentModelProvider<IUserModel> currentUserProvider, IPageDialogService pageDialogService
+            , ICurrentModelProviderManager<ITaskGroupModel> currentTaskGroupProvider, IDialogService dialogService,
+            ITaskGroupFacade taskGroupFacade, DialogEventService dialogEventService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_currentUserProvider = currentUserProvider;
 			_pageDialogService = pageDialogService;
@@ -114,7 +117,7 @@ namespace WorkManager.ViewModels.Pages
 				TranslateViewModelsSR.TaskGroupClearDialogMessage, TranslateViewModelsSR.DialogYes,
 				TranslateViewModelsSR.DialogNo))
 			{
-				await _taskGroupFacade.ClearAsync();
+				await ViewModelTaskExecute.ExecuteTaskWithQueue(_taskGroupFacade.ClearAsync);
 				TaskGroups.Clear();
 			}
 			IsDialogThrown = false;
@@ -125,7 +128,7 @@ namespace WorkManager.ViewModels.Pages
 		{
 			if (taskGroupModel != null)
 			{
-			    await _taskGroupFacade.RemoveAsync(taskGroupModel.Id);
+			    await ViewModelTaskExecute.ExecuteTaskWithQueue(taskGroupModel.Id, _taskGroupFacade.RemoveAsync);
 			    TaskGroups.Remove(taskGroupModel);
 			}
 		}
@@ -133,7 +136,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
 		{
 			BeginProcess();
-            TaskGroups = new ObservableCollection<ITaskGroupModel>(await _taskGroupFacade.GetTaskGroupsByUserIdAsync(_currentUserProvider.GetModel().Id));
+            TaskGroups = new ObservableCollection<ITaskGroupModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(_currentUserProvider.GetModel().Id, _taskGroupFacade.GetTaskGroupsByUserIdAsync));
 			EndProcess();
 		}
 

@@ -23,7 +23,10 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly IFacade<IWorkRecordModelBase> _workRecordDetailFacade;
 		private readonly IWorkRecordModelFactory _workRecordModelFactory;
 
-		public AddWorkRecordDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IFacade<IWorkRecordModelBase> workRecordDetailFacade, IWorkRecordModelFactory workRecordModelFactory) : base(navigationService)
+		public AddWorkRecordDialogViewModel(INavigationService navigationService,
+            ICurrentModelProvider<ICompanyModel> companyModelProvider,
+            IFacade<IWorkRecordModelBase> workRecordDetailFacade, IWorkRecordModelFactory workRecordModelFactory,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_companyModelProvider = companyModelProvider;
 			_workRecordDetailFacade = workRecordDetailFacade;
@@ -120,7 +123,7 @@ namespace WorkManager.ViewModels.Dialogs
         {
             IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
                 PricePerHour, Pieces, PricePerPiece, SelectedWorkType.GetValue<EWorkType>(), Description, _companyModelProvider.GetModel().Id);
-            await _workRecordDetailFacade.AddAsync(model);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _workRecordDetailFacade.AddAsync);
             _companyModelProvider.GetModel().WorkRecordsCount++;
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
 		}

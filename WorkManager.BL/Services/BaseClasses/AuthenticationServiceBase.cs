@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Prism.Events;
 using WorkManager.BL.Exceptions;
@@ -54,9 +55,9 @@ namespace WorkManager.BL.Services.BaseClasses
 			return user;
 		}
 
-		public async Task<IUserModel> AuthenticateAsync(string username, string password)
+		public async Task<IUserModel> AuthenticateAsync(string username, string password, CancellationToken token)
 		{
-			string storedPassword = await _facade.GetPasswordByUserNameAsync(username);
+			string storedPassword = await _facade.GetPasswordByUserNameAsync(username, token);
 
 			if (storedPassword == null)
 			{
@@ -64,13 +65,13 @@ namespace WorkManager.BL.Services.BaseClasses
 				throw new UnauthorizedAccessException("Failed to authenticate user.");
 			}
 
-			if (!await PasswordMatchesHashedPasswordAsync(password, storedPassword))
+			if (!await PasswordMatchesHashedPasswordAsync(password, storedPassword, token))
 			{
 				_currentUserProviderManager.SetItem(null);
 				throw new UnauthorizedAccessException("Failed to authenticate user.");
 			}
 
-			IUserModel user = await _facade.GetByUserNameAsync(username);
+			IUserModel user = await _facade.GetByUserNameAsync(username, token);
 
 			if (user == null)
 			{
@@ -99,9 +100,9 @@ namespace WorkManager.BL.Services.BaseClasses
 			return hashWithSaltString;
 		}
 
-		public async Task<string> GetHashedPasswordAsync(string password)
+		public async Task<string> GetHashedPasswordAsync(string password, CancellationToken token)
 		{
-			return await Task.Run(()=> GetHashedPassword(password));
+			return await Task.Run(()=> GetHashedPassword(password), token);
 		}
 
         public bool PasswordMatchesHashedPassword(string password, string hashedPassword)
@@ -121,9 +122,9 @@ namespace WorkManager.BL.Services.BaseClasses
 			return true;
 		}
 
-		public async Task<bool> PasswordMatchesHashedPasswordAsync(string password, string hashedPassword)
+		public async Task<bool> PasswordMatchesHashedPasswordAsync(string password, string hashedPassword, CancellationToken token)
 		{
-			return await Task.Run(()=> PasswordMatchesHashedPassword(password, hashedPassword));
+			return await Task.Run(()=> PasswordMatchesHashedPassword(password, hashedPassword), token);
 		}
 
         public bool HasPasswordCorrectStructure(string password)

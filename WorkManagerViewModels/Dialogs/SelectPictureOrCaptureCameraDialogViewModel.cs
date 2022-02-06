@@ -17,7 +17,8 @@ namespace WorkManager.ViewModels.Dialogs
 	{
 		private readonly IPhotoService _photoService;
 
-		public SelectPictureOrCaptureCameraDialogViewModel(INavigationService navigationService, IPhotoService photoService) : base(navigationService)
+		public SelectPictureOrCaptureCameraDialogViewModel(INavigationService navigationService,
+            IPhotoService photoService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_photoService = photoService;
 			SelectCameraCommand = new DelegateCommand(async () => await SelectCameraAsync());

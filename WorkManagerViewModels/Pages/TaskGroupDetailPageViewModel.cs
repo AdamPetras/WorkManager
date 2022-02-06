@@ -26,8 +26,10 @@ namespace WorkManager.ViewModels.Pages
         private readonly DialogEventService _dialogEventService;
         private readonly IToastMessageService _toastMessageService;
 
-        public TaskGroupDetailPageViewModel(INavigationService navigationService, ITaskGroupFacade taskGroupFacade, IKanbanStateFacade kanbanStateFacade, 
-            IDialogService dialogService, DialogEventService dialogEventService, IToastMessageService toastMessageService) : base(navigationService)
+        public TaskGroupDetailPageViewModel(INavigationService navigationService, ITaskGroupFacade taskGroupFacade,
+            IKanbanStateFacade kanbanStateFacade,
+            IDialogService dialogService, DialogEventService dialogEventService,
+            IToastMessageService toastMessageService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _taskGroupFacade = taskGroupFacade;
             _kanbanStateFacade = kanbanStateFacade;
@@ -38,7 +40,8 @@ namespace WorkManager.ViewModels.Pages
             DeleteCommand = new DelegateCommand(async () => await DeleteAsync());
             AddKanbanCommand = new DelegateCommand(async () => await AddKanbanAsync());
             DeleteKanbanStateCommand = new DelegateCommand<IKanbanStateModel>(async (s) => await DeleteKanbanStateAsync(s));
-            RefreshCommand = new DelegateCommand(async () => {
+            RefreshCommand = new DelegateCommand(async () =>
+            {
                 BeginRefresh();
                 await RefreshAsync();
                 EndRefresh();
@@ -99,8 +102,11 @@ namespace WorkManager.ViewModels.Pages
         private async Task DeleteAsync()
         {
             BeginProcess();
-            await _taskGroupFacade.RemoveAsync(SelectedTaskGroup.Id);
-            EnumerableExtensions.ForEach(KanbanItems, async (s)=>await _kanbanStateFacade.RemoveAsync(s.Id));
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
+            {
+                await _taskGroupFacade.RemoveAsync(SelectedTaskGroup.Id, token);
+                EnumerableExtensions.ForEach(KanbanItems, async (s) => await _kanbanStateFacade.RemoveAsync(s.Id, token));
+            });
             await NavigationService.GoBackAsync();
             EndProcess();
         }
@@ -108,7 +114,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task AddKanbanAsync()
         {
             BeginProcess();
-            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialog",  new StateOrderTaskGroupNavigationParameters(KanbanItems.Count,SelectedTaskGroup))).Parameters;
+            IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddKanbanStateDialog", new StateOrderTaskGroupNavigationParameters(KanbanItems.Count, SelectedTaskGroup))).Parameters;
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
             if (dialogEvent != null)
             {
@@ -120,7 +126,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task SaveAsync()
         {
             BeginProcess();
-            await _taskGroupFacade.UpdateAsync(SelectedTaskGroup);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTaskGroup, _taskGroupFacade.UpdateAsync);
             await TaskSaveKanbanStatesAsync();
             await NavigationService.GoBackAsync();
             EndProcess();
@@ -129,15 +135,21 @@ namespace WorkManager.ViewModels.Pages
         private async Task TaskSaveKanbanStatesAsync()
         {
             EnumerableDiffChecker<IKanbanStateModel> kanbanDiffChecker = new EnumerableDiffChecker<IKanbanStateModel>();
-            DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_selectedTaskGroup.Id), KanbanItems, (s, t) => s.Id == t.Id && s.StateOrder == t.StateOrder);
-            foreach (IKanbanStateModel kanbanStateModel in value.DeleteEnumerable)
+            DifferentialCollection<IKanbanStateModel> value = kanbanDiffChecker.CheckCollectionDifference(
+                await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(_selectedTaskGroup.Id),
+                KanbanItems, (s, t) => s.Id == t.Id && s.StateOrder == t.StateOrder);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
             {
-                await _kanbanStateFacade.RemoveAsync(kanbanStateModel.Id);
-            }
-            foreach (IKanbanStateModel kanbanStateModel in value.AddEnumerable)
-            {
-                await _kanbanStateFacade.AddAsync(kanbanStateModel);
-            }
+                foreach (IKanbanStateModel kanbanStateModel in value.DeleteEnumerable)
+                {
+                    await _kanbanStateFacade.RemoveAsync(kanbanStateModel.Id, token);
+                }
+
+                foreach (IKanbanStateModel kanbanStateModel in value.AddEnumerable)
+                {
+                    await _kanbanStateFacade.AddAsync(kanbanStateModel, token);
+                }
+            });
         }
 
         private async Task DeleteKanbanStateAsync(IKanbanStateModel kanbanStateModel)
@@ -148,7 +160,7 @@ namespace WorkManager.ViewModels.Pages
                 _toastMessageService.LongAlert(TranslateViewModelsSR.KanbanMustHaveThreeStates);
                 return;
             }
-            await _kanbanStateFacade.RemoveAsync(kanbanStateModel.Id);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(kanbanStateModel.Id, _kanbanStateFacade.RemoveAsync);
             KanbanItems.Remove(kanbanStateModel);
             UpdateKanbanStatesOrder();
             EndProcess();
@@ -187,13 +199,13 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
             BeginProcess();
-            KanbanItems = new ObservableCollection<IKanbanStateModel>(await _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync(SelectedTaskGroup.Id));
+            KanbanItems = new ObservableCollection<IKanbanStateModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTaskGroup.Id, _kanbanStateFacade.GetKanbanStatesByTaskGroupOrderedByStateAsync));
             EndProcess();
         }
 
         private void UpdateKanbanStatesOrder()
         {
-            EnumerableExtensions.ForEach(KanbanItems, s=> s.StateOrder = KanbanItems.IndexOf(s));
+            EnumerableExtensions.ForEach(KanbanItems, s => s.StateOrder = KanbanItems.IndexOf(s));
         }
     }
 }

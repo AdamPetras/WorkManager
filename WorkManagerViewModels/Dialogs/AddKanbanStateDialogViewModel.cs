@@ -17,7 +17,8 @@ namespace WorkManager.ViewModels.Dialogs
 		private ITaskGroupModel _selectedTaskGroup;
 		private int _selectedStateOrder;
 
-		public AddKanbanStateDialogViewModel(INavigationService navigationService) : base(navigationService)
+		public AddKanbanStateDialogViewModel(INavigationService navigationService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			IsIconSelectionVisible = false;
 			ShowHideSelectionCommand = new DelegateCommand(() => { IsIconSelectionVisible = !IsIconSelectionVisible; });

@@ -16,14 +16,13 @@ namespace WorkManager.ViewModels.Pages
     public class WorkRecordStatisticsPageViewModel : ViewModelBase
     {
         private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
-        private readonly IRecordTotalCalculatorService _recordTotalCalculatorService;
         private readonly IWorkRecordFacade _workRecordFacade;
 
-        public WorkRecordStatisticsPageViewModel(INavigationService navigationService, ICurrentModelProvider<ICompanyModel> companyModelProvider, IRecordTotalCalculatorService recordTotalCalculatorService,
-            IWorkRecordFacade workRecordFacade) : base(navigationService)
+        public WorkRecordStatisticsPageViewModel(INavigationService navigationService,
+            ICurrentModelProvider<ICompanyModel> companyModelProvider,
+            IWorkRecordFacade workRecordFacade, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _companyModelProvider = companyModelProvider;
-            _recordTotalCalculatorService = recordTotalCalculatorService;
             _workRecordFacade = workRecordFacade;
         }
 
@@ -141,7 +140,7 @@ namespace WorkManager.ViewModels.Pages
             await base.InitializeAsyncInt();
             SetDefault();
             DateTime today = DateTime.Today;
-            foreach (IWorkRecordModelBase workRecordModel in await _workRecordFacade.GetAllRecordsByCompanyAsync(_companyModelProvider.GetModel().Id))
+            foreach (IWorkRecordModelBase workRecordModel in await ViewModelTaskExecute.ExecuteTaskWithQueue(_companyModelProvider.GetModel().Id, _workRecordFacade.GetAllRecordsByCompanyAsync))
             {
                 switch (workRecordModel.Type)
                 {

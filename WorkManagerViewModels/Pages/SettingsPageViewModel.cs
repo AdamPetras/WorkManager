@@ -5,7 +5,7 @@ namespace WorkManager.ViewModels.Pages
 {
 	public class SettingsPageViewModel : ViewModelBase
 	{
-		public SettingsPageViewModel(INavigationService navigationService) : base(navigationService)
+		public SettingsPageViewModel(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 		}
 	}

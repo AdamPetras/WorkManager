@@ -242,7 +242,7 @@
                 </CollectionView>
             </RefreshView>
             <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" BackgroundColor="{StaticResource PrimaryLightColor}" 
-                  effects:TouchEffect.Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}">
+                  effects:TouchEffect.Command="{Binding ShowStatisticsCommand, Source={RelativeSource AncestorType={x:Type pages:WorkRecordPageViewModel}}}" effects:TouchEffect.NativeAnimation="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="40"></RowDefinition>

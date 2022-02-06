@@ -20,8 +20,9 @@ namespace WorkManager.ViewModels.Dialogs
         private readonly IUserFacade _userFacade;
         private readonly IToastMessageService _toastMessageService;
 
-        public ChangePasswordDialogViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserModelProvider, IAuthenticationService authenticationService, 
-            IUserFacade userFacade, IToastMessageService toastMessageService) : base(navigationService)
+        public ChangePasswordDialogViewModel(INavigationService navigationService,
+            ICurrentModelProvider<IUserModel> currentUserModelProvider, IAuthenticationService authenticationService,
+            IUserFacade userFacade, IToastMessageService toastMessageService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _currentUserModelProvider = currentUserModelProvider;
             _authenticationService = authenticationService;
@@ -84,18 +85,19 @@ namespace WorkManager.ViewModels.Dialogs
                 if (_authenticationService.HasPasswordCorrectStructure(NewPassword))
                 {
                     BeginProcess();
-                    if (await _authenticationService.PasswordMatchesHashedPasswordAsync(OldPassword,
-                            _currentUserModelProvider.GetModel().Password))
-                    {
-                        IUserModel cpyModel = new UserModel(_currentUserModelProvider.GetModel());
-                        cpyModel.Password = await _authenticationService.GetHashedPasswordAsync(NewPassword);
-                        await _userFacade.UpdateAsync(cpyModel);
-                        CancelInt();
-                        _authenticationService.Logout();
-                        await NavigationService.NavigateAsync("LoginPage");
-                    }
-                    else
-                        _toastMessageService.LongAlert(TranslateViewModelsSR.WrongPassword);
+                    await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) => { 
+                        if (await _authenticationService.PasswordMatchesHashedPasswordAsync(OldPassword, _currentUserModelProvider.GetModel().Password, token))
+                        {
+                            IUserModel cpyModel = new UserModel(_currentUserModelProvider.GetModel());
+                            cpyModel.Password = await _authenticationService.GetHashedPasswordAsync(NewPassword,token);
+                            await _userFacade.UpdateAsync(cpyModel, token);
+                            CancelInt();
+                            _authenticationService.Logout();
+                            await NavigationService.NavigateAsync("LoginPage");
+                        }
+                        else
+                            _toastMessageService.LongAlert(TranslateViewModelsSR.WrongPassword);
+                    });
                 }
             }
             catch (PasswordStructureException e)

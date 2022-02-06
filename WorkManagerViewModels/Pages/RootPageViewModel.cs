@@ -12,7 +12,8 @@ namespace WorkManager.ViewModels.Pages
 	{
 		private readonly ICurrentModelProviderManager<IUserModel> _currentUserProvider;
 
-		public RootPageViewModel(INavigationService navigationService, ICurrentModelProviderManager<IUserModel> currentUserProvider) : base(navigationService)
+		public RootPageViewModel(INavigationService navigationService,
+            ICurrentModelProviderManager<IUserModel> currentUserProvider, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_currentUserProvider = currentUserProvider;
 			ShowTasksCommand = new DelegateCommand(async ()=>await ShowTasksAsync());

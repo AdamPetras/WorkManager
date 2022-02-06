@@ -14,11 +14,13 @@ namespace WorkManager.ViewModels.Pages
 		private readonly ICurrentModelProvider<IUserModel> _currentUserModelProvider;
         private readonly IDialogService _dialogService;
 
-        public UserDetailPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserModelProvider, IDialogService dialogService) : base(navigationService)
+        public UserDetailPageViewModel(INavigationService navigationService,
+            ICurrentModelProvider<IUserModel> currentUserModelProvider, IDialogService dialogService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _currentUserModelProvider = currentUserModelProvider;
             _dialogService = dialogService;
-            ChangePasswordCommand = new DelegateCommand(async () => await ChangePasswordAsync());
+            ChangePasswordCommand = new DelegateCommand(async () => await ShowChangePasswordAsync());
         }
 
         public DelegateCommand ChangePasswordCommand { get; }
@@ -67,7 +69,7 @@ namespace WorkManager.ViewModels.Pages
             Surname = _currentUserModelProvider.GetModel().Surname;
         }
 
-        private async Task ChangePasswordAsync()
+        private async Task ShowChangePasswordAsync()
         {
             BeginProcess();
             await _dialogService.ShowDialogAsync("ChangePasswordDialog");

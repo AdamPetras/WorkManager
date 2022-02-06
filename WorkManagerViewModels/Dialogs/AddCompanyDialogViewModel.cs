@@ -27,7 +27,8 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly IToastMessageService _toastMessageService;
 
 		public AddCompanyDialogViewModel(INavigationService navigationService, ICompanyFacade companyFacade,
-			ICurrentModelProvider<IUserModel> currentUserProvider, IToastMessageService toastMessageService) : base(navigationService)
+            ICurrentModelProvider<IUserModel> currentUserProvider, IToastMessageService toastMessageService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_companyFacade = companyFacade;
 			_currentUserProvider = currentUserProvider;
@@ -45,7 +46,7 @@ namespace WorkManager.ViewModels.Dialogs
                 return;
             }
             ICompanyModel model = new CompanyModel(Guid.NewGuid(), Name, 0, _currentUserProvider.GetModel().Id);
-            await _companyFacade.AddAsync(model);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _companyFacade.AddAsync);
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ICompanyModel>(model) } });
             EndProcess();
 		}

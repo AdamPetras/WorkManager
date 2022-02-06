@@ -8,10 +8,12 @@ namespace WorkManager.ViewModels.BaseClasses
 	public delegate void DialogThrownDelegate();
 	public abstract class ViewModelBase : BindableBase, IInitializeAsync, INavigationAware, IDestructible
 	{
-		protected ViewModelBase(INavigationService navigationService)
-		{
-			NavigationService = navigationService;
-		}
+
+        protected ViewModelBase(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute)
+        {
+            NavigationService = navigationService;
+            ViewModelTaskExecute = viewModelTaskExecute;
+        }
 
 		public event DialogThrownDelegate DialogThrownEvent;
 
@@ -19,6 +21,7 @@ namespace WorkManager.ViewModels.BaseClasses
 		/// Pokud program vykonává složitější operaci nastavíme na IsBusy == true následně po vykonání IsBusy==false zobrazí nadefinovaný activity indicator pouze async popř pokud operace běží na jiném než hlavnín vlákně
 		/// </summary>
 		public bool IsBusy => RunningOperation != 0;
+        public ViewModelTaskExecute ViewModelTaskExecute { get; }
 
 		private ushort _runningOperation;
 		private ushort RunningOperation
@@ -59,9 +62,10 @@ namespace WorkManager.ViewModels.BaseClasses
 				OnDialogThrownEvent();
 			}
 		}
+
 		protected INavigationService NavigationService { get; private set; }
 
-		public Task InitializeAsync(INavigationParameters parameters)
+        public Task InitializeAsync(INavigationParameters parameters)
 		{
 			return InitializeAsyncInt();
 		}

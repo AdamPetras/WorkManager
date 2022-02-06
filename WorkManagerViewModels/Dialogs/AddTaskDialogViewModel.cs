@@ -33,17 +33,17 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
-		private readonly IKanbanStateFacade _kanbanStateFacade;
 
         private IKanbanStateModel _selectedKanbanState;
 
-		public AddTaskDialogViewModel(INavigationService navigationService, ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider, 
-			ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, IKanbanStateFacade kanbanStateFacade) : base(navigationService)
+		public AddTaskDialogViewModel(INavigationService navigationService,
+            ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider,
+            ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, 
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
-			_kanbanStateFacade = kanbanStateFacade;
 			_taskFacade = taskFacade;
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
@@ -52,8 +52,8 @@ namespace WorkManager.ViewModels.Dialogs
 			PhotoPaths = new ObservableCollection<string>();
 			DeletePhotoCommand = new DelegateCommand<string>(DeletePhoto);
 			ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
-            NameMaxLength = typeof(IKanbanStateModel).GetStringMaxLength(nameof(ITaskModel.Name));
-            DescriptionMaxLength = typeof(IKanbanStateModel).GetStringMaxLength(nameof(ITaskModel.Description));
+            NameMaxLength = typeof(ITaskModel).GetStringMaxLength(nameof(ITaskModel.Name));
+            DescriptionMaxLength = typeof(ITaskModel).GetStringMaxLength(nameof(ITaskModel.Description));
 		}
 
         public DelegateCommand<string> DeletePhotoCommand { get; }
@@ -152,10 +152,10 @@ namespace WorkManager.ViewModels.Dialogs
 			BeginProcess();
             ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
                 _currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime);
-            await _taskFacade.AddAsync(model);
+			await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _taskFacade.AddAsync);
             foreach (string path in PhotoPaths)
             {
-                await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id));
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(new ImageModel(Guid.NewGuid(), path, "", model.Id), _imageFacade.AddAsync);
             }
             _currentTaskGroupProvider.GetModel().TasksCount++;
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model) } });

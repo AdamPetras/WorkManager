@@ -23,6 +23,11 @@ namespace WorkManager.DAL.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ActualDateTimeEntity>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView(nameof(ActualDateTimeEntity));
+            });
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Crashes;
 using WorkManager.BL.Exceptions;
@@ -25,10 +26,10 @@ namespace WorkManager.BL.Services.BaseClasses
 			return Facade.Add(model) != null;
 		}
 
-		public async Task<bool> RegisterUserAsync(IUserModel model)
+		public async Task<bool> RegisterUserAsync(IUserModel model, CancellationToken token)
 		{
-			model.Password = await AuthenticationService.GetHashedPasswordAsync(model.Password);
-			return await Facade.AddAsync(model) != null;
+			model.Password = await AuthenticationService.GetHashedPasswordAsync(model.Password, token);
+			return await Facade.AddAsync(model, token) != null;
 		}
 
 		public bool RegisterAndAuthenticateUser(IUserModel model)
@@ -44,21 +45,21 @@ namespace WorkManager.BL.Services.BaseClasses
 			return true;
 		}
 
-		public async Task<bool> RegisterAndAuthenticateUserAsync(IUserModel model)
+		public async Task<bool> RegisterAndAuthenticateUserAsync(IUserModel model, CancellationToken token)
 		{
 			string nonHashedPassword = model.Password;
-			if (await Facade.ExistsAsync(model.Username))
+			if (await Facade.ExistsAsync(model.Username, token))
 			{
 				throw new UserAlreadyExistsException();
 			}
-			if (!await RegisterUserAsync(model))
+			if (!await RegisterUserAsync(model, token))
 				return false;
 			model.Password = nonHashedPassword;
-			if (!await Facade.ExistsAsync(model.Username))
+			if (!await Facade.ExistsAsync(model.Username, token))
 			{
 				throw new UserNotExistsException("Problem with create user.");
 			}
-			await AuthenticationService.AuthenticateAsync(model.Username, model.Password);
+			await AuthenticationService.AuthenticateAsync(model.Username, model.Password, token);
 			return true;
 		}
 	}

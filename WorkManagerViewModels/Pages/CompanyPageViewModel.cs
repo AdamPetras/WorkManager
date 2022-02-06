@@ -31,9 +31,12 @@ namespace WorkManager.ViewModels.Pages
         private readonly RecordTotalCalculatorService _recordTotalCalculatorService;
         private readonly IWorkRecordFacade _workRecordFacade;
 
-        public CompanyPageViewModel(INavigationService navigationService, ICurrentModelProvider<IUserModel> currentUserProvider, ICurrentModelProviderManager<ICompanyModel> companyModelProviderManager,
-			IDialogService dialogService, ICompanyFacade companyFacade, DialogEventService dialogEventService, IPageDialogService pageDialogService,RecordTotalCalculatorService recordTotalCalculatorService,
-            IWorkRecordFacade workRecordFacade) : base(navigationService)
+        public CompanyPageViewModel(INavigationService navigationService,
+            ICurrentModelProvider<IUserModel> currentUserProvider,
+            ICurrentModelProviderManager<ICompanyModel> companyModelProviderManager,
+            IDialogService dialogService, ICompanyFacade companyFacade, DialogEventService dialogEventService,
+            IPageDialogService pageDialogService, RecordTotalCalculatorService recordTotalCalculatorService,
+            IWorkRecordFacade workRecordFacade, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_currentUserProvider = currentUserProvider;
 			_companyModelProviderManager = companyModelProviderManager;
@@ -111,7 +114,7 @@ namespace WorkManager.ViewModels.Pages
 				TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
 				TranslateViewModelsSR.DialogNo))
 			{
-				await _companyFacade.ClearAsync();
+				await ViewModelTaskExecute.ExecuteTaskWithQueue(_companyFacade.ClearAsync);
 				Companies.Clear();
 			}
 			IsDialogThrown = false;
@@ -138,7 +141,7 @@ namespace WorkManager.ViewModels.Pages
         private async Task RefreshAsync()
         {
 			BeginProcess();
-			Companies = new ObservableCollection<ICompanyModel>(await _companyFacade.GetCompaniesByUserIdAsync(_currentUserProvider.GetModel().Id));
+			Companies = new ObservableCollection<ICompanyModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(_currentUserProvider.GetModel().Id, _companyFacade.GetCompaniesByUserIdAsync));
 			EndProcess();
 		}
 

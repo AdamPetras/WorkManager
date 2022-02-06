@@ -18,7 +18,9 @@ namespace WorkManager.ViewModels.Pages
         private readonly IAuthenticationService _authenticationService;
         private readonly IToastMessageService _toastMessageService;
 
-		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService, IAuthenticationService authenticationService, IToastMessageService toastMessageService) : base(navigationService)
+		public RegisterPageViewModel(INavigationService navigationService, IRegistrationService registrationService,
+            IAuthenticationService authenticationService, IToastMessageService toastMessageService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_registrationService = registrationService;
             _authenticationService = authenticationService;
@@ -100,9 +102,8 @@ namespace WorkManager.ViewModels.Pages
             {
                 if (_authenticationService.HasPasswordCorrectStructure(Password))
                 {
-                    if (await _registrationService.RegisterAndAuthenticateUserAsync(new UserModel(Guid.NewGuid(),
-                            FirstName,
-                            Surname, Username, Password)))
+                    if (await ViewModelTaskExecute.ExecuteTaskWithQueue(new UserModel(Guid.NewGuid(), FirstName, Surname, Username, Password),
+                            _registrationService.RegisterAndAuthenticateUserAsync))
                         await NavigationService.NavigateAsync("/RootPage/NavigationPage/TaskGroupPage");
                 }
             }

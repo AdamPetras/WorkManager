@@ -12,7 +12,7 @@ namespace WorkManager.ViewModels.Dialogs
 {
 	public class FilterDialogViewModel:ConfirmDialogViewModelBase
 	{
-		public FilterDialogViewModel(INavigationService navigationService) : base(navigationService)
+		public FilterDialogViewModel(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 		}
 

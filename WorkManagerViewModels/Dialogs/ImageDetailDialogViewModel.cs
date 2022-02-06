@@ -7,7 +7,8 @@ namespace WorkManager.ViewModels.Dialogs
 {
 	public class ImageDetailDialogViewModel : DialogViewModelBase
 	{
-		public ImageDetailDialogViewModel(INavigationService navigationService) : base(navigationService)
+		public ImageDetailDialogViewModel(INavigationService navigationService,
+            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			CloseCommand = new DelegateCommand(() => OnRequestClose(null));
 		}

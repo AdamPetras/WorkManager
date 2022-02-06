@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using WorkManager.BL.Interfaces;
 using WorkManager.DAL.Entities;
-using WorkManager.DAL.Entities.BaseClasses;
 using WorkManager.DAL.Repositories.Interfaces;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;

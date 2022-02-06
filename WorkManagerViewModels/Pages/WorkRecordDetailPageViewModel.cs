@@ -24,7 +24,9 @@ namespace WorkManager.ViewModels.Pages
 		private readonly IPageDialogService _pageDialogService;
 		private readonly IWorkRecordFacade _workRecordFacade;
 
-		public WorkRecordDetailPageViewModel(INavigationService navigationService, IWorkRecordModelFactory workRecordModelFactory, IPageDialogService pageDialogService, IWorkRecordFacade workRecordFacade) : base(navigationService)
+		public WorkRecordDetailPageViewModel(INavigationService navigationService,
+            IWorkRecordModelFactory workRecordModelFactory, IPageDialogService pageDialogService,
+            IWorkRecordFacade workRecordFacade, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_workRecordModelFactory = workRecordModelFactory;
 			_pageDialogService = pageDialogService;
@@ -56,7 +58,10 @@ namespace WorkManager.ViewModels.Pages
 			BeginProcess();
 			await base.OnNavigatedToAsyncInt(parameters);
 			//observable collection kvůli tomu, že binduju na datatemplate a tam je pouze itemsource
-			RecordModel = new ObservableCollection<IWorkRecordModelBase>() { _workRecordModelFactory.CopyRecord(parameters.GetValue<IWorkRecordModelBase>("Record")) };  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
+			RecordModel = new ObservableCollection<IWorkRecordModelBase>
+            {
+                _workRecordModelFactory.CopyRecord(parameters.GetValue<IWorkRecordModelBase>("Record"))
+            };  //vytváření nového modelu aby se neměnil model, který zde dojde pomocí navigace
 			EndProcess();
 		}
 

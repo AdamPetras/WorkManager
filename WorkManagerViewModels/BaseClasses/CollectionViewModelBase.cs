@@ -4,7 +4,7 @@ namespace WorkManager.ViewModels.BaseClasses
 {
     public class CollectionViewModelBase : ViewModelBase
     {
-        public CollectionViewModelBase(INavigationService navigationService) : base(navigationService)
+        public CollectionViewModelBase(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
         }
 

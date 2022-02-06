@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\WorkManager.Core\WorkManager.Core.csproj" />
     <ProjectReference Include="..\..\WorkManager.DAL\WorkManager.DAL.csproj" />
     <ProjectReference Include="..\..\WorkManager.Extensions\WorkManager.Extensions.csproj" />
+    <ProjectReference Include="..\..\WorkManager.Logger\WorkManager.Logger.csproj" />
     <ProjectReference Include="..\..\WorkManager.Views\WorkManager.Views.csproj" />
     <ProjectReference Include="..\..\WorkManagerViewModels\WorkManager.ViewModels.csproj" />
   </ItemGroup>
