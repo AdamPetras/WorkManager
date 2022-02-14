@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Services;
+using WorkManager.Logger;
 
 namespace WorkManager.ViewModels.BaseClasses
 {
     public class ViewModelTaskExecute : IDisposable
     {
         private readonly ViewModelCancellationTokensQueueService _viewModelCancellationTokensQueueService;
+        private readonly ILogger<ViewModelCancellationTokensQueueService> _logger;
 
-		public ViewModelTaskExecute(ViewModelCancellationTokensQueueService viewModelCancellationTokensQueueService)
-		{
-			_viewModelCancellationTokensQueueService = viewModelCancellationTokensQueueService;
-		}
+        public ViewModelTaskExecute(ViewModelCancellationTokensQueueService viewModelCancellationTokensQueueService, ILogger<ViewModelCancellationTokensQueueService> logger)
+        {
+            _viewModelCancellationTokensQueueService = viewModelCancellationTokensQueueService;
+            _logger = logger;
+        }
 
 		public async Task<TRes> ExecuteTaskWithQueue<TRes>(Func<CancellationToken, Task<TRes>> action)
 		{
@@ -22,10 +26,10 @@ namespace WorkManager.ViewModels.BaseClasses
 			{
 				return await action(cts.Token);
 			}
-			catch (OperationCanceledException ex)
+			catch (Exception ex)
             {
+                _logger.Error(string.Empty,ex);
                 throw;
-                //_logger.Log(LogLevel.Debug, ex, "Operation cancelled cancellation token has stopped operation.");
             }
 			finally
 			{
@@ -41,10 +45,10 @@ namespace WorkManager.ViewModels.BaseClasses
 			{
 				await action(cts.Token);
 			}
-			catch (OperationCanceledException ex)
+			catch (Exception ex)
 			{
+                _logger.Error(string.Empty, ex);
                 throw;
-				//_logger.Log(LogLevel.Debug, ex, "Operation cancelled cancellation token has stopped operation.");
 			}
 			finally
 			{

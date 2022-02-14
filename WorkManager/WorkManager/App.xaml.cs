@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using CommonServiceLocator;
 using Microsoft.Extensions.Logging;
 using Prism;
@@ -59,17 +60,7 @@ namespace WorkManager
             IUnityContainer container = containerRegistry.GetContainer();
             ServiceLocator.SetLocatorProvider(() => new UnityServiceLocator(container));
 
-            var factoryMethod = typeof(LoggerExt).
-                GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).
-                First(x => x.ContainsGenericParameters);
-
-            container.RegisterFactory(typeof(Logger.ILogger<>),
-                (c, t,s) =>
-                {
-                    var genFactoryMethod = factoryMethod.MakeGenericMethod(t.GetGenericArguments()[0]);
-                    return genFactoryMethod.Invoke(null, new object[]{
-                    c.Resolve<SystemRepository>()});
-                });
+            container.Resolve<LoggerRegistrator>().Register();
             container.RegisterSingleton<IToastMessageService, ToastMessageService>();
             RegisterXamarinEssentials(containerRegistry);
             RegisterDbContext(container);
@@ -137,6 +128,7 @@ namespace WorkManager
 
         private void RegisterProviders(IUnityContainer container)
         {
+            container.RegisterSingleton<IServerCurrentTimeProvider, ServerCurrentTimeProvider>();
             container.RegisterMultipleTypeSingleton<ICurrentModelProvider<IUserModel>, ICurrentModelProviderManager<IUserModel>, CurrentModelProvider<IUserModel>>();
             container.RegisterMultipleTypeSingleton<ICurrentModelProvider<ITaskGroupModel>, ICurrentModelProviderManager<ITaskGroupModel>, CurrentModelProvider<ITaskGroupModel>>();
             container.RegisterMultipleTypeSingleton<ICurrentModelProvider<ICompanyModel>, ICurrentModelProviderManager<ICompanyModel>, CurrentModelProvider<ICompanyModel>>();
