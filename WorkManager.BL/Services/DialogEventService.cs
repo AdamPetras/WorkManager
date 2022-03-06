@@ -14,13 +14,13 @@ namespace WorkManager.BL.Services
             switch (dialogEvent)
 			{
 				case AddAfterDialogCloseDialogEvent<T> addAfterDialogCloseDialogEvent:
-					if(condition != null && condition(addAfterDialogCloseDialogEvent.Value))
+                    if (condition == null || condition(addAfterDialogCloseDialogEvent.Value))
                     {
                         lst.Add(addAfterDialogCloseDialogEvent.Value);
                     }
                     break;
 				case UpdateAfterDialogCloseDialogEvent<T> updateAfterDialogCloseDialogEvent:
-                    if (condition != null && condition(updateAfterDialogCloseDialogEvent.Value))
+                    if (condition == null || condition(updateAfterDialogCloseDialogEvent.Value))
                     {
                         int index = lst.IndexOf(lst.Single(s => s.Id == updateAfterDialogCloseDialogEvent.Value.Id));
                         lst.RemoveAt(index);
@@ -28,7 +28,7 @@ namespace WorkManager.BL.Services
                     }
                     break;
 				case RemoveAfterDialogCloseDialogEvent<T> removeAfterDialogCloseDialogEvent:
-                    if (condition != null && condition(removeAfterDialogCloseDialogEvent.Value))
+                    if (condition == null || condition(removeAfterDialogCloseDialogEvent.Value))
                     {
                         lst.Remove(lst.Single(s => s.Id == removeAfterDialogCloseDialogEvent.Value.Id));
                     }

@@ -225,7 +225,7 @@ namespace WorkManager.ViewModels.Pages
             IsDialogThrown = true;
             IDialogParameters parameters = (await _dialogService.ShowDialogAsync("AddTaskDialog", new KanbanStateNavigationParameters(SelectedKanbanState))).Parameters;
             IDialogEvent dialogEvent = parameters.GetValue<IDialogEvent>("DialogEvent");
-            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks);
+            _dialogEventService.OnRaiseDialogEvent(dialogEvent, Tasks, s=>s.StateId == SelectedKanbanState.Id);
             IsDialogThrown = false;
         }
 
