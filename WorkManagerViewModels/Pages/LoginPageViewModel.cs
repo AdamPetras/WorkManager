@@ -33,7 +33,7 @@ namespace WorkManager.ViewModels.Pages
 			IsRememberCredentialsToggled = _workManagerSettingsService.SaveCredentials;
             InitDialogCommands();
 #if DEBUG
-			LoginCommand.Execute();
+			//LoginCommand.Execute();
 #endif
 		}
 

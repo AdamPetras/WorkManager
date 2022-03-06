@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using CommonServiceLocator;
@@ -43,6 +44,8 @@ namespace WorkManager
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class App : PrismApplication
     {
+
+        private static readonly TimeSpan ApplicationTimeout = TimeSpan.FromSeconds(180);
         public App(IPlatformInitializer initializer)
             : base(initializer)
         {
@@ -146,6 +149,9 @@ namespace WorkManager
             container.RegisterSingleton<ISettingsServiceProvider, SettingsService>();
             container.RegisterSingleton<ISettingsServiceManager, SettingsService>();
             container.RegisterSingleton<WorkManagerSettingsService>();
+
+            //volání async bez await pokud nastane vyjímka tak zapadne...
+            container.RegisterAndResolve<IDatabaseSessionController, DatabaseSessionController>().Initialize(ApplicationTimeout);
 
             //model services
             container.RegisterSingleton<IRecordCalculatorService, RecordCalculatorService>();

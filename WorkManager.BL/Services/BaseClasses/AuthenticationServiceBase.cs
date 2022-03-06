@@ -3,13 +3,16 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Prism.Common;
 using Prism.Events;
+using Prism.Navigation;
 using WorkManager.BL.Exceptions;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Resources;
 using WorkManager.Models.Interfaces;
+using Xamarin.Forms;
 
 namespace WorkManager.BL.Services.BaseClasses
 {
@@ -17,16 +20,21 @@ namespace WorkManager.BL.Services.BaseClasses
 	{
 		private readonly IUserFacade _facade;
 		private readonly ICurrentModelProviderManager<IUserModel> _currentUserProviderManager;
+        private readonly INavigationService _navigationService;
 
-		protected const int DefaultSaltLength = 32;
+        protected const int DefaultSaltLength = 32;
 		protected const int DefaultHashLength = 128;
 		protected const int DefaultNumberOfPbkdfIterations = 1000;
 
-		protected AuthenticationServiceBase(IUserFacade facade, ICurrentModelProviderManager<IUserModel> currentUserProviderManager)
+		protected AuthenticationServiceBase(IUserFacade facade,
+            ICurrentModelProviderManager<IUserModel> currentUserProviderManager, INavigationService navigationService,
+            IDatabaseSessionController databaseSessionController)
 		{
 			_facade = facade;
 			_currentUserProviderManager = currentUserProviderManager;
-		}
+            _navigationService = navigationService;
+            databaseSessionController.TimeoutExpiredAsyncEvent += async (_,_) => await LogoutAsync(CancellationToken.None);
+        }
 
 		public IUserModel Authenticate(string username, string password)
 		{
@@ -82,9 +90,14 @@ namespace WorkManager.BL.Services.BaseClasses
 			return user;
 		}
 
-        public void Logout()
+        public async Task LogoutAsync(CancellationToken token)
         {
+            if (PageUtilities.GetCurrentPage(Application.Current.MainPage).GetType().Name == "LoginPage")   //Pokud jsem na loginPage
+			{
+				return;
+            }
             _currentUserProviderManager.SetItem(null);
+			await _navigationService.NavigateAsync("/NavigationPage/LoginPage");
 		}
 
         public string GetHashedPassword(string password)

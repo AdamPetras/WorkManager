@@ -22,5 +22,11 @@ namespace WorkManager.Extensions
 			RegisterMultipleTypeSingleton<TI1, TI2, TI3, TClass>(containerRegistry);
 			containerRegistry.RegisterSingleton<TI4, TClass>();
 		}
-	}
+
+        public static TInterface RegisterAndResolve<TInterface, TClass>(this IUnityContainer containerRegistry) where TClass: TInterface
+        {
+            containerRegistry.RegisterSingleton<TInterface, TClass>();
+            return containerRegistry.Resolve<TInterface>();
+        }
+    }
 }

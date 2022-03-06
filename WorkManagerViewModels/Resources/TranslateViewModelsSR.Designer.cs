@@ -349,6 +349,15 @@ namespace WorkManager.ViewModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vypršelo spojení se serverem..
+        /// </summary>
+        internal static string TimeoutExceptionMessage {
+            get {
+                return ResourceManager.GetString("TimeoutExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nepovedlo se přihlásit uživatele, uživatelské jméno nebo heslo není správné..
         /// </summary>
         internal static string UnauthorizedAccessExceptionMessage {

@@ -92,8 +92,7 @@ namespace WorkManager.ViewModels.Dialogs
                             cpyModel.Password = await _authenticationService.GetHashedPasswordAsync(NewPassword,token);
                             await _userFacade.UpdateAsync(cpyModel, token);
                             CancelInt();
-                            _authenticationService.Logout();
-                            await NavigationService.NavigateAsync("LoginPage");
+                            await _authenticationService.LogoutAsync(token);
                         }
                         else
                             _toastMessageService.LongAlert(TranslateViewModelsSR.WrongPassword);

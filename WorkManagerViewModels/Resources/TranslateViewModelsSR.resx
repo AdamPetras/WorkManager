@@ -213,6 +213,9 @@
   <data name="TaskGroupNameAlreadyExists" xml:space="preserve">
     <value>Skupina se jménem {0} již existuje prosím zadejte jiné jméno, nebo smažte stejnějmennou skupinu.</value>
   </data>
+  <data name="TimeoutExceptionMessage" xml:space="preserve">
+    <value>Vypršelo spojení se serverem.</value>
+  </data>
   <data name="UnauthorizedAccessExceptionMessage" xml:space="preserve">
     <value>Nepovedlo se přihlásit uživatele, uživatelské jméno nebo heslo není správné.</value>
   </data>

@@ -1,50 +1,77 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using WorkManager.Core.Exceptions;
 
 namespace WorkManager.Core
 {
-    public abstract class LoopingBase : DisposableBase
+    public abstract class LoopingBase : InitializedCheckerBase
     {
-	    private readonly TimeSpan _start;
-	    private readonly TimeSpan _interval;
-	    private readonly Task _task;
-	    private readonly CancellationTokenSource _tokenSource;
+	    private TimeSpan _start;
+	    private TimeSpan _interval;
+        private Thread _loopThread;
 
-	    protected LoopingBase(TimeSpan start, TimeSpan interval)
-	    {
-		    _start = start;
-		    _interval = interval;
-		    _tokenSource = new CancellationTokenSource();
-		    _task = Task.Factory.StartNew(LoopThread, _tokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current);
-	    }
+        protected LoopingBase(TimeSpan start, TimeSpan interval)
+        {
+            Initialize(start, interval);
+        }
 
-	    private void LoopThread()
-	    {
-		    _task.Wait(_start);
-		    while (!_tokenSource.IsCancellationRequested)
-		    {
-			    Loop();
-			    _task.Wait(_interval);
-		    }
-	    }
+        protected LoopingBase(TimeSpan interval) : this(TimeSpan.Zero, interval)
+        {
+        }
 
-	    protected void Start()
-	    {
-		    _task.Start();
-	    }
+        protected LoopingBase()
+        {
+        }
 
-	    protected void Stop()
-	    {
-		    _tokenSource.Cancel();
-		    ReleaseUnmanagedResources();
-	    }
+        protected void Initialize(TimeSpan start, TimeSpan interval)
+        {
+            if(Initialized)
+                throw new AlreadyInitializedException();
+            _start = start;
+            _interval = interval;
+            State = ELoopingState.New;
+            Initialized = true;
+        }
 
-	    protected abstract void Loop();
+        protected ELoopingState State { get; private set; }
 
-	    protected override void ReleaseUnmanagedResources()
-	    {
-		    _task.Dispose();
-	    }
+        protected void StartLoop()
+        {
+            CheckIsInitialized();
+            _loopThread = new Thread(LoopThread);
+            _loopThread.Start();
+        }
+
+	    protected void StopLoop()
+        {
+            CheckIsInitialized();
+            State = ELoopingState.Stopped;
+            _loopThread.Join();  //počkám až vlákno umře
+            State = ELoopingState.Terminated;
+        }
+
+        protected void RestartLoop()
+        {
+            CheckIsInitialized();
+            if(State == ELoopingState.Running)
+                StopLoop();
+            if(State != ELoopingState.Running)
+                StartLoop();
+        }
+
+        private void LoopThread()
+        {
+            CheckIsInitialized();
+            State = ELoopingState.Running;
+            Thread.Sleep(_start);
+            while (State == ELoopingState.Running)
+            {
+                Loop();
+                Thread.Sleep(_interval);
+            }
+        }
+
+        protected abstract void Loop();
     }
 }

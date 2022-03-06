@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Services;
 using WorkManager.Logger;
+using WorkManager.ViewModels.Resources;
 
 namespace WorkManager.ViewModels.BaseClasses
 {
@@ -11,31 +12,42 @@ namespace WorkManager.ViewModels.BaseClasses
     {
         private readonly ViewModelCancellationTokensQueueService _viewModelCancellationTokensQueueService;
         private readonly ILogger<ViewModelCancellationTokensQueueService> _logger;
+        private readonly IToastMessageService _toastMessageService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public ViewModelTaskExecute(ViewModelCancellationTokensQueueService viewModelCancellationTokensQueueService, ILogger<ViewModelCancellationTokensQueueService> logger)
+        public ViewModelTaskExecute(ViewModelCancellationTokensQueueService viewModelCancellationTokensQueueService, ILogger<ViewModelCancellationTokensQueueService> logger, IToastMessageService toastMessageService, 
+            IAuthenticationService authenticationService)
         {
             _viewModelCancellationTokensQueueService = viewModelCancellationTokensQueueService;
             _logger = logger;
+            _toastMessageService = toastMessageService;
+            _authenticationService = authenticationService;
         }
 
 		public async Task<TRes> ExecuteTaskWithQueue<TRes>(Func<CancellationToken, Task<TRes>> action)
 		{
 			await _viewModelCancellationTokensQueueService.TerminateOldLoading();
 			CancellationTokenSource cts = await _viewModelCancellationTokensQueueService.CreateTokenSource();
-			try
-			{
-				return await action(cts.Token);
-			}
-			catch (Exception ex)
+            try
             {
-                _logger.Error(string.Empty,ex);
+                return await action(cts.Token);
+            }
+            catch (TimeoutException)
+            {
+				_toastMessageService.LongAlert(TranslateViewModelsSR.TimeoutExceptionMessage);
+                await _authenticationService.LogoutAsync(cts.Token);
+                return default;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(string.Empty, ex);
                 throw;
             }
-			finally
-			{
-				cts.Dispose();
-			}
-		}
+            finally
+            {
+                cts.Dispose();
+            }
+        }
 
 		public async Task ExecuteTaskWithQueue(Func<CancellationToken, Task> action)
 		{

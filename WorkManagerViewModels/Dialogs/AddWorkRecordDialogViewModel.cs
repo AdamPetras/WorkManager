@@ -7,6 +7,7 @@ using Prism.Services.Dialogs;
 using WorkManager.BL.DialogEvents;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Providers;
+using WorkManager.BL.Interfaces.Services;
 using WorkManager.DAL.Enums;
 using WorkManager.Extensions;
 using WorkManager.Models;
@@ -22,16 +23,18 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly ICurrentModelProvider<ICompanyModel> _companyModelProvider;
 		private readonly IFacade<IWorkRecordModelBase> _workRecordDetailFacade;
 		private readonly IWorkRecordModelFactory _workRecordModelFactory;
+        private readonly IToastMessageService _toastMessageService;
 
-		public AddWorkRecordDialogViewModel(INavigationService navigationService,
+        public AddWorkRecordDialogViewModel(INavigationService navigationService,
             ICurrentModelProvider<ICompanyModel> companyModelProvider,
             IFacade<IWorkRecordModelBase> workRecordDetailFacade, IWorkRecordModelFactory workRecordModelFactory,
-            ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
+            ViewModelTaskExecute viewModelTaskExecute, IToastMessageService toastMessageService) : base(navigationService, viewModelTaskExecute)
 		{
 			_companyModelProvider = companyModelProvider;
 			_workRecordDetailFacade = workRecordDetailFacade;
 			_workRecordModelFactory = workRecordModelFactory;
-			SetupDefaultValues();
+            _toastMessageService = toastMessageService;
+            SetupDefaultValues();
             DescriptionMaxLength = typeof(IWorkRecordModelBase).GetStringMaxLength(nameof(IWorkRecordModelBase.Description));
 		}
 
@@ -71,8 +74,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private uint _pieces;
-		public uint Pieces
+		private uint? _pieces;
+		public uint? Pieces
 		{
 			get => _pieces;
 			set
@@ -83,8 +86,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private double _pricePerHour;
-		public double PricePerHour
+		private double? _pricePerHour;
+		public double? PricePerHour
 		{
 			get => _pricePerHour;
 			set
@@ -95,8 +98,8 @@ namespace WorkManager.ViewModels.Dialogs
 			}
 		}
 
-		private double _pricePerPiece;
-		public double PricePerPiece
+		private double? _pricePerPiece;
+		public double? PricePerPiece
 		{
 			get => _pricePerPiece;
 			set
@@ -121,8 +124,17 @@ namespace WorkManager.ViewModels.Dialogs
 
         protected override async Task ConfirmAsyncInt()
         {
+            double parsedPricePerHour = 0;
+            uint parsedPieces = 0;
+            double parsedPricePerPiece = 0;
+            if (PricePerHour != null)
+                parsedPricePerHour = PricePerHour.Value;
+            if (PricePerPiece != null)
+                parsedPricePerPiece = PricePerPiece.Value;
+            if (Pieces != null)
+                parsedPieces = Pieces.Value;
             IWorkRecordModelBase model = _workRecordModelFactory.CreateWorkRecord(Guid.NewGuid(), SelectedDate, WorkTime,
-                PricePerHour, Pieces, PricePerPiece, SelectedWorkType.GetValue<EWorkType>(), Description, _companyModelProvider.GetModel().Id);
+                parsedPricePerHour, parsedPieces, parsedPricePerPiece, SelectedWorkType.GetValue<EWorkType>(), Description, _companyModelProvider.GetModel().Id);
             await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _workRecordDetailFacade.AddAsync);
             _companyModelProvider.GetModel().WorkRecordsCount++;
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<IWorkRecordModelBase>(model) } });
@@ -133,9 +145,9 @@ namespace WorkManager.ViewModels.Dialogs
 			SelectedDate = DateTime.Today;
 			WorkTime = TimeSpan.Zero;
 			SelectedWorkType = new LocalizedEnum(EWorkType.Time);
-			Pieces = 0;
-			PricePerHour = 0;
-			PricePerPiece = 0;
+			Pieces = null;
+			PricePerHour = null;
+			PricePerPiece = null;
 		}
 	}
 }

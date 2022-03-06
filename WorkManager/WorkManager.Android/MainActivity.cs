@@ -7,7 +7,6 @@ using Android.OS;
 using Java.Lang;
 using PCLAppConfig;
 using Prism;
-using Prism.Ioc;
 using Xamarin.Forms;
 
 
@@ -32,19 +31,16 @@ namespace WorkManager.Droid
             LoadApplication(new App(new AndroidInitializer()));
         }
 
+        public override void OnBackPressed()
+        {
+            PrismPlatform.OnBackPressed();
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
-
-    public class AndroidInitializer : IPlatformInitializer
-    {
-        public void RegisterTypes(IContainerRegistry containerRegistry)
-        {
-            // Register any platform specific implementations
         }
     }
 }

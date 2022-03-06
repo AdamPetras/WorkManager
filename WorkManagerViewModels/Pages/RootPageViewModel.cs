@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Navigation;
 using WorkManager.BL.Interfaces.Providers;
@@ -10,13 +11,12 @@ namespace WorkManager.ViewModels.Pages
 {
 	public class RootPageViewModel : ViewModelBase
 	{
-		private readonly ICurrentModelProviderManager<IUserModel> _currentUserProvider;
+        private readonly IAuthenticationService _authenticationService;
 
-		public RootPageViewModel(INavigationService navigationService,
-            ICurrentModelProviderManager<IUserModel> currentUserProvider, ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
+        public RootPageViewModel(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute, IAuthenticationService authenticationService) : base(navigationService, viewModelTaskExecute)
 		{
-			_currentUserProvider = currentUserProvider;
-			ShowTasksCommand = new DelegateCommand(async ()=>await ShowTasksAsync());
+            _authenticationService = authenticationService;
+            ShowTasksCommand = new DelegateCommand(async ()=>await ShowTasksAsync());
 			ShowWorkTimeStoreCommand = new DelegateCommand(async () => await ShowWorkTimeStoreAsync());
 			ShowUserProfileCommand = new DelegateCommand(async () => await ShowUserProfileAsync());
 			ShowSettingsCommand = new DelegateCommand(async () => await ShowSettingsAsync());
@@ -66,10 +66,9 @@ namespace WorkManager.ViewModels.Pages
         }
 
 		private async Task LogoutAsync()
-		{
-			_currentUserProvider.SetItem(null);
-			await NavigationService.NavigateAsync("/NavigationPage/LoginPage");
-		}
+        {
+            await _authenticationService.LogoutAsync(CancellationToken.None);
+        }
 
 		private async Task ShowTasksAsync()
         {
