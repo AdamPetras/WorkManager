@@ -13,7 +13,7 @@ namespace WorkManager.DAL.Entities
         public Guid Id { get; set; }
         [StringLength(20)]
 		public string Username { get; set; }
-        [StringLength(20)]
+        [StringLength(512)]
         public string Password { get; set; }
         [StringLength(30)]
 		public string FirstName { get; set; }

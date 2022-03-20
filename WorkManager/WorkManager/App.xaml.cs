@@ -1,32 +1,22 @@
 using System;
-using System.Linq;
-using System.Reflection;
 using CommonServiceLocator;
-using Microsoft.Extensions.Logging;
 using Prism;
 using Prism.Ioc;
 using Prism.Unity;
 using Unity;
 using Unity.ServiceLocation;
-using Prism.Mvvm;
-using Unity.Injection;
 using WorkManager.BL.Facades;
-using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
+using WorkManager.BL.Interfaces.Mappers;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.BL.Interfaces.Services;
 using WorkManager.BL.Mappers;
 using WorkManager.BL.Providers;
 using WorkManager.BL.Services;
-using WorkManager.Core;
 using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
-using WorkManager.DAL.Repositories;
-using WorkManager.DAL.DbContext.Interfaces;
-using WorkManager.DAL.Repositories.Interfaces;
 using WorkManager.Extensions;
 using WorkManager.Logger;
-using WorkManager.Models;
 using WorkManager.Models.BaseClasses;
 using WorkManager.Models.Interfaces;
 using WorkManager.Models.Interfaces.ModelServices;
@@ -67,7 +57,6 @@ namespace WorkManager
             container.RegisterSingleton<IToastMessageService, ToastMessageService>();
             RegisterXamarinEssentials(containerRegistry);
             RegisterDbContext(container);
-            RegisterRepositories(container);
             RegisterFactories(container);
             RegisterMappers(container);
             RegisterFacades(container);
@@ -89,18 +78,7 @@ namespace WorkManager
         {
             container.RegisterSingleton<WorkManagerDbContext>();
         }
-
-        private void RegisterRepositories(IUnityContainer container)
-        {
-            container.RegisterMultipleTypeSingleton<IUserRepository, IRepository<UserEntity>, UserRepository>();
-            container.RegisterMultipleTypeSingleton<ICompanyRepository, IRepository<CompanyEntity>, CompanyRepository>();
-            container.RegisterMultipleTypeSingleton<ITaskGroupRepository, IRepository<TaskGroupEntity>, TaskGroupRepository>();
-            container.RegisterMultipleTypeSingleton<ITaskRepository, IRepository<TaskEntity>, TaskRepository>();
-            container.RegisterMultipleTypeSingleton<IWorkRecordRepository, IRepository<WorkRecordEntity>, WorkRecordRepository>();
-            container.RegisterMultipleTypeSingleton<IKanbanStateRepository, IRepository<KanbanStateEntity>, KanbanStateRepository>();
-            container.RegisterMultipleTypeSingleton<IImageRepository, IRepository<ImageEntity>, ImageRepository>();
-        }
-
+        
         private void RegisterFactories(IUnityContainer container)
         {
             container.RegisterSingleton<IWorkRecordModelFactory, WorkRecordModelFactory>();
@@ -108,13 +86,14 @@ namespace WorkManager
 
         private void RegisterMappers(IUnityContainer container)
         {
-            container.RegisterSingleton<IMapper<WorkRecordEntity, IWorkRecordModelBase>, WorkRecordMapper>();
-            container.RegisterSingleton<IMapper<CompanyEntity, ICompanyModel>, CompanyMapper>();
-            container.RegisterSingleton<IMapper<TaskEntity, ITaskModel>, TaskMapper>();
-            container.RegisterSingleton<IMapper<TaskGroupEntity, ITaskGroupModel>, TaskGroupMapper>();
-            container.RegisterSingleton<IMapper<UserEntity, IUserModel>, UserMapper>();
-            container.RegisterSingleton<IMapper<KanbanStateEntity, IKanbanStateModel>, KanbanStateMapper>();
-            container.RegisterSingleton<IMapper<ImageEntity, IImageModel>, ImageMapper>();
+            container.RegisterMultipleTypeSingleton<IWorkRecordMapper, IMapper<WorkRecordEntity, IWorkRecordModelBase>, WorkRecordMapper>();
+            container.RegisterMultipleTypeSingleton<ICompanyMapper, IMapper<CompanyEntity, ICompanyModel>, CompanyMapper>();
+            container.RegisterMultipleTypeSingleton<ITaskMapper, IMapper<TaskEntity, ITaskModel>, TaskMapper>();
+            container.RegisterMultipleTypeSingleton<ITaskDetailMapper, IMapper<TaskEntity, ITaskDetailModel>, TaskDetailMapper>();
+            container.RegisterMultipleTypeSingleton<ITaskGroupMapper, IMapper<TaskGroupEntity, ITaskGroupModel>, TaskGroupMapper>();
+            container.RegisterMultipleTypeSingleton<IUserMapper, IMapper<UserEntity, IUserModel>, UserMapper>();
+            container.RegisterMultipleTypeSingleton<IKanbanStateMapper, IMapper<KanbanStateEntity, IKanbanStateModel>, KanbanStateMapper>();
+            container.RegisterMultipleTypeSingleton<IImageMapper, IMapper<ImageEntity, IImageModel>, ImageMapper>();
 
         }
 
@@ -124,6 +103,7 @@ namespace WorkManager
             container.RegisterMultipleTypeSingleton<ICompanyFacade, IFacade<ICompanyModel>, CompanyFacade>();
             container.RegisterMultipleTypeSingleton<ITaskGroupFacade, IFacade<ITaskGroupModel>, TaskGroupFacade>();
             container.RegisterMultipleTypeSingleton<ITaskFacade, IFacade<ITaskModel>, TaskFacade>();
+            container.RegisterMultipleTypeSingleton<ITaskDetailFacade, IFacade<ITaskDetailModel>, TaskDetailFacade>();
             container.RegisterMultipleTypeSingleton<IKanbanStateFacade, IFacade<IKanbanStateModel>, KanbanStateFacade>();
             container.RegisterMultipleTypeSingleton<IWorkRecordFacade, IFacade<IWorkRecordModelBase>, WorkRecordFacade>();
             container.RegisterMultipleTypeSingleton<IImageFacade, IFacade<IImageModel>, ImageFacade>();
@@ -174,6 +154,7 @@ namespace WorkManager
             containerRegistry.RegisterForNavigation<TaskGroupDetailPage, TaskGroupDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<CompanyDetailPage, CompanyDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<WorkRecordStatisticsPage, WorkRecordStatisticsPageViewModel>();
+            containerRegistry.RegisterForNavigation<RelatedTasksPage, RelatedTasksPageViewModel>();
 
 
             containerRegistry.RegisterDialog<AddWorkRecordDialog, AddWorkRecordDialogViewModel>();

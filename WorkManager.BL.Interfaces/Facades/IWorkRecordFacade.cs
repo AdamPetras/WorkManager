@@ -16,5 +16,6 @@ namespace WorkManager.BL.Interfaces.Facades
 
         Task<double> GetPriceTotalThisMonthAsync(Guid companyId, DateTime today, CancellationToken token = default);
         Task<double> GetPriceTotalThisYearAsync(Guid companyId, DateTime today, CancellationToken token = default);
+        Task RemoveAllByCompanyIdAsync(Guid companyId, CancellationToken token = default);
     }
 }

@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using WorkManager.BL.Interfaces;
+﻿using WorkManager.BL.Interfaces.Mappers;
 using WorkManager.DAL.Entities;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Mappers
 {
-	public class UserMapper: IMapper<UserEntity,IUserModel>
+	public class UserMapper: IUserMapper
 	{
 
 		public UserMapper()
@@ -34,27 +31,6 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
 				return new UserModel();
 			return new UserModel(entity.Id, entity.FirstName, entity.Surname, entity.Username, entity.Password);
-		}
-
-        public Task<UserEntity> MapAsync(IUserModel model, CancellationToken token)
-        {
-			if (model == null)
-                return Task.FromResult(new UserEntity());
-            return Task.FromResult(new UserEntity()
-            {
-                Id = model.Id,
-                Username = model.Username,
-                Password = model.Password,
-                FirstName = model.FirstName,
-                Surname = model.Surname,
-            });
-		}
-
-        public Task<IUserModel> MapAsync(UserEntity entity, CancellationToken token)
-        {
-			if (entity == null)
-                return Task.FromResult<IUserModel>(new UserModel());
-            return Task.FromResult<IUserModel>(new UserModel(entity.Id, entity.FirstName, entity.Surname, entity.Username, entity.Password));
 		}
     }
 }

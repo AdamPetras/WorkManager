@@ -3,7 +3,6 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using WorkManager.BL.Interfaces.Providers;
 using WorkManager.Core.Annotations;
-using WorkManager.DAL.Repositories;
 
 namespace WorkManager.Logger
 {

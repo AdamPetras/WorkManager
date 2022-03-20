@@ -48,7 +48,7 @@ namespace WorkManager.Models
             return Equals((TaskModel)other);
         }
 
-        protected bool Equals(TaskModel other)
+        private bool Equals(TaskModel other)
         {
             return ActualDateTime.Equals(other.ActualDateTime) && Name == other.Name && Description == other.Description &&
                    TaskDoneDateTime.Equals(other.TaskDoneDateTime) && TaskGroupId == other.TaskGroupId &&

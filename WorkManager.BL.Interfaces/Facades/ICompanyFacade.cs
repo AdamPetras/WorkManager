@@ -11,5 +11,6 @@ namespace WorkManager.BL.Interfaces.Facades
         ICollection<ICompanyModel> GetCompaniesByUserId(Guid userId);
         Task<ICollection<ICompanyModel>> GetCompaniesByUserIdAsync(Guid userId, CancellationToken token = default);
         Task<bool> ExistsAsync(string companyName, CancellationToken token = default);
+        Task RemoveAllByUserIdAsync(Guid userId, CancellationToken token = default);
     }
 }

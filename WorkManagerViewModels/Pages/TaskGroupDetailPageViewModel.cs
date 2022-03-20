@@ -14,7 +14,6 @@ using WorkManager.Extensions;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 using WorkManager.ViewModels.Resources;
-using Xamarin.Forms.Internals;
 
 namespace WorkManager.ViewModels.Pages
 {
@@ -105,7 +104,7 @@ namespace WorkManager.ViewModels.Pages
             await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
             {
                 await _taskGroupFacade.RemoveAsync(SelectedTaskGroup.Id, token);
-                EnumerableExtensions.ForEach(KanbanItems, async (s) => await _kanbanStateFacade.RemoveAsync(s.Id, token));
+                await KanbanItems.ForEachAwait(async (s, t) => await _kanbanStateFacade.RemoveAsync(s.Id,t), token);
             });
             await NavigationService.GoBackAsync();
             EndProcess();
@@ -205,7 +204,7 @@ namespace WorkManager.ViewModels.Pages
 
         private void UpdateKanbanStatesOrder()
         {
-            EnumerableExtensions.ForEach(KanbanItems, s => s.StateOrder = KanbanItems.IndexOf(s));
+            KanbanItems.ForEach( s => s.StateOrder = KanbanItems.IndexOf(s));
         }
     }
 }

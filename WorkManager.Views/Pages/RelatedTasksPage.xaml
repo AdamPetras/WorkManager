@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:WorkManager.ViewModels.Pages;assembly=WorkManager.ViewModels"
+             xmlns:effects="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
+             x:Class="WorkManager.Views.Pages.RelatedTasksPage"
+             x:DataType="pages:RelatedTasksPageViewModel">
+    <CollectionView ItemsSource="{Binding RelatedTasks}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="interfaces:ITaskModel">
+                <StackLayout effects:TouchEffect.Command="{Binding SelectDeselectRelatedCommand, Source={RelativeSource AncestorType={x:Type pages:RelatedTasksPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
+                    <Label Text="{Binding Name}"></Label>
+                </StackLayout>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

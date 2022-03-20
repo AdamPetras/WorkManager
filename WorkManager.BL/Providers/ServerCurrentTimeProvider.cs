@@ -1,28 +1,34 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using WorkManager.BL.Interfaces.Providers;
-using WorkManager.DAL.Repositories;
+using WorkManager.DAL.DbContext;
+using WorkManager.DAL.Entities;
 
 namespace WorkManager.BL.Providers
 {
     public class ServerCurrentTimeProvider : IServerCurrentTimeProvider
     {
-        private readonly SystemRepository _systemRepository;
+        private readonly WorkManagerDbContext _dbContext;
 
-        public ServerCurrentTimeProvider(SystemRepository systemRepository)
+        public ServerCurrentTimeProvider(WorkManagerDbContext dbContext)
         {
-            _systemRepository = systemRepository;
+            _dbContext = dbContext;
         }
 
         public DateTime GetTime()
         {
-            return _systemRepository.ActualServerTime();
+            IQueryable<ActualDateTimeEntity> dQuery = _dbContext.Set<ActualDateTimeEntity>().FromSqlRaw("SELECT \"04DC42DD-64C6-428A-94BE-F46390C1EF27\" AS Id, now() AS ActualDateTime");
+            DateTime time = dQuery.First().ActualDateTime;
+            return time;
         }
 
-        public Task<DateTime> GetTimeAsync(CancellationToken token)
+        public async Task<DateTime> GetTimeAsync(CancellationToken token)
         {
-            return _systemRepository.ActualServerTimeAsync(token);
+            IQueryable<ActualDateTimeEntity> dQuery = _dbContext.Set<ActualDateTimeEntity>().FromSqlRaw("SELECT \"04DC42DD-64C6-428A-94BE-F46390C1EF27\" AS Id, now() AS ActualDateTime");
+            return (await dQuery.FirstAsync(token)).ActualDateTime;
         }
     }
 }

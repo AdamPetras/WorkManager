@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -38,7 +39,8 @@
         <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding SelectedTask.WorkTime}"></TimePicker>
         <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" Text="{x:Static resources:TranslateDialogsSR.Priority}" TextColor="{StaticResource SecondaryTextColor}"></Label>
         <Picker Grid.Row="5" Grid.Column="1" SelectedItem="{Binding SelectedTask.Priority}" ItemsSource="{Binding Source ={extensions:EnumBindingSource {x:Type enums:EPriority}}}"></Picker>
-        <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80">
+        <Button Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding AddRelatedTasksCommand}" Text="TEST"></Button>
+        <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="80">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="80"></ColumnDefinition>

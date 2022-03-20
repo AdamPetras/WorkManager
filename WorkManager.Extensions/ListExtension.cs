@@ -1,65 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using WorkManager.Core;
 using WorkManager.Models.Interfaces;
 
 namespace WorkManager.Extensions
 {
     public static class ListExtension
     {
-        public static void AddIfNotExists<T>(this IList<T> lst, T value) where T : IModel
+        public static void AddIfNotExists<T>(this IList<T> list, T value) where T : IModel
         {
-            if (lst == null)
-                throw new ArgumentException("lst");
-            if (lst.FirstOrDefault(s => s.Id == value.Id) == null)
-                lst.Add(value);
+            Guard.ParameterNull(list, nameof(list));
+            if (list.FirstOrDefault(s => s.Id == value.Id) == null)
+                list.Add(value);
         }
 
-        public static IList<T> AddRange<T>(this IList<T> lst, IEnumerable<T> secondList)
+        public static IList<T> AddRange<T>(this IList<T> list, IEnumerable<T> enumeration)
         {
-            if (lst == null)
-                throw new ArgumentException("lst");
-            if (secondList == null)
-                return lst;
-            foreach (T value in secondList)
+            Guard.ParameterNull(list, nameof(list));
+            if (enumeration == null)
+                return list;
+            foreach (T value in enumeration)
             {
-                lst.Add(value);
+                list.Add(value);
             }
-            return lst;
+            return list;
         }
 
-        public static void ForEach<T>(this IEnumerable<T> lst, Action<T> action)
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            if (lst == null)
-                throw new ArgumentNullException("lst");
-            if (action == null) 
-                throw new ArgumentNullException("action");
-
-            foreach (T item in lst)
+            Guard.ParameterNull(enumeration, nameof(enumeration));
+            Guard.ParameterNull(action, nameof(action));
+            foreach (T item in enumeration)
             {
                 action(item);
             }
         }
 
-        public static IList<T> AddRange<T>(this IList<T> lst, params T[] secondList)
+        public static async Task ForEachAwait<T>(this IEnumerable<T> enumeration, Func<T, CancellationToken, Task> action, CancellationToken token)
         {
-            if (lst == null) 
-                throw new ArgumentNullException("lst");
-            return AddRange(lst, secondList.ToList());
+            Guard.ParameterNull(enumeration, nameof(enumeration));
+            Guard.ParameterNull(action, nameof(action));
+            foreach (T item in enumeration)
+            {
+                await action(item, token);
+            }
         }
 
-        public static IList<T> RemoveAll<T>(this IList<T> lst, Func<T, bool> predicate)
+        public static IList<T> AddRange<T>(this IList<T> list, params T[] secondList)
         {
-            if (lst == null) 
-                throw new ArgumentNullException("lst");
-            return lst.RemoveRange(lst.Where(predicate));
+            Guard.ParameterNull(list, nameof(list));
+            return AddRange(list, secondList.ToList());
         }
 
-        public static IList<T> RemoveRange<T>(this IList<T> lst, IEnumerable<T> removeList)
+        public static IList<T> RemoveAll<T>(this IList<T> list, Func<T, bool> predicate)
         {
-            if (lst == null) 
-                throw new ArgumentNullException("lst");
-            IList<T> clearedList = lst.ToList();
+            Guard.ParameterNull(list, nameof(list));
+            return list.RemoveRange(list.Where(predicate));
+        }
+
+        public static IList<T> RemoveRange<T>(this IList<T> list, IEnumerable<T> removeList)
+        {
+            Guard.ParameterNull(list, nameof(list));
+            Guard.ParameterNull(removeList, nameof(removeList));
+            IList<T> clearedList = list.ToList();
             removeList.ForEach(s => clearedList.Remove(s));
             return clearedList;
         }

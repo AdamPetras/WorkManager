@@ -16,12 +16,7 @@ namespace WorkManager.BL.Interfaces.Facades
 		Task RemoveAsync(Guid id, CancellationToken token = default);
 		void Update(TModel model);
 		Task UpdateAsync(TModel model, CancellationToken token = default);
-        ICollection<TModel> GetAll();
-        Task<ICollection<TModel>> GetAllAsync(CancellationToken token = default);
-		TModel GetById(Guid id);
-		Task<TModel> GetByIdAsync(Guid id, CancellationToken token = default);
 		bool Exists(Guid id);
-		void Clear();
-		Task ClearAsync (CancellationToken token = default);
-	}
+		Task<bool> ExistsAsync(Guid id, CancellationToken token = default);
+    }
 }

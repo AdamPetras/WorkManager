@@ -28,7 +28,8 @@ namespace WorkManager.DAL.DbContext
                 entity.HasNoKey();
                 entity.ToView(nameof(ActualDateTimeEntity));
             });
-		}
+            modelBuilder.Entity<TaskEntity>().HasMany(s=>s.RelatedTasks).WithMany(s => s.RelatedBy);
+        }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

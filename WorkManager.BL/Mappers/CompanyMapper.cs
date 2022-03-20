@@ -1,22 +1,19 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using WorkManager.BL.Interfaces;
+using WorkManager.BL.Interfaces.Mappers;
+using WorkManager.DAL.DbContext;
 using WorkManager.DAL.Entities;
-using WorkManager.DAL.Repositories.Interfaces;
 using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 
 namespace WorkManager.BL.Mappers
 {
-	public class CompanyMapper: IMapper<CompanyEntity, ICompanyModel>
+	public class CompanyMapper: ICompanyMapper
 	{
-		private readonly IMapper<UserEntity, IUserModel> _userMapper;
-        private readonly IWorkRecordRepository _workRecordRepository;
 
-        public CompanyMapper(IMapper<UserEntity, IUserModel> userMapper, IWorkRecordRepository workRecordRepository)
+        public CompanyMapper()
         {
-            _userMapper = userMapper;
-            _workRecordRepository = workRecordRepository;
         }
 
 		public CompanyEntity Map(ICompanyModel model)
@@ -31,30 +28,11 @@ namespace WorkManager.BL.Mappers
 			};
 		}
 
-		public ICompanyModel Map(CompanyEntity entity)
-		{
-			if (entity == null)
-				return new CompanyModel();
-			return new CompanyModel(entity.Id,entity.Name, _workRecordRepository.Count(s=>s.CompanyId == entity.Id), entity.UserId);
-		}
-
-        public Task<CompanyEntity> MapAsync(ICompanyModel model, CancellationToken token)
-        {
-            if (model == null)
-                return Task.FromResult(new CompanyEntity());
-            return Task.FromResult(new CompanyEntity()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                UserId = model.UserId,
-            });
-        }
-
-        public async Task<ICompanyModel> MapAsync(CompanyEntity entity, CancellationToken token)
+        public ICompanyModel Map(CompanyEntity entity, int workRecordsCount)
         {
             if (entity == null)
                 return new CompanyModel();
-            return new CompanyModel(entity.Id, entity.Name, await _workRecordRepository.CountAsync(s=>s.CompanyId == entity.Id, token), entity.UserId);
+            return new CompanyModel(entity.Id, entity.Name, workRecordsCount, entity.UserId);
         }
 	}
 }

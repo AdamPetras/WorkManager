@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WorkManager.DAL.Entities.Interfaces;
@@ -31,7 +32,8 @@ namespace WorkManager.DAL.Entities
 
 		[ForeignKey(nameof(TaskGroupId))]
 		public virtual TaskGroupEntity TaskGroup { get; set; }
-		public EPriority Priority { get; set; }
+		public virtual ICollection<RelatedTaskEntity> RelatedTasks { get; set; }
+        public EPriority Priority { get; set; }
 		public TimeSpan WorkTime { get; set; }
 	}
 }

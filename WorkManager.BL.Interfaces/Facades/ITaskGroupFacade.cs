@@ -12,5 +12,6 @@ namespace WorkManager.BL.Interfaces.Facades
         ICollection<ITaskGroupModel> GetTaskGroupsByUserId(Guid userId);
         Task<ICollection<ITaskGroupModel>> GetTaskGroupsByUserIdAsync(Guid userId, CancellationToken token = default);
         Task<bool> ExistsAsync(string taskGroupName, CancellationToken token = default);
+        Task RemoveAllByUserIdAsync(Guid userId, CancellationToken token = default);
     }
 }

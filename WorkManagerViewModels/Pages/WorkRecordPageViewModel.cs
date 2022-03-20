@@ -215,7 +215,7 @@ namespace WorkManager.ViewModels.Pages
                 TranslateViewModelsSR.WorkRecordClearDialogMessage, TranslateViewModelsSR.DialogYes,
                 TranslateViewModelsSR.DialogNo))
             {
-                await ViewModelTaskExecute.ExecuteTaskWithQueue(_workFacade.ClearAsync);
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(_companyModelProvider.GetModel().Id, _workFacade.RemoveAllByCompanyIdAsync);
                 Records?.Clear();
                 _companyModelProvider.GetModel().WorkRecordsCount = 0;
             }

@@ -26,24 +26,25 @@ namespace WorkManager.ViewModels.Pages
     public class TaskDetailPageViewModel : ViewModelBase
     {
         private readonly IPageDialogService _pageDialogService;
-        private readonly ITaskFacade _taskFacade;
+        private readonly ITaskDetailFacade _taskDetailFacade;
         private readonly IDialogService _dialogService;
         private readonly IImageFacade _imageFacade;
 
-        private ITaskModel _defaultTask;
+        private ITaskDetailModel _defaultTask;
 
         public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService,
-            ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade,
+            ITaskDetailFacade taskDetailFacade, IDialogService dialogService, IImageFacade imageFacade,
             ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _pageDialogService = pageDialogService;
-            _taskFacade = taskFacade;
+            _taskDetailFacade = taskDetailFacade;
             _dialogService = dialogService;
             _imageFacade = imageFacade;
             SaveCommand = new DelegateCommand(async () => await SaveAsync());
             DeletePhotoCommand = new DelegateCommand<IImageModel>(DeletePhoto);
             TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
             GoBackCommand = new DelegateCommand(async () => await GoBackAsync());
+            AddRelatedTasksCommand = new DelegateCommand(async () => await ShowAddRelatedTasksAsync());
             ShowDetailImageDialogCommand = new DelegateCommand<string>(ShowDetailImageDialog);
             PhotoPaths = new ObservableCollection<IImageModel>();
             InitDialogCommands();
@@ -57,12 +58,13 @@ namespace WorkManager.ViewModels.Pages
         public DelegateCommand TakePhotoCommand { get; }
         public DelegateCommand<string> ShowDetailImageDialogCommand { get; }
         public DelegateCommand GoBackCommand { get; }
+        public DelegateCommand AddRelatedTasksCommand { get; }
 
         public int NameMaxLength { get; }
         public int DescriptionMaxLength { get; }
 
-        private ITaskModel _selectedTask;
-        public ITaskModel SelectedTask
+        private ITaskDetailModel _selectedTask;
+        public ITaskDetailModel SelectedTask
         {
             get => _selectedTask;
             private set
@@ -98,8 +100,8 @@ namespace WorkManager.ViewModels.Pages
             }
             BeginProcess();
             TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
-            SelectedTask = navigationParameters.TaskModel;
-            _defaultTask = new TaskModel(navigationParameters.TaskModel);
+            SelectedTask = await ViewModelTaskExecute.ExecuteTaskWithQueue(navigationParameters.TaskModel.Id, _taskDetailFacade.GetByIdAsync);
+            _defaultTask = new TaskDetailModel(SelectedTask);
             PhotoPaths = new ObservableCollection<IImageModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTask.Id, _imageFacade.GetAllImagesByTaskAsync));
             InitImages = PhotoPaths.ToList();
             EndProcess();
@@ -131,7 +133,7 @@ namespace WorkManager.ViewModels.Pages
         {
             await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
             {
-                await _taskFacade.UpdateAsync(SelectedTask, token);
+                await _taskDetailFacade.UpdateAsync(SelectedTask, token);
                 EnumerableDiffChecker<IImageModel> diffChecker = new EnumerableDiffChecker<IImageModel>();
                 DifferentialCollection<IImageModel> collections = diffChecker.CheckCollectionDifference(InitImages, PhotoPaths);
                 foreach (IImageModel imageModel in collections.AddEnumerable)
@@ -151,7 +153,7 @@ namespace WorkManager.ViewModels.Pages
             IsDialogThrown = true;
             if (await _pageDialogService.DisplayAlertAsync(TranslateViewModelsSR.DialogTitleWarning, TranslateViewModelsSR.SelectedTaskDeleteMessage.Format(SelectedTask.Name), TranslateViewModelsSR.DialogYes, TranslateViewModelsSR.DialogNo))
             {
-                await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTask.Id, _taskFacade.RemoveAsync);
+                await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTask.Id, _taskDetailFacade.RemoveAsync);
                 await NavigationService.GoBackAsync(new NavigationParameters() { { "DialogEvent", new RemoveAfterDialogCloseDialogEvent<ITaskModel>(SelectedTask) } });
             }
             IsDialogThrown = false;
@@ -165,6 +167,11 @@ namespace WorkManager.ViewModels.Pages
             {
                 PhotoPaths.Add(new ImageModel(Guid.NewGuid(), path, "", SelectedTask.Id));
             }
+        }
+
+        private async Task ShowAddRelatedTasksAsync()
+        {
+            await NavigationService.NavigateAsync("RelatedTasksPage",new TaskDetailNavigationParameters(SelectedTask));
         }
 
         private void DeletePhoto(IImageModel obj)

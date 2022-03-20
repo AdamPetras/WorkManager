@@ -9,8 +9,8 @@ using WorkManager.DAL.DbContext;
 namespace WorkManager.DAL.Migrations
 {
     [DbContext(typeof(WorkManagerDbContext))]
-    [Migration("20220113160900_Initial")]
-    partial class Initial
+    [Migration("20220315201541_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,32 @@ namespace WorkManager.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.13");
 
+            modelBuilder.Entity("RelatedTaskEntityTaskEntity", b =>
+                {
+                    b.Property<Guid>("RelatedById")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("RelatedTasksId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("RelatedById", "RelatedTasksId");
+
+                    b.HasIndex("RelatedTasksId");
+
+                    b.ToTable("RelatedTaskEntityTaskEntity");
+                });
+
+            modelBuilder.Entity("WorkManager.DAL.Entities.ActualDateTimeEntity", b =>
+                {
+                    b.Property<DateTime>("ActualDateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
+
+                    b.ToView("ActualDateTimeEntity");
+                });
+
             modelBuilder.Entity("WorkManager.DAL.Entities.CompanyEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -26,7 +52,8 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -48,10 +75,12 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Path")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<Guid>("TaskId")
                         .HasColumnType("char(36)");
@@ -70,10 +99,12 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("IconName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<int>("StateOrder")
                         .HasColumnType("int");
@@ -88,6 +119,21 @@ namespace WorkManager.DAL.Migrations
                     b.ToTable("KanbanSet");
                 });
 
+            modelBuilder.Entity("WorkManager.DAL.Entities.RelatedTaskEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RelatedTaskEntity");
+                });
+
             modelBuilder.Entity("WorkManager.DAL.Entities.TaskEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,10 +144,12 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -134,10 +182,12 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
@@ -156,16 +206,20 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<string>("Password")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.Property<string>("Username")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
 
@@ -185,7 +239,8 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
                     b.Property<uint>("Pieces")
                         .HasColumnType("int unsigned");
@@ -207,6 +262,21 @@ namespace WorkManager.DAL.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("WorkSet");
+                });
+
+            modelBuilder.Entity("RelatedTaskEntityTaskEntity", b =>
+                {
+                    b.HasOne("WorkManager.DAL.Entities.TaskEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RelatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WorkManager.DAL.Entities.RelatedTaskEntity", null)
+                        .WithMany()
+                        .HasForeignKey("RelatedTasksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WorkManager.DAL.Entities.CompanyEntity", b =>

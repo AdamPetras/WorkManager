@@ -114,7 +114,7 @@ namespace WorkManager.ViewModels.Pages
 				TranslateViewModelsSR.CompanyClearDialogMessage, TranslateViewModelsSR.DialogYes,
 				TranslateViewModelsSR.DialogNo))
 			{
-				await ViewModelTaskExecute.ExecuteTaskWithQueue(_companyFacade.ClearAsync);
+				await ViewModelTaskExecute.ExecuteTaskWithQueue(_currentUserProvider.GetModel().Id, _companyFacade.RemoveAllByUserIdAsync);
 				Companies.Clear();
 			}
 			IsDialogThrown = false;

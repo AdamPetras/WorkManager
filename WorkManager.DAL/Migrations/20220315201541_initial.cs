@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkManager.DAL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,17 +11,31 @@ namespace WorkManager.DAL.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "RelatedTaskEntity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RelatedTaskEntity", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "UserSet",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Username = table.Column<string>(type: "longtext", nullable: true)
+                    Username = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "longtext", nullable: true)
+                    Password = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FirstName = table.Column<string>(type: "longtext", nullable: true)
+                    FirstName = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Surname = table.Column<string>(type: "longtext", nullable: true)
+                    Surname = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -35,7 +49,7 @@ namespace WorkManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Type = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
@@ -57,9 +71,9 @@ namespace WorkManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
@@ -87,7 +101,7 @@ namespace WorkManager.DAL.Migrations
                     PricePerHour = table.Column<double>(type: "double", nullable: false),
                     Pieces = table.Column<uint>(type: "int unsigned", nullable: false),
                     PricePerPiece = table.Column<double>(type: "double", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -107,10 +121,10 @@ namespace WorkManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     StateOrder = table.Column<int>(type: "int", nullable: false),
-                    IconName = table.Column<string>(type: "longtext", nullable: true)
+                    IconName = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TaskGroupId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
@@ -132,9 +146,9 @@ namespace WorkManager.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ActualDateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TaskDoneDateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     StateId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -165,9 +179,9 @@ namespace WorkManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Path = table.Column<string>(type: "longtext", nullable: true)
+                    Path = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TaskId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
@@ -177,6 +191,31 @@ namespace WorkManager.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_ImageSet_TaskSet_TaskId",
                         column: x => x.TaskId,
+                        principalTable: "TaskSet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "RelatedTaskEntityTaskEntity",
+                columns: table => new
+                {
+                    RelatedById = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    RelatedTasksId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RelatedTaskEntityTaskEntity", x => new { x.RelatedById, x.RelatedTasksId });
+                    table.ForeignKey(
+                        name: "FK_RelatedTaskEntityTaskEntity_RelatedTaskEntity_RelatedTasksId",
+                        column: x => x.RelatedTasksId,
+                        principalTable: "RelatedTaskEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RelatedTaskEntityTaskEntity_TaskSet_RelatedById",
+                        column: x => x.RelatedById,
                         principalTable: "TaskSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,6 +236,11 @@ namespace WorkManager.DAL.Migrations
                 name: "IX_KanbanSet_TaskGroupId",
                 table: "KanbanSet",
                 column: "TaskGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RelatedTaskEntityTaskEntity_RelatedTasksId",
+                table: "RelatedTaskEntityTaskEntity",
+                column: "RelatedTasksId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskGroupSet_UserId",
@@ -225,7 +269,13 @@ namespace WorkManager.DAL.Migrations
                 name: "ImageSet");
 
             migrationBuilder.DropTable(
+                name: "RelatedTaskEntityTaskEntity");
+
+            migrationBuilder.DropTable(
                 name: "WorkSet");
+
+            migrationBuilder.DropTable(
+                name: "RelatedTaskEntity");
 
             migrationBuilder.DropTable(
                 name: "TaskSet");
