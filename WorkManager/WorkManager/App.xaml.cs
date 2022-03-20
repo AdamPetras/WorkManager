@@ -88,8 +88,8 @@ namespace WorkManager
         {
             container.RegisterMultipleTypeSingleton<IWorkRecordMapper, IMapper<WorkRecordEntity, IWorkRecordModelBase>, WorkRecordMapper>();
             container.RegisterMultipleTypeSingleton<ICompanyMapper, IMapper<CompanyEntity, ICompanyModel>, CompanyMapper>();
+            container.RegisterMultipleTypeSingleton<IRelatedTaskMapper, IMapper<RelatedTaskEntity, IRelatedTaskModel>, RelatedTaskMapper>();
             container.RegisterMultipleTypeSingleton<ITaskMapper, IMapper<TaskEntity, ITaskModel>, TaskMapper>();
-            container.RegisterMultipleTypeSingleton<ITaskDetailMapper, IMapper<TaskEntity, ITaskDetailModel>, TaskDetailMapper>();
             container.RegisterMultipleTypeSingleton<ITaskGroupMapper, IMapper<TaskGroupEntity, ITaskGroupModel>, TaskGroupMapper>();
             container.RegisterMultipleTypeSingleton<IUserMapper, IMapper<UserEntity, IUserModel>, UserMapper>();
             container.RegisterMultipleTypeSingleton<IKanbanStateMapper, IMapper<KanbanStateEntity, IKanbanStateModel>, KanbanStateMapper>();
@@ -102,8 +102,8 @@ namespace WorkManager
             container.RegisterMultipleTypeSingleton<IUserFacade, IFacade<IUserModel>, UserFacade>();
             container.RegisterMultipleTypeSingleton<ICompanyFacade, IFacade<ICompanyModel>, CompanyFacade>();
             container.RegisterMultipleTypeSingleton<ITaskGroupFacade, IFacade<ITaskGroupModel>, TaskGroupFacade>();
+            container.RegisterMultipleTypeSingleton<IRelatedTaskFacade, IFacade<IRelatedTaskModel>, RelatedTaskFacade>();
             container.RegisterMultipleTypeSingleton<ITaskFacade, IFacade<ITaskModel>, TaskFacade>();
-            container.RegisterMultipleTypeSingleton<ITaskDetailFacade, IFacade<ITaskDetailModel>, TaskDetailFacade>();
             container.RegisterMultipleTypeSingleton<IKanbanStateFacade, IFacade<IKanbanStateModel>, KanbanStateFacade>();
             container.RegisterMultipleTypeSingleton<IWorkRecordFacade, IFacade<IWorkRecordModelBase>, WorkRecordFacade>();
             container.RegisterMultipleTypeSingleton<IImageFacade, IFacade<IImageModel>, ImageFacade>();

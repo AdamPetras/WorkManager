@@ -31,7 +31,8 @@ namespace WorkManager.BL.Mappers
 				StateId = model.StateId,
 				Priority = model.Priority.GetValue<EPriority>(),
 				WorkTime = model.WorkTime,
-			};
+                RelatedTaskId = model.RelatedTaskId
+            };
 		}
 
 		public ITaskModel Map(TaskEntity entity, int imagesCount)
@@ -39,7 +40,7 @@ namespace WorkManager.BL.Mappers
 			if (entity == null)
 				return new TaskModel();
 			return new TaskModel(entity.Id, entity.ActualDateTime, entity.Name, imagesCount, entity.Description,
-				entity.TaskDoneDateTime, entity.TaskGroupId, entity.StateId, entity.Priority,entity.WorkTime);
+				entity.TaskDoneDateTime, entity.TaskGroupId, entity.StateId, entity.Priority,entity.WorkTime, entity.RelatedTaskId);
 		}
     }
 }

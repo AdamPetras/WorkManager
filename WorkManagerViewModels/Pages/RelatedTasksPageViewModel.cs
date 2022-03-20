@@ -1,10 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Navigation;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.NavigationParams;
+using WorkManager.Models;
 using WorkManager.Models.Interfaces;
 using WorkManager.ViewModels.BaseClasses;
 
@@ -13,14 +16,14 @@ namespace WorkManager.ViewModels.Pages
     public class RelatedTasksPageViewModel : CollectionViewModelBase
     {
         private readonly ITaskFacade _taskFacade;
-        private readonly ITaskDetailFacade _taskDetailFacade;
+        private readonly IRelatedTaskFacade _relatedTaskFacade;
 
-        private ITaskDetailModel _selectedTask;
+        private ITaskModel _selectedTask;
 
-        public RelatedTasksPageViewModel(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute, ITaskFacade taskFacade, ITaskDetailFacade taskDetailFacade) : base(navigationService, viewModelTaskExecute)
+        public RelatedTasksPageViewModel(INavigationService navigationService, ViewModelTaskExecute viewModelTaskExecute, ITaskFacade taskFacade, IRelatedTaskFacade relatedTaskFacade) : base(navigationService, viewModelTaskExecute)
         {
             _taskFacade = taskFacade;
-            _taskDetailFacade = taskDetailFacade;
+            _relatedTaskFacade = relatedTaskFacade;
             RefreshCommand = new DelegateCommand(async () => await RefreshAsync());
             SelectDeselectRelatedCommand = new DelegateCommand<ITaskModel>(async (s) => await SelectDeselectRelatedAsync(s));
         }
@@ -28,18 +31,16 @@ namespace WorkManager.ViewModels.Pages
         private async Task SelectDeselectRelatedAsync(ITaskModel model)
         {
             BeginProcess();
-            //ITaskModel foundedModel = _selectedTask.RelatedTasks.SingleOrDefault(s => s.Id == model.Id);
-            //if (foundedModel == null)
-            //{
-            //    _selectedTask.RelatedTasks.Add(model);
-            //    RelatedTasks.Remove(model);
-            //}
-            //else
-            //{
-            //    _selectedTask.RelatedTasks.Remove(foundedModel);
-            //    RelatedTasks.Add(foundedModel);
-            //}
-            //await ViewModelTaskExecute.ExecuteTaskWithQueue(_selectedTask, _taskDetailFacade.UpdateAsync);
+            IRelatedTaskModel foundedModel = await ViewModelTaskExecute.ExecuteTaskWithQueue(_selectedTask.RelatedTaskId, _relatedTaskFacade.GetByIdAsync);
+            if (foundedModel.RelatedBy.Any(s => s.Id == model.Id))
+            {
+                foundedModel.RelatedBy.Remove(model);
+            }
+            else
+            {
+                foundedModel.RelatedBy.Add(model);
+            }
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(foundedModel, _relatedTaskFacade.UpdateAsync);
             EndProcess();
         }
 
@@ -61,8 +62,8 @@ namespace WorkManager.ViewModels.Pages
         {
             BeginProcess();
             await base.OnNavigatedToAsyncInt(parameters);
-            TaskDetailNavigationParameters taskNavigationParameters = new TaskDetailNavigationParameters(parameters);
-            _selectedTask = taskNavigationParameters.TaskDetailModel;
+            TaskNavigationParameters taskNavigationParameters = new TaskNavigationParameters(parameters);
+            _selectedTask = taskNavigationParameters.TaskModel;
             await RefreshAsync();
             EndProcess();
         }

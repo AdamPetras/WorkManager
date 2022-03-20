@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,14 @@ namespace WorkManager.BL.Facades
             Mapper = mapper;
         }
 
-		public ICollection<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId)
+        public async Task<ITaskModel> GetByIdAsync(Guid taskId, CancellationToken token)
+        {
+            DatabaseSessionController.Reset();
+            TaskEntity entity = await DbContext.TaskSet.Include(s => s.RelatedTask).SingleOrDefaultAsync(s => s.Id == taskId, token);
+            return Mapper.Map(entity, await GetImagesCountAsync(entity.Id, token));
+        }
+
+        public ICollection<ITaskModel> GetTasksByTaskGroupId(Guid taskGroupId)
 		{
             DatabaseSessionController.Reset();
 			return DbContext.TaskSet.AsQueryable().Where(s=>s.TaskGroupId == taskGroupId).ToList().Select(s => Mapper.Map(s, GetImagesCount(s.Id))).ToList();
@@ -37,16 +45,19 @@ namespace WorkManager.BL.Facades
 			return await (await DbContext.TaskSet.AsQueryable().Where(s=>s.TaskGroupId == taskGroupId).ToListAsync(token)).ToAsyncEnumerable().SelectAwait( async s => Mapper.Map(s, await GetImagesCountAsync(s.Id, token))).ToListAsync(token);
         }
 
-        public ICollection<ITaskModel> GetTasksByTaskGroupNoRelatedToTask(ITaskDetailModel task, Guid taskGroupId)
+        public ICollection<ITaskModel> GetTasksByTaskGroupNoRelatedToTask(ITaskModel task, Guid taskGroupId)
         {
             DatabaseSessionController.Reset();
-            return DbContext.TaskSet.AsQueryable().Where(s => s.TaskGroupId == taskGroupId).ToList().Select(s => Mapper.Map(s, GetImagesCount(s.Id))).Where(s=> task.RelatedTasks.All(x => x.Id != s.Id)).ToList();
+            return DbContext.TaskSet.Include(s=>s.RelatedTask).AsQueryable().Where(t => t.TaskGroupId == taskGroupId && t.RelatedTask.RelatedTasks.All(s => s.Id != task.Id)).ToList().Select(s => Mapper.Map(s, GetImagesCount(s.Id))).ToList();
         }
 
-        public async Task<ICollection<ITaskModel>> GetTasksByTaskGroupNoRelatedToTaskAsync(ITaskDetailModel task, Guid taskGroupId, CancellationToken token = default)
+        public async Task<ICollection<ITaskModel>> GetTasksByTaskGroupNoRelatedToTaskAsync(ITaskModel task, Guid taskGroupId, CancellationToken token = default)
         {
             DatabaseSessionController.Reset();
-            return await (await DbContext.TaskSet.AsQueryable().Where(s => s.TaskGroupId == taskGroupId).ToListAsync(token)).ToAsyncEnumerable().SelectAwait(async s => Mapper.Map(s, await GetImagesCountAsync(s.Id, token))).Where(s => task.RelatedTasks.All(x => x.Id != s.Id)).ToListAsync(token);
+            return await DbContext.TaskSet.Include(s => s.RelatedTask).AsQueryable()
+                .Where(t => t.TaskGroupId == taskGroupId && t.RelatedTask.RelatedTasks.All(s => s.Id != task.Id))
+                .ToList().ToAsyncEnumerable().SelectAwait(async s => Mapper.Map(s, await GetImagesCountAsync(s.Id, token)))
+                .ToListAsync(token);
         }
 
         public ICollection<ITaskModel> GetTasksByTaskGroupIdAndKanbanState(Guid taskGroupId, string kanbanStateName)

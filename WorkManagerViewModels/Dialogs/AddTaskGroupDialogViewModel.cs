@@ -73,8 +73,11 @@ namespace WorkManager.ViewModels.Dialogs
                 return;
             }
             ITaskGroupModel model = new TaskGroupModel(Guid.NewGuid(), Name, Description, 0, _currentUserProvider.GetModel().Id);
-            await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _taskGroupFacade.AddAsync);
-            _kanbanStateFacade.CreateDefaultKanbanStateModels(model);
+            await ViewModelTaskExecute.ExecuteTaskWithQueue(async token =>
+            {
+                await _taskGroupFacade.AddAsync(model,token);
+                await _kanbanStateFacade.CreateDefaultKanbanStateModelsAsync(model, token);
+			});
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskGroupModel>(model) } });
             EndProcess();
 		}

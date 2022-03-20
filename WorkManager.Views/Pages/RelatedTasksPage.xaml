@@ -6,11 +6,15 @@
              xmlns:interfaces="clr-namespace:WorkManager.Models.Interfaces;assembly=WorkManager.Models.Interfaces"
              x:Class="WorkManager.Views.Pages.RelatedTasksPage"
              x:DataType="pages:RelatedTasksPageViewModel">
+    <ContentPage.Resources>
+        <ResourceDictionary Source="../Styles/SharedStyles.xaml"></ResourceDictionary>
+    </ContentPage.Resources>
     <CollectionView ItemsSource="{Binding RelatedTasks}">
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="interfaces:ITaskModel">
                 <StackLayout effects:TouchEffect.Command="{Binding SelectDeselectRelatedCommand, Source={RelativeSource AncestorType={x:Type pages:RelatedTasksPageViewModel}}}" effects:TouchEffect.CommandParameter="{Binding .}" effects:TouchEffect.NativeAnimation="True">
-                    <Label Text="{Binding Name}"></Label>
+                    <Label Text="{Binding Name}" HorizontalTextAlignment="Center" FontSize="Medium"></Label>
+                    <BoxView HeightRequest="2" BackgroundColor="{StaticResource BorderColor}"></BoxView>
                 </StackLayout>
             </DataTemplate>
         </CollectionView.ItemTemplate>

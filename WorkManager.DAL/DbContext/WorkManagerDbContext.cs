@@ -12,12 +12,13 @@ namespace WorkManager.DAL.DbContext
 		public DbSet<UserEntity> UserSet { get; set; }
 		public DbSet<WorkRecordEntity> WorkSet { get; set; }
 		public DbSet<CompanyEntity> CompanySet { get; set; }
+		public DbSet<RelatedTaskEntity> RelatedTaskSet { get; set; }
 		public DbSet<TaskGroupEntity> TaskGroupSet { get; set; }
 		public DbSet<TaskEntity> TaskSet { get; set; }
 		public DbSet<KanbanStateEntity> KanbanSet { get; set; }
 		public DbSet<ImageEntity> ImageSet { get; set; }
 
-		public WorkManagerDbContext()
+        public WorkManagerDbContext()
 		{
 		}
 
@@ -28,7 +29,7 @@ namespace WorkManager.DAL.DbContext
                 entity.HasNoKey();
                 entity.ToView(nameof(ActualDateTimeEntity));
             });
-            modelBuilder.Entity<TaskEntity>().HasMany(s=>s.RelatedTasks).WithMany(s => s.RelatedBy);
+            modelBuilder.Entity<TaskEntity>().HasOne(s=>s.RelatedTask).WithMany(s=>s.RelatedTasks);
         }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

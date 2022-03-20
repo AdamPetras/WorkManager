@@ -33,18 +33,20 @@ namespace WorkManager.ViewModels.Dialogs
 		private readonly ICurrentModelProvider<ITaskGroupModel> _currentTaskGroupProvider;
 		private readonly IDialogService _dialogService;
 		private readonly IImageFacade _imageFacade;
+        private readonly IRelatedTaskFacade _relatedTaskFacade;
 
         private IKanbanStateModel _selectedKanbanState;
 
 		public AddTaskDialogViewModel(INavigationService navigationService,
             ICurrentModelProvider<ITaskGroupModel> currentTaskGroupProvider,
-            ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, 
+            ITaskFacade taskFacade, IDialogService dialogService, IImageFacade imageFacade, IRelatedTaskFacade relatedTaskFacade,
             ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
 		{
 			_currentTaskGroupProvider = currentTaskGroupProvider;
 			_dialogService = dialogService;
 			_imageFacade = imageFacade;
-			_taskFacade = taskFacade;
+            _relatedTaskFacade = relatedTaskFacade;
+            _taskFacade = taskFacade;
 			TakePhotoCommand = new DelegateCommand(async () => await TakePhotoAsync());
 			TaskStartDate = DateTime.Now;
 			Priority = new LocalizedEnum(EPriority.None);
@@ -150,13 +152,20 @@ namespace WorkManager.ViewModels.Dialogs
 		protected override async Task ConfirmAsyncInt()
         {
 			BeginProcess();
+            IRelatedTaskModel newRelatedTaskModel = new RelatedTaskModel(Guid.NewGuid(), "Test", new List<ITaskModel>());
             ITaskModel model = new TaskModel(Guid.NewGuid(), TaskStartDate, Name, 0, Description, TaskDoneDate,
-                _currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime);
-			await ViewModelTaskExecute.ExecuteTaskWithQueue(model, _taskFacade.AddAsync);
-            foreach (string path in PhotoPaths)
+                _currentTaskGroupProvider.GetModel().Id, _selectedKanbanState.Id, Priority.GetValue<EPriority>(), WorkTime, newRelatedTaskModel.Id);
+
+			await ViewModelTaskExecute.ExecuteTaskWithQueue(async (token) =>
             {
-                await ViewModelTaskExecute.ExecuteTaskWithQueue(new ImageModel(Guid.NewGuid(), path, "", model.Id), _imageFacade.AddAsync);
-            }
+                await _relatedTaskFacade.AddAsync(newRelatedTaskModel, token);
+                await _taskFacade.AddAsync(model, token);
+                foreach (string path in PhotoPaths)
+                {
+                    await _imageFacade.AddAsync(new ImageModel(Guid.NewGuid(), path, "", model.Id), token);
+                }
+			});
+            
             _currentTaskGroupProvider.GetModel().TasksCount++;
             OnRequestClose(new DialogParameters() { { "DialogEvent", new AddAfterDialogCloseDialogEvent<ITaskModel>(model) } });
             EndProcess();

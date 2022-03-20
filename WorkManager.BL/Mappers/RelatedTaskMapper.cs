@@ -21,13 +21,13 @@ namespace WorkManager.BL.Mappers
             {
                 Id = model.Id,
                 Name = model.Name,
-                RelatedBy = model.RelatedBy.Select(_taskMapper.Map).ToList()
+                RelatedTasks = model.RelatedBy.Select(_taskMapper.Map).ToList()
             };
         }
 
         public IRelatedTaskModel Map(RelatedTaskEntity item)
         {
-            return new RelatedTaskModel(item.Id, item.Name, item.RelatedBy.Select(_taskMapper.Map).ToList());
+            return new RelatedTaskModel(item.Id, item.Name, item.RelatedTasks.Select(_taskMapper.Map).ToList());
         }
     }
 }

@@ -35,8 +35,9 @@ namespace WorkManager.BL.Facades.BaseClasses
             DatabaseSessionController.Reset();
             using (IDbContextTransaction tx = DbContext.Database.BeginTransaction())
             {
-                if (DbContext.Add(Mapper.Map(model)) == null)
+                if (DbContext.Set<TEntity>().Add(Mapper.Map(model)) == null)
                     return default;
+                DbContext.SaveChanges();
                 tx.Commit();
                 return model;
             }
@@ -50,10 +51,11 @@ namespace WorkManager.BL.Facades.BaseClasses
             DatabaseSessionController.Reset();
             using (IDbContextTransaction tx = await DbContext.Database.BeginTransactionAsync(token))
             {
-                if (await DbContext.AddAsync(Mapper.Map(model), token).ConfigureAwait(false) == null)
+                if (await DbContext.Set<TEntity>().AddAsync(Mapper.Map(model), token).ConfigureAwait(false) == null)
                 {
                     return default;
                 }
+                await DbContext.SaveChangesAsync(token);
                 await tx.CommitAsync(token);
                 return model;
             }
@@ -67,7 +69,7 @@ namespace WorkManager.BL.Facades.BaseClasses
                 TEntity entity = DbContext.Set<TEntity>().SingleOrDefault(s => s.Id == id);
                 if (entity == null)
                     return false;
-                DbContext.Remove(entity);
+                DbContext.Set<TEntity>().Remove(entity);
                 DbContext.SaveChanges();
                 tx.Commit();
                 return true;
@@ -83,7 +85,7 @@ namespace WorkManager.BL.Facades.BaseClasses
                     .SingleOrDefaultAsync(s => s.Id == id, token);
                 if (entity == null)
                     return;
-                DbContext.Remove(entity);
+                DbContext.Set<TEntity>().Remove(entity);
                 await DbContext.SaveChangesAsync(token);
                 await tx.CommitAsync(token);
             }

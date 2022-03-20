@@ -20,20 +20,23 @@ namespace WorkManager.DAL.Entities
         [StringLength(300)]
         public string Description { get; set; }
 		public DateTime TaskDoneDateTime { get; set; }
+        public EPriority Priority { get; set; }
+        public TimeSpan WorkTime { get; set; }
+
 
 		[Required]
 		public Guid StateId { get; set; }
-
-		[ForeignKey(nameof(StateId))]
+        [ForeignKey(nameof(StateId))]
 		public virtual KanbanStateEntity State { get; set; }
 
 		[Required]
 		public Guid TaskGroupId { get; set; }
-
-		[ForeignKey(nameof(TaskGroupId))]
+        [ForeignKey(nameof(TaskGroupId))]
 		public virtual TaskGroupEntity TaskGroup { get; set; }
-		public virtual ICollection<RelatedTaskEntity> RelatedTasks { get; set; }
-        public EPriority Priority { get; set; }
-		public TimeSpan WorkTime { get; set; }
-	}
+
+		[Required]
+		public Guid RelatedTaskId { get; set; }
+		[ForeignKey(nameof(RelatedTaskId))]
+		public virtual RelatedTaskEntity RelatedTask { get; set; }
+    }
 }

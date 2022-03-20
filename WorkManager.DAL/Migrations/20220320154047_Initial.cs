@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WorkManager.DAL.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace WorkManager.DAL.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RelatedTaskEntity",
+                name: "RelatedTaskSet",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -20,7 +20,7 @@ namespace WorkManager.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelatedTaskEntity", x => x.Id);
+                    table.PrimaryKey("PK_RelatedTaskSet", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -151,10 +151,11 @@ namespace WorkManager.DAL.Migrations
                     Description = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TaskDoneDateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    WorkTime = table.Column<TimeSpan>(type: "time(6)", nullable: false),
                     StateId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TaskGroupId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Priority = table.Column<int>(type: "int", nullable: false),
-                    WorkTime = table.Column<TimeSpan>(type: "time(6)", nullable: false)
+                    RelatedTaskId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -163,6 +164,12 @@ namespace WorkManager.DAL.Migrations
                         name: "FK_TaskSet_KanbanSet_StateId",
                         column: x => x.StateId,
                         principalTable: "KanbanSet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TaskSet_RelatedTaskSet_RelatedTaskId",
+                        column: x => x.RelatedTaskId,
+                        principalTable: "RelatedTaskSet",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -197,31 +204,6 @@ namespace WorkManager.DAL.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "RelatedTaskEntityTaskEntity",
-                columns: table => new
-                {
-                    RelatedById = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    RelatedTasksId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RelatedTaskEntityTaskEntity", x => new { x.RelatedById, x.RelatedTasksId });
-                    table.ForeignKey(
-                        name: "FK_RelatedTaskEntityTaskEntity_RelatedTaskEntity_RelatedTasksId",
-                        column: x => x.RelatedTasksId,
-                        principalTable: "RelatedTaskEntity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RelatedTaskEntityTaskEntity_TaskSet_RelatedById",
-                        column: x => x.RelatedById,
-                        principalTable: "TaskSet",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateIndex(
                 name: "IX_CompanySet_UserId",
                 table: "CompanySet",
@@ -238,14 +220,14 @@ namespace WorkManager.DAL.Migrations
                 column: "TaskGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RelatedTaskEntityTaskEntity_RelatedTasksId",
-                table: "RelatedTaskEntityTaskEntity",
-                column: "RelatedTasksId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TaskGroupSet_UserId",
                 table: "TaskGroupSet",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaskSet_RelatedTaskId",
+                table: "TaskSet",
+                column: "RelatedTaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskSet_StateId",
@@ -269,13 +251,7 @@ namespace WorkManager.DAL.Migrations
                 name: "ImageSet");
 
             migrationBuilder.DropTable(
-                name: "RelatedTaskEntityTaskEntity");
-
-            migrationBuilder.DropTable(
                 name: "WorkSet");
-
-            migrationBuilder.DropTable(
-                name: "RelatedTaskEntity");
 
             migrationBuilder.DropTable(
                 name: "TaskSet");
@@ -285,6 +261,9 @@ namespace WorkManager.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "KanbanSet");
+
+            migrationBuilder.DropTable(
+                name: "RelatedTaskSet");
 
             migrationBuilder.DropTable(
                 name: "TaskGroupSet");

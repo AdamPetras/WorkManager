@@ -8,7 +8,7 @@ namespace WorkManager.BL.Interfaces.Facades
 {
     public interface IKanbanStateFacade : IFacade<IKanbanStateModel>
     {
-        void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup);
+        Task CreateDefaultKanbanStateModelsAsync(ITaskGroupModel taskGroup, CancellationToken token = default);
         ICollection<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId);
         Task<ICollection<IKanbanStateModel>> GetKanbanStatesByTaskGroupOrderedByStateAsync(Guid taskGroupId, CancellationToken token = default);
         IKanbanStateModel GetNextKanbanState(Guid taskGroupId, int currentStateOrder);

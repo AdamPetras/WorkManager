@@ -17,21 +17,6 @@ namespace WorkManager.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.13");
 
-            modelBuilder.Entity("RelatedTaskEntityTaskEntity", b =>
-                {
-                    b.Property<Guid>("RelatedById")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("RelatedTasksId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("RelatedById", "RelatedTasksId");
-
-                    b.HasIndex("RelatedTasksId");
-
-                    b.ToTable("RelatedTaskEntityTaskEntity");
-                });
-
             modelBuilder.Entity("WorkManager.DAL.Entities.ActualDateTimeEntity", b =>
                 {
                     b.Property<DateTime>("ActualDateTime")
@@ -129,7 +114,7 @@ namespace WorkManager.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RelatedTaskEntity");
+                    b.ToTable("RelatedTaskSet");
                 });
 
             modelBuilder.Entity("WorkManager.DAL.Entities.TaskEntity", b =>
@@ -152,6 +137,9 @@ namespace WorkManager.DAL.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("RelatedTaskId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("StateId")
                         .HasColumnType("char(36)");
 
@@ -165,6 +153,8 @@ namespace WorkManager.DAL.Migrations
                         .HasColumnType("time(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RelatedTaskId");
 
                     b.HasIndex("StateId");
 
@@ -262,21 +252,6 @@ namespace WorkManager.DAL.Migrations
                     b.ToTable("WorkSet");
                 });
 
-            modelBuilder.Entity("RelatedTaskEntityTaskEntity", b =>
-                {
-                    b.HasOne("WorkManager.DAL.Entities.TaskEntity", null)
-                        .WithMany()
-                        .HasForeignKey("RelatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WorkManager.DAL.Entities.RelatedTaskEntity", null)
-                        .WithMany()
-                        .HasForeignKey("RelatedTasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WorkManager.DAL.Entities.CompanyEntity", b =>
                 {
                     b.HasOne("WorkManager.DAL.Entities.UserEntity", "User")
@@ -312,6 +287,12 @@ namespace WorkManager.DAL.Migrations
 
             modelBuilder.Entity("WorkManager.DAL.Entities.TaskEntity", b =>
                 {
+                    b.HasOne("WorkManager.DAL.Entities.RelatedTaskEntity", "RelatedTask")
+                        .WithMany("RelatedTasks")
+                        .HasForeignKey("RelatedTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WorkManager.DAL.Entities.KanbanStateEntity", "State")
                         .WithMany()
                         .HasForeignKey("StateId")
@@ -323,6 +304,8 @@ namespace WorkManager.DAL.Migrations
                         .HasForeignKey("TaskGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("RelatedTask");
 
                     b.Navigation("State");
 
@@ -349,6 +332,11 @@ namespace WorkManager.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("WorkManager.DAL.Entities.RelatedTaskEntity", b =>
+                {
+                    b.Navigation("RelatedTasks");
                 });
 #pragma warning restore 612, 618
         }

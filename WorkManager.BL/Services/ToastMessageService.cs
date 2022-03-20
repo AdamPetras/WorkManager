@@ -44,7 +44,7 @@ namespace WorkManager.BL.Services
                 return;
             }
 
-            _messages.TryPeek(out Message message);
+            _messages.TryDequeue(out Message message);
             switch (message.Duration)
             {
                 case EMessageDuration.Long:

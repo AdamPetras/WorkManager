@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using WorkManager.BL.Facades.BaseClasses;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
@@ -25,11 +26,16 @@ namespace WorkManager.BL.Facades
             Mapper = mapper;
         }
 
-		public void CreateDefaultKanbanStateModels(ITaskGroupModel taskGroup)
+		public async Task CreateDefaultKanbanStateModelsAsync(ITaskGroupModel taskGroup, CancellationToken token = default)
 		{
-			DbContext.KanbanSet.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Todo", 0, "\uf46d", taskGroup.Id)));
-            DbContext.KanbanSet.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "In Progress", 1, "\uf110", taskGroup.Id)));
-            DbContext.KanbanSet.Add(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Done", 2, "\uf46c", taskGroup.Id)));
+            using (IDbContextTransaction tx = await DbContext.Database.BeginTransactionAsync(token))
+            {
+                await DbContext.KanbanSet.AddAsync(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Todo", 0, "\uf46d", taskGroup.Id)), token);
+                await DbContext.KanbanSet.AddAsync(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "In Progress", 1, "\uf110", taskGroup.Id)), token);
+                await DbContext.KanbanSet.AddAsync(Mapper.Map(new KanbanStateModel(Guid.NewGuid(), "Done", 2, "\uf46c", taskGroup.Id)), token);
+                await DbContext.SaveChangesAsync(token);
+                await tx.CommitAsync(token);
+            }
 		}
 
 		public ICollection<IKanbanStateModel> GetKanbanStatesByTaskGroup(Guid taskGroupId)

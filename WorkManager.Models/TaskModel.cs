@@ -14,13 +14,13 @@ namespace WorkManager.Models
         {
         }
 
-        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroupId, task.StateId, task.Priority.GetValue<EPriority>(), task.WorkTime)
+        public TaskModel([NotNull] ITaskModel task) : this(task.Id, task.ActualDateTime, task.Name, task.ImagesCount, task.Description, task.TaskDoneDateTime, task.TaskGroupId, task.StateId, task.Priority.GetValue<EPriority>(), task.WorkTime, task.RelatedTaskId)
         {
 
         }
 
         public TaskModel(Guid id, DateTime actualDateTime, string name, int imagesCount, string description, DateTime taskDoneDateTime,
-            Guid taskGroupId, Guid stateId, EPriority priority, TimeSpan workTime) : base(id)
+            Guid taskGroupId, Guid stateId, EPriority priority, TimeSpan workTime, Guid relatedTaskId) : base(id)
         {
             ActualDateTime = actualDateTime;
             Name = name;
@@ -31,6 +31,7 @@ namespace WorkManager.Models
             StateId = stateId;
             Priority = new LocalizedEnum(priority);
             WorkTime = workTime;
+            RelatedTaskId = relatedTaskId;
         }
 
         public DateTime ActualDateTime { get; set; }
@@ -42,6 +43,8 @@ namespace WorkManager.Models
         public Guid StateId { get; set; }
         public LocalizedEnum Priority { get; set; }
         public TimeSpan WorkTime { get; set; }
+        public Guid RelatedTaskId { get; set; }
+
 
         public bool Equals(ITaskModel other)
         {
@@ -52,7 +55,7 @@ namespace WorkManager.Models
         {
             return ActualDateTime.Equals(other.ActualDateTime) && Name == other.Name && Description == other.Description &&
                    TaskDoneDateTime.Equals(other.TaskDoneDateTime) && TaskGroupId == other.TaskGroupId &&
-                   StateId == other.StateId && Priority == other.Priority && WorkTime.Equals(other.WorkTime);
+                   StateId == other.StateId && Priority == other.Priority && WorkTime.Equals(other.WorkTime) && RelatedTaskId == other.RelatedTaskId;
         }
 
         public override bool Equals(object obj)
@@ -64,7 +67,18 @@ namespace WorkManager.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ActualDateTime, Name, Description, TaskDoneDateTime, TaskGroupId, StateId, (int)Priority.GetValue<EPriority>(), WorkTime);
+            HashCode hash = new HashCode();
+            hash.Add(ActualDateTime);
+            hash.Add(Name);
+            hash.Add(ImagesCount);
+            hash.Add(Description);
+            hash.Add(TaskDoneDateTime);
+            hash.Add(TaskGroupId);
+            hash.Add(StateId);
+            hash.Add((int)Priority.GetValue<EPriority>());
+            hash.Add(WorkTime);
+            hash.Add(RelatedTaskId);
+            return hash.ToHashCode();
         }
     }
 }

@@ -19,5 +19,6 @@ namespace WorkManager.Models.Interfaces
         Guid StateId { get; set; }
 		LocalizedEnum Priority { get; set; }
 		TimeSpan WorkTime { get; set; }
+        Guid RelatedTaskId { get; set; }
 	}
 }

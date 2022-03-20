@@ -26,14 +26,14 @@ namespace WorkManager.ViewModels.Pages
     public class TaskDetailPageViewModel : ViewModelBase
     {
         private readonly IPageDialogService _pageDialogService;
-        private readonly ITaskDetailFacade _taskDetailFacade;
+        private readonly ITaskFacade _taskDetailFacade;
         private readonly IDialogService _dialogService;
         private readonly IImageFacade _imageFacade;
 
-        private ITaskDetailModel _defaultTask;
+        private ITaskModel _defaultTask;
 
         public TaskDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService,
-            ITaskDetailFacade taskDetailFacade, IDialogService dialogService, IImageFacade imageFacade,
+            ITaskFacade taskDetailFacade, IDialogService dialogService, IImageFacade imageFacade,
             ViewModelTaskExecute viewModelTaskExecute) : base(navigationService, viewModelTaskExecute)
         {
             _pageDialogService = pageDialogService;
@@ -63,8 +63,8 @@ namespace WorkManager.ViewModels.Pages
         public int NameMaxLength { get; }
         public int DescriptionMaxLength { get; }
 
-        private ITaskDetailModel _selectedTask;
-        public ITaskDetailModel SelectedTask
+        private ITaskModel _selectedTask;
+        public ITaskModel SelectedTask
         {
             get => _selectedTask;
             private set
@@ -100,8 +100,8 @@ namespace WorkManager.ViewModels.Pages
             }
             BeginProcess();
             TaskNavigationParameters navigationParameters = new TaskNavigationParameters(parameters);
-            SelectedTask = await ViewModelTaskExecute.ExecuteTaskWithQueue(navigationParameters.TaskModel.Id, _taskDetailFacade.GetByIdAsync);
-            _defaultTask = new TaskDetailModel(SelectedTask);
+            SelectedTask = navigationParameters.TaskModel;
+            _defaultTask = new TaskModel(SelectedTask);
             PhotoPaths = new ObservableCollection<IImageModel>(await ViewModelTaskExecute.ExecuteTaskWithQueue(SelectedTask.Id, _imageFacade.GetAllImagesByTaskAsync));
             InitImages = PhotoPaths.ToList();
             EndProcess();
@@ -171,7 +171,7 @@ namespace WorkManager.ViewModels.Pages
 
         private async Task ShowAddRelatedTasksAsync()
         {
-            await NavigationService.NavigateAsync("RelatedTasksPage",new TaskDetailNavigationParameters(SelectedTask));
+            await NavigationService.NavigateAsync("RelatedTasksPage",new TaskNavigationParameters(SelectedTask));
         }
 
         private void DeletePhoto(IImageModel obj)

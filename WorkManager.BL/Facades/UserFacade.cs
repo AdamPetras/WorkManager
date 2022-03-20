@@ -30,6 +30,7 @@ namespace WorkManager.BL.Facades
         public async Task<bool> ExistsAsync(string username, CancellationToken token = default)
         {
             DatabaseSessionController.Reset();
+            var values = await DbContext.UserSet.ToListAsync(token);
             return await DbContext.UserSet.AnyAsync(s => s.Username == username, token).ConfigureAwait(false);
         }
 

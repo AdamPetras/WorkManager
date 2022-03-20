@@ -1,4 +1,8 @@
-﻿using WorkManager.BL.Facades.BaseClasses;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using WorkManager.BL.Facades.BaseClasses;
 using WorkManager.BL.Interfaces;
 using WorkManager.BL.Interfaces.Facades;
 using WorkManager.BL.Interfaces.Mappers;
@@ -11,8 +15,17 @@ namespace WorkManager.BL.Facades
 {
     public class RelatedTaskFacade : FacadeBase<IRelatedTaskModel, RelatedTaskEntity>, IRelatedTaskFacade
     {
-        public RelatedTaskFacade(WorkManagerDbContext dbContext, IMapper<RelatedTaskEntity, IRelatedTaskModel> mapper, IDatabaseSessionController databaseSessionController) : base(dbContext, mapper, databaseSessionController)
+        protected new readonly IRelatedTaskMapper Mapper;
+
+        public RelatedTaskFacade(WorkManagerDbContext dbContext, IRelatedTaskMapper mapper, IDatabaseSessionController databaseSessionController) : base(dbContext, mapper, databaseSessionController)
         {
+            Mapper = mapper;
+        }
+
+        public async Task<IRelatedTaskModel> GetByIdAsync(Guid relatedTaskId, CancellationToken token)
+        {
+            DatabaseSessionController.Reset();
+            return Mapper.Map(await DbContext.RelatedTaskSet.SingleOrDefaultAsync(s => s.Id == relatedTaskId, token));
         }
     }
 }
